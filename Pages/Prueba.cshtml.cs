@@ -21,7 +21,7 @@ public class Prueba : PageModel
 
     void Select()
     {
-        var database = DatabaseConnection.GetInstance(_configuration);
+        var database = DatabaseConnectionManager.GetInstance(_configuration);
         string query = @"SELECT * FROM ""Brand""";
         using (NpgsqlConnection connection = database.GetConnection())
         {

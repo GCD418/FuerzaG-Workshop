@@ -2,20 +2,20 @@ using Npgsql;
 
 namespace FuerzaG.Data.Services;
 
-public class DatabaseConnection
+public class DatabaseConnectionManager
 {
-    private static DatabaseConnection _instance;
+    private static DatabaseConnectionManager _instance;
     private static readonly object _locker = new object();
     private readonly string _connectionString;
     private readonly IConfiguration _configuration;
 
-    private DatabaseConnection(IConfiguration configuration)
+    private DatabaseConnectionManager(IConfiguration configuration)
     {
         _configuration = configuration;
         _connectionString = _configuration.GetConnectionString("NeonPostgres")!;
     }
 
-    public static DatabaseConnection GetInstance(IConfiguration configuration)
+    public static DatabaseConnectionManager GetInstance(IConfiguration configuration)
     {
         if (_instance == null)
         {
@@ -23,7 +23,7 @@ public class DatabaseConnection
             {
                 if (_instance == null)
                 {
-                    _instance = new DatabaseConnection(configuration);
+                    _instance = new DatabaseConnectionManager(configuration);
                 }
             }
         }
