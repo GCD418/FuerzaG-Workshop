@@ -6,16 +6,15 @@ public class DatabaseConnectionManager
 {
     private static DatabaseConnectionManager _instance;
     private static readonly object _locker = new object();
-    private readonly string _connectionString;
+    public string ConnectionString { get; private set; }
     private readonly IConfiguration _configuration;
 
-    private DatabaseConnectionManager(IConfiguration configuration)
+    private DatabaseConnectionManager(string  connectionString)
     {
-        _configuration = configuration;
-        _connectionString = _configuration.GetConnectionString("NeonPostgres")!;
+        ConnectionString = connectionString;
     }
 
-    public static DatabaseConnectionManager GetInstance(IConfiguration configuration)
+    public static DatabaseConnectionManager GetInstance(string connectionString)
     {
         if (_instance == null)
         {
@@ -23,15 +22,27 @@ public class DatabaseConnectionManager
             {
                 if (_instance == null)
                 {
-                    _instance = new DatabaseConnectionManager(configuration);
+                    _instance = new DatabaseConnectionManager(connectionString);
                 }
             }
         }
         return _instance;
     }
 
-    public NpgsqlConnection GetConnection()
+    public static DatabaseConnectionManager GetInstance()
     {
-        return new NpgsqlConnection(_connectionString);
+        if (_instance == null)
+        {
+            throw new Exception("Database connection manager not initialized");
+        }
+        return _instance;
+    }
+
+    public void UpdateConnectionString(string connectionString)
+    {
+        lock (_locker)
+        {
+            ConnectionString = connectionString;
+        }
     }
 }
