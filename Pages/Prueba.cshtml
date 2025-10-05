@@ -1,0 +1,42 @@
+@page
+@model FuerzaG.Pages.Prueba
+
+@{
+}
+
+<h2>Categorías</h2>
+
+<div>
+    <a asp-page="CategoriasCreate" class="btn btn-primary">Nueva Categoría</a>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Nombre de la Categoría</th>
+        <th>Descripción</th>
+        <th>Creado en:</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (System.Data.DataRow row in Model.CategoriasTable.Rows)
+    {
+        <tr>
+            <td>@row["name"]</td>
+            <td>@row["isActive"]</td>
+            <td>@row["createdAt"]</td>
+            <td>
+                <a asp-page="CategoriasEdit" asp-route-id="@row["id"]" class="btn btn-warning btn-sm">Editar</a>
+                <a class="btn btn-warning btn-sm">Eliminar</a>
+            </td>
+        </tr>
+    }
+
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3"> @Model.CategoriasTable.Rows.Count Registros encontrados</td>
+    </tr>
+    </tfoot>
+</table>
