@@ -1,5 +1,5 @@
 using System.Data;
-using FuerzaG.Data.Services;
+using FuerzaG.Configuration;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Npgsql;
 
