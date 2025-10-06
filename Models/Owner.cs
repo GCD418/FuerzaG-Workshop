@@ -10,4 +10,6 @@ public class Owner
     public string Email { get; set; } = string.Empty;
     public string Ci { get; set; } = string.Empty;        // Cédula o carnet
     public string Address { get; set; } = string.Empty;
+    public bool IsActive { get; set; } = true;  // True = activo, false = inactivo
+
 }

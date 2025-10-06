@@ -18,5 +18,25 @@ namespace FuerzaG.Services
         {
             return _repository.GetAll();
         }
+
+        public Owner? GetOwnerById(short id)
+        {
+            return _repository.GetById(id);
+        }
+
+        public void AddOwner(Owner owner)
+        {
+            _repository.Add(owner);
+        }
+
+        public void UpdateOwner(Owner owner)
+        {
+            _repository.Update(owner);
+        }
+
+        public void DeleteOwner(short id)
+        {
+            _repository.Delete(id);
+        }
     }
 }
