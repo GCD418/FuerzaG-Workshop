@@ -45,4 +45,9 @@ public class DatabaseConnectionManager
             ConnectionString = connectionString;
         }
     }
+    public NpgsqlConnection GetConnection()
+    {
+        return new NpgsqlConnection(ConnectionString);
+    }
+
 }
