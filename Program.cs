@@ -1,4 +1,15 @@
+using FuerzaG.Configuration;
+using FuerzaG.Factories;
+
 var builder = WebApplication.CreateBuilder(args);
+
+string connectionString = builder.Configuration.GetConnectionString("PostgreSql")!;
+
+var connectionManager = DatabaseConnectionManager.GetInstance(connectionString);
+
+builder.Services.AddSingleton(connectionManager);
+
+builder.Services.AddScoped<IDbConnectionFactory, PostgreSqlConnectionFactory>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

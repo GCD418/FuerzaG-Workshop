@@ -13,21 +13,22 @@
 <table class="table">
     <thead>
     <tr>
+        <th>ID</th>
         <th>Nombre de la Categoría</th>
-        <th>Descripción</th>
         <th>Creado en:</th>
-        <th>Acciones</th>
+        <th>Estado</th>
     </tr>
     </thead>
     <tbody>
-    @foreach (System.Data.DataRow row in Model.CategoriasTable.Rows)
+    @foreach (var brand in Model.Brands)
     {
         <tr>
-            <td>@row["name"]</td>
-            <td>@row["isActive"]</td>
-            <td>@row["createdAt"]</td>
+            <td>@brand.Id</td>
+            <td>@brand.Name</td>
+            <td>@brand.CreatedAt</td>
+            <td>@brand.IsActive</td>
             <td>
-                <a asp-page="CategoriasEdit" asp-route-id="@row["id"]" class="btn btn-warning btn-sm">Editar</a>
+                <a asp-page="CategoriasEdit" asp-route-id="@brand.Id" class="btn btn-warning btn-sm">Editar</a>
                 <a class="btn btn-warning btn-sm">Eliminar</a>
             </td>
         </tr>
@@ -36,7 +37,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="3"> @Model.CategoriasTable.Rows.Count Registros encontrados</td>
+        <td colspan="3"> @Model.Brands.Count Registros encontrados</td>
     </tr>
     </tfoot>
 </table>
