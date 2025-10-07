@@ -10,9 +10,4 @@
       <PackageReference Include="Npgsql" Version="9.0.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Data\Interfaces\" />
-      <Folder Include="Data\Repositories\" />
-    </ItemGroup>
-
 </Project>

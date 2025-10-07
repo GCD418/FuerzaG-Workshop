@@ -24,7 +24,7 @@ public class Prueba : PageModel
 
     void Select()
     {
-        string query = @"SELECT * FROM ""Brand""";
+        string query = @"SELECT * FROM brand";
         using (var connection =  _connectionFactory.CreateConnection())
         {
             using var command =  connection.CreateCommand();
