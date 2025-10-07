@@ -1,0 +1,18 @@
+﻿@page
+@model FuerzaG.Pages.Technicians.CreateModel
+@{
+    ViewData["Title"] = "Create Technician";
+}
+
+<h2>Create Technician</h2>
+<hr />
+
+<form method="post">
+    <partial name="_TechnicianFields" for="Form" />
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="/TechnicianPage" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

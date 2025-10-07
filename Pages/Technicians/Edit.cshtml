@@ -1,0 +1,23 @@
+﻿@page "{id:int}"
+@model FuerzaG.Pages.Technicians.EditModel
+@{
+    ViewData["Title"] = "Edit Technician";
+}
+
+<h2>Edit Technician</h2>
+<hr />
+
+<form method="post">
+    <!-- MUY IMPORTANTE: mantener el Id oculto -->
+    <input type="hidden" asp-for="Form.Id" />
+
+    <!-- Campos del técnico (usa tu partial para no duplicar) -->
+    <partial name="_TechnicianFields" for="Form" />
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-page="/Technicians/TechnicianPage" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

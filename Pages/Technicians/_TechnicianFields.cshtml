@@ -1,0 +1,50 @@
+﻿@model FuerzaG.Models.Technician
+
+<div class="mb-3">
+    <label asp-for="Name" class="form-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="First_Last_Name" class="form-label"></label>
+        <input asp-for="First_Last_Name" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="Second_Last_Name" class="form-label"></label>
+        <input asp-for="Second_Last_Name" class="form-control" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="Phone_Number" class="form-label"></label>
+        <input asp-for="Phone_Number" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="Document_Number" class="form-label"></label>
+        <input asp-for="Document_Number" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="Base_Salary" class="form-label"></label>
+        <input asp-for="Base_Salary" class="form-control" />
+    </div>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Address" class="form-label"></label>
+    <input asp-for="Address" class="form-control" />
+</div>
+
+<div class="form-check mb-3">
+    <input asp-for="Is_Active" class="form-check-input" />
+    <label asp-for="Is_Active" class="form-check-label"></label>
+</div>
