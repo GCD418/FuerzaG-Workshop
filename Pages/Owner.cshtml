@@ -1,0 +1,48 @@
+@page
+@model FuerzaG.Pages.Owner
+
+@{
+}
+<h2>Dueños</h2>
+
+<div class="mb-3">
+    <a asp-page="CategoriasCreate" class="btn btn-primary">Nueva Categoría</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>ApellidoPaterno</th>
+        <th>ApellidoMaterno</th>
+        <th>Telefono</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var owner in Model.Owners)
+    {
+        <tr>
+            <td>@owner.Id</td>
+            <td>@owner.Name</td>
+            <td>@categoria.Descripcion</td>
+            <td>@categoria.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+            <td>@(categoria.UltimaModificacion?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</td>
+            <td>
+                <a asp-page="CategoriasEdit" asp-route-id="@categoria.Id" class="btn btn-warning btn-sm">Editar</a>
+                <button class="btn btn-danger btn-sm">Eliminar</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="6">
+            <strong>@Model.Categorias.Count()</strong> registro(s) encontrado(s)
+        </td>
+    </tr>
+    </tfoot>
+</table>
+
+
