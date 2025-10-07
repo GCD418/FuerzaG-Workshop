@@ -4,43 +4,56 @@
     ViewData["Title"] = "Technicians";
 }
 
-<h2 class="mb-3">Technicians</h2>
 
-<a asp-page="./Create" class="btn btn-primary mb-3">Create</a>
-
-<table class="table table-striped align-middle">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>First Last</th>
-            <th>Second Last</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Base Salary</th>
-            <th>Active</th>
-            <th style="width:160px;"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var t in Model.List)
-        {
+<section id="owners" class="section bg-light">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="fw-bold">Listado de Técnicos</h2>
+            <p class="text-muted">Gestiona los registros de los técnicos del taller</p>
+        </div>
+    
+        <div class="d-flex justify-content-end mb-4">
+            <a asp-page="./Create" class="btn btn-custom">
+                <i class="fas fa-plus-circle me-2"></i> Crear nuevo técnico
+            </a>
+        </div>
+        <table class="table table-striped align-middle">
+            <thead>
             <tr>
-                <td>@t.Id</td>
-                <td>@t.Name</td>
-                <td>@t.First_Last_Name</td>
-                <td>@t.Second_Last_Name</td>
-                <td>@t.Phone_Number</td>
-                <td>@t.Email</td>
-                <td>@t.Base_Salary</td>
-                <td>@t.Is_Active</td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@t.Id" class="btn btn-sm btn-warning">Edit</a>
-                    <form method="post" asp-page-handler="Delete" asp-route-id="@t.Id" class="d-inline">
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this technician?');">Delete</button>
-                    </form>
-                </td>
+                <th>Id</th>
+                <th>Name</th>
+                <th>First Last</th>
+                <th>Second Last</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Base Salary</th>
+                <th>Active</th>
+                <th style="width:160px;"></th>
             </tr>
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+            @foreach (var t in Model.List)
+            {
+                <tr>
+                    <td>@t.Id</td>
+                    <td>@t.Name</td>
+                    <td>@t.First_Last_Name</td>
+                    <td>@t.Second_Last_Name</td>
+                    <td>@t.Phone_Number</td>
+                    <td>@t.Email</td>
+                    <td>@t.Base_Salary</td>
+                    <td>@t.Is_Active</td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@t.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@t.Id" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Delete this technician?');">Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
