@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using FuerzaG.Factories;                       // IDbConnectionFactory
-using FuerzaG.Factories.ConcreteCreators;      // OwnerRepositoryCreator
-using FuerzaG.Data.Interfaces;                 // IRepository<T>
-using FuerzaG.Models;                          // Owner
+using FuerzaG.Factories;
+using FuerzaG.Factories.ConcreteCreators;     
+using FuerzaG.Models;                          
 
 namespace FuerzaG.Pages.Owners;
 
@@ -15,15 +14,33 @@ public class EditModel : PageModel
     public EditModel(IDbConnectionFactory connectionFactory)
         => _creator = new OwnerRepositoryCreator(connectionFactory);
 
-    [BindProperty] public Owner Form { get; set; } = new();
+    
+    [BindProperty] public int Id { get; set; }
+    [BindProperty] public string Name { get; set; } = string.Empty;
+    [BindProperty] public string FirstLastname { get; set; } = string.Empty;
+    [BindProperty] public string? SecondLastname { get; set; }
+    [BindProperty] public string PhoneNumber { get; set; } = string.Empty;
+    [BindProperty] public string Email { get; set; } = string.Empty;
+    [BindProperty] public string Ci { get; set; } = string.Empty;
+    [BindProperty] public string Address { get; set; } = string.Empty;
 
+    
     public IActionResult OnGet(int id)
     {
         var repo = _creator.GetRepository<Owner>();
-        var entity = repo.GetById(id);
-        if (entity is null) return RedirectToPage("/OwnerPage");
+        var o = repo.GetById(id);
+        if (o is null) return RedirectToPage("/OwnerPage");
 
-        Form = entity;
+        
+        Id = o.Id;
+        Name = o.Name;
+        FirstLastname = o.FirstLastname;
+        SecondLastname = o.SecondLastname;
+        PhoneNumber = o.PhoneNumber;
+        Email = o.Email;
+        Ci = o.Ci;
+        Address = o.Address;
+
         return Page();
     }
 
@@ -31,12 +48,25 @@ public class EditModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var ok = _creator.GetRepository<Owner>().Update(Form);
+        var repo = _creator.GetRepository<Owner>();
+        var ok = repo.Update(new Owner
+        {
+            Id = Id,
+            Name = Name,
+            FirstLastname = FirstLastname,
+            SecondLastname = SecondLastname,
+            PhoneNumber = PhoneNumber,
+            Email = Email,
+            Ci = Ci,
+            Address = Address
+        });
+
         if (!ok)
         {
-            ModelState.AddModelError(string.Empty, "No se pudo actualizar.");
+            ModelState.AddModelError(string.Empty, "No se pudo actualizar el registro.");
             return Page();
         }
+
         return RedirectToPage("/OwnerPage");
     }
 }

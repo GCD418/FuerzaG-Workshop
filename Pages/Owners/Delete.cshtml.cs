@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using FuerzaG.Factories;                       // IDbConnectionFactory
-using FuerzaG.Factories.ConcreteCreators;      // OwnerRepositoryCreator
-using FuerzaG.Data.Interfaces;                 // IRepository<T>
-using FuerzaG.Models;                          // (opcional)
+using FuerzaG.Factories;                      
+using FuerzaG.Factories.ConcreteCreators;     
+using FuerzaG.Data.Interfaces;                
+using FuerzaG.Models;                       
 
 namespace FuerzaG.Pages.Owners;
 
@@ -15,7 +15,7 @@ public class DeleteModel : PageModel
     public DeleteModel(IDbConnectionFactory connectionFactory)
         => _creator = new OwnerRepositoryCreator(connectionFactory);
 
-    // POST /Owners/Delete?id=123
+
     public IActionResult OnPost(int id)
     {
         _creator.GetRepository<Owner>().DeleteById(id);
