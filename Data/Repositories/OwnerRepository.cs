@@ -154,17 +154,21 @@ public class OwnerRepository : IRepository<Owner>
     public bool DeleteById(int id)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-
-        const string sql = "DELETE FROM owner WHERE id = @id;"; 
+        const string query = @"
+        UPDATE owner
+        SET 
+            is_active = false,
+            updated_at = CURRENT_TIMESTAMP,
+            modified_by_user_id = @modified_by_user_id
+        WHERE id = @id;";
         using var command = connection.CreateCommand();
-        command.CommandText = sql;
+        command.CommandText = query;                  // <<-- IMPORTANTE
         AddParameter(command, "@id", id);
+        AddParameter(command, "@modified_by_user_id", 8888);
 
         connection.Open();
-        var rows = command.ExecuteNonQuery();
-        return rows > 0;
+        return command.ExecuteNonQuery() > 0;
     }
-
 
 
 
