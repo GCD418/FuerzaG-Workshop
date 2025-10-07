@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuerzaG", "FuerzaG.csproj", "{3E12065C-EEAD-4FC3-A5AB-79901723CFE0}"
 EndProject
 Global
@@ -12,5 +15,11 @@ Global
 		{3E12065C-EEAD-4FC3-A5AB-79901723CFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E12065C-EEAD-4FC3-A5AB-79901723CFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E12065C-EEAD-4FC3-A5AB-79901723CFE0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECB05DD5-ACFD-46D0-9CA0-41627452D588}
 	EndGlobalSection
 EndGlobal
