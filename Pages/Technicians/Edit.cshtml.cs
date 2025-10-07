@@ -21,7 +21,6 @@ namespace FuerzaG.Pages.Technicians
             var entity = repo.GetById(id);
             if (entity is null) return RedirectToPage("/Technicians/TechnicianPage");
 
-
             Form = entity;
             return Page();
         }
