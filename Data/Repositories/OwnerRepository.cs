@@ -31,6 +31,7 @@ public class OwnerRepository:IRepository<Owner>
             address,
             created_at,
             updated_at,
+            is_active,
             modified_by_user_id
         FROM owner
         WHERE is_active = true
@@ -167,7 +168,7 @@ public class OwnerRepository:IRepository<Owner>
             Id = reader.GetInt32(0),
             Name = reader.GetString(1),
             FirstLastname = reader.GetString(2),
-            SecondLastname = reader.GetString(3),
+            SecondLastname = reader.IsDBNull(3) ? null : reader.GetString(3),
             PhoneNumber = reader.GetString(4),
             Email = reader.GetString(5),
             Ci = reader.GetString(6),
