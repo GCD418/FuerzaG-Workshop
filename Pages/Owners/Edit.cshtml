@@ -1,13 +1,54 @@
 @page "{id:int}"
 @model FuerzaG.Pages.Owners.EditModel
-<h2>Editar Dueño</h2>
+@{
+    ViewData["Title"] = "Editar Dueño";
+}
+<h2 class="mb-3">Editar Dueño</h2>
 
-<form method="post" class="card card-body">
+<form method="post" class="card card-body shadow-sm">
   <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-  <input type="hidden" asp-for="Form.Id" />
-  <!-- usa el mismo bloque de inputs que en Create, cambiando Form.XXX -->
-  <partial name="_OwnerFields" model="Model.Form" />
-  <!-- Si no creas el parcial, copia los inputs de Create y cambia "Form." -->
+
+
+  <input type="hidden" asp-for="Id" />
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label asp-for="Name" class="form-label"></label>
+      <input asp-for="Name" class="form-control" />
+      <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+      <label asp-for="FirstLastname" class="form-label"></label>
+      <input asp-for="FirstLastname" class="form-control" />
+      <span asp-validation-for="FirstLastname" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+      <label asp-for="SecondLastname" class="form-label"></label>
+      <input asp-for="SecondLastname" class="form-control" />
+      <span asp-validation-for="SecondLastname" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+      <label asp-for="PhoneNumber" class="form-label"></label>
+      <input asp-for="PhoneNumber" class="form-control" />
+      <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+      <label asp-for="Email" class="form-label"></label>
+      <input asp-for="Email" class="form-control" />
+      <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+      <label asp-for="Ci" class="form-label">CI</label>
+      <input asp-for="Ci" class="form-control" />
+      <span asp-validation-for="Ci" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+      <label asp-for="Address" class="form-label"></label>
+      <input asp-for="Address" class="form-control" />
+      <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+  </div>
+
   <div class="mt-3">
     <button class="btn btn-primary" type="submit">Actualizar</button>
     <a asp-page="/OwnerPage" class="btn btn-outline-secondary">Cancelar</a>

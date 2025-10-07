@@ -38,7 +38,7 @@ public class OwnerRepository : IRepository<Owner>
             ORDER BY id ASC;";
 
         using var command = connection.CreateCommand();
-        command.CommandText = query;                 // ✅ asignar SQL
+        command.CommandText = query;         
         connection.Open();
 
         using var reader = command.ExecuteReader();
@@ -69,7 +69,7 @@ public class OwnerRepository : IRepository<Owner>
             WHERE id = @id AND is_active = true;";
 
         using var command = connection.CreateCommand();
-        command.CommandText = query;                 // ✅ asignar SQL
+        command.CommandText = query;   
         AddParameter(command, "@id", id);
 
         connection.Open();
@@ -101,7 +101,7 @@ public class OwnerRepository : IRepository<Owner>
             RETURNING id;";
 
         using var command = connection.CreateCommand();
-        command.CommandText = query;                 // ✅ asignar SQL
+        command.CommandText = query;             
 
         AddParameter(command, "@name",             entity.Name);
         AddParameter(command, "@first_last_name",  entity.FirstLastname);
@@ -112,7 +112,7 @@ public class OwnerRepository : IRepository<Owner>
         AddParameter(command, "@address",          entity.Address);
 
         connection.Open();
-        var idObj = command.ExecuteScalar();        // ✅ usar ExecuteScalar con RETURNING
+        var idObj = command.ExecuteScalar();        
         return Convert.ToInt32(idObj);
     }
 
@@ -134,7 +134,7 @@ public class OwnerRepository : IRepository<Owner>
             WHERE id = @id;";
 
         using var command = connection.CreateCommand();
-        command.CommandText = query;                 // ✅ asignar SQL
+        command.CommandText = query;           
 
         AddParameter(command, "@name",             entity.Name);
         AddParameter(command, "@first_last_name",  entity.FirstLastname);
@@ -155,14 +155,14 @@ public class OwnerRepository : IRepository<Owner>
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql = "DELETE FROM owner WHERE id = @id;"; // HARD DELETE
+        const string sql = "DELETE FROM owner WHERE id = @id;"; 
         using var command = connection.CreateCommand();
         command.CommandText = sql;
         AddParameter(command, "@id", id);
 
         connection.Open();
         var rows = command.ExecuteNonQuery();
-        return rows > 0; // true si realmente borró filas
+        return rows > 0;
     }
 
 
