@@ -143,8 +143,8 @@ public class OwnerRepository : IRepository<Owner>
         AddParameter(command, "@email",            entity.Email);
         AddParameter(command, "@document_number",  entity.Ci);
         AddParameter(command, "@address",          entity.Address);
-        AddParameter(command, "@modified_by_user_id", 9999); // TODO
-        AddParameter(command, "@id",               entity.Id); // ✅ faltaba
+        AddParameter(command, "@modified_by_user_id", 9999);
+        AddParameter(command, "@id",               entity.Id);
 
         connection.Open();
         int rows = command.ExecuteNonQuery();
@@ -155,42 +155,17 @@ public class OwnerRepository : IRepository<Owner>
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string query = @"
-            UPDATE owner
-            SET 
-                is_active = false,
-                updated_at = CURRENT_TIMESTAMP,
-                modified_by_user_id = @modified_by_user_id
-            WHERE id = @id;";
-
+        const string sql = "DELETE FROM owner WHERE id = @id;"; // HARD DELETE
         using var command = connection.CreateCommand();
-        command.CommandText = query;                         // ¡IMPRESCINDIBLE!
+        command.CommandText = sql;
         AddParameter(command, "@id", id);
-        AddParameter(command, "@modified_by_user_id", 8888);
 
         connection.Open();
         var rows = command.ExecuteNonQuery();
-
-        // --- DEBUG: lee el valor actual en BD para confirmar
-        using (var check = connection.CreateCommand())
-        {
-            check.CommandText = "SELECT is_active, current_database() db FROM owner WHERE id=@id;";
-            AddParameter(check, "@id", id);
-            using var r = check.ExecuteReader();
-            if (r.Read())
-            {
-                var isActive = (bool)r["is_active"];
-                var dbName   = r["db"]?.ToString();
-                Console.WriteLine($"[OwnerRepository] id={id} -> is_active={isActive} (db={dbName})");
-            }
-            else
-            {
-                Console.WriteLine($"[OwnerRepository] id={id} no existe.");
-            }
-        }
-
-        return rows > 0;
+        return rows > 0; // true si realmente borró filas
     }
+
+
 
 
 
