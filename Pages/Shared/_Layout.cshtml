@@ -100,9 +100,9 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
-                            <a href="service.html" class="nav-item nav-link">Servicios</a>
+                            <a asp-page="/index" class="nav-item nav-link active">Home</a>
+                            <a asp-page="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                            <a asp-page="service.html" class="nav-item nav-link">Servicios</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" style="cursor: pointer">Pages</a>
                                 <div class="dropdown-menu">
@@ -123,56 +123,8 @@
         </div>
 
     
-        <div class="carousel">
-            <div class="container-fluid">
-                <div class="owl-carousel">
-                    <div class="carousel-item">
-                        <div class="carousel-img">
-                            <img src="img/carousel-FG-1.jpg" alt="Image">
-                        </div>
-                        <div class="carousel-text">
-                            <h3>Mantenimiento experto</h3>
-                            <h1>Mantén tu automóvil como nuevo</h1>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus ut mollis mauris. Vivamus egestas eleifend dui ac
-                            </p>
-                            <a class="btn btn-custom" href="">Explorar</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img">
-                            <img src="img/carousel-FG-2.jpg" alt="Image">
-                        </div>
-                        <div class="carousel-text">
-                            <h3>Mantenimiento experto</h3>
-                            <h1>Calidad de servicio para ti</h1>
-                            <p>
-                                Morbi sagittis turpis id suscipit feugiat. Suspendisse eu augue urna. Morbi sagittis orci sodales
-                            </p>
-                            <a class="btn btn-custom" href="">Explorar</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="carousel-img">
-                            <img src="img/carousel-FG-3.jpg" alt="Image">
-                        </div>
-                        <div class="carousel-text">
-                            <h3>Mantenimiento experto</h3>
-                            <h1>Reparaciones confiables, soluciones duraderas</h1>
-                            <p>
-                                Sed ultrices, est eget feugiat accumsan, dui nibh egestas tortor, ut rhoncus nibh ligula euismod quam
-                            </p>
-                            <a class="btn btn-custom" href="">Explorar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
+        @RenderBody()
+
 
         <div class="footer">
             <div class="container">
