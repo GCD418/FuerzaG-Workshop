@@ -15,7 +15,8 @@ namespace FuerzaG.Pages.Technicians
         public IActionResult OnPost(int id)
         {
             _creator.GetRepository<Models.Technician>().DeleteById(id);
-            return RedirectToPage("/TechnicianPage");
+            return RedirectToPage("/Technicians/TechnicianPage");
+
         }
     }
 }

@@ -27,7 +27,7 @@ namespace FuerzaG.Pages.Technicians
                 ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
                 return Page();
             }
-            return RedirectToPage("/TechnicianPage");
+            return RedirectToPage("/Technicians/TechnicianPage");
         }
     }
 }

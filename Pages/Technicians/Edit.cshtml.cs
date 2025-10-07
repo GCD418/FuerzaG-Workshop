@@ -19,7 +19,8 @@ namespace FuerzaG.Pages.Technicians
         {
             var repo = _creator.GetRepository<Technician>();
             var entity = repo.GetById(id);
-            if (entity is null) return RedirectToPage("/TechnicianPage");
+            if (entity is null) return RedirectToPage("/Technicians/TechnicianPage");
+
 
             Form = entity;
             return Page();
@@ -35,7 +36,7 @@ namespace FuerzaG.Pages.Technicians
                 ModelState.AddModelError(string.Empty, "No se pudo actualizar.");
                 return Page();
             }
-            return RedirectToPage("/TechnicianPage");
+            return RedirectToPage("/Technicians/TechnicianPage");
         }
     }
 }
