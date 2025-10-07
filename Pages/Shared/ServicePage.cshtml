@@ -1,0 +1,57 @@
+@page
+@model FuerzaG.Pages.ServicePage
+@{
+    ViewData["Title"] = "Servicios";
+}
+
+<h2>Lista de Servicios</h2>
+
+<a asp-page="/Services/Create" class="btn btn-primary mb-3">+ Nuevo Servicio</a>
+
+@if (TempData["Msg"] is string msg)
+{
+<div class="alert alert-info">@msg</div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Services != null && Model.Services.Count > 0)
+    {
+        foreach (var s in Model.Services)
+        {
+        <tr>
+            <td>@s.Id</td>
+            <td>@s.Name</td>
+            <td>@s.Type</td>
+            <td>@s.Price.ToString("C")</td>
+            <td>@s.Description</td>
+            <td>
+                <a asp-page="/Services/Edit" asp-route-id="@s.Id" class="btn btn-sm btn-warning">Editar</a>
+                <form method="post" asp-page-handler="Delete" asp-route-id="@s.Id" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('¿Seguro que quieres eliminar este servicio?')">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="6" class="text-center">No hay servicios registrados.</td>
+        </tr>
+    }
+    </tbody>
+</table>
