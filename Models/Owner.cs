@@ -2,7 +2,7 @@ namespace FuerzaG.Models;
 
 public class Owner
 {
-    public short Id { get; set; }                        // Primary Key
+    public int Id { get; set; }                        // Primary Key
     public string Name { get; set; } = string.Empty;     // Nombres
     public string FirstLastname { get; set; } = string.Empty; // Primer apellido
     public string? SecondLastname { get; set; }           // Segundo apellido (opcional)

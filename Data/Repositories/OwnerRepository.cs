@@ -111,8 +111,54 @@ public class OwnerRepository:IRepository<Owner>
         var result = command.ExecuteNonQuery();
         return Convert.ToInt32(result);
     }
-    public bool Update(T entity);
-    public bool DeleteById(int id);
+
+    public bool Update(Owner entity)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+        string query = @"
+            UPDATE owner
+            SET 
+                name = @name,
+                first_last_name = @first_last_name,
+                second_last_name = @second_last_name,
+                phone_number = @phone_number,
+                email = @email,
+                document_number = @document_number,
+                address = @address,
+                updated_at = CURRENT_TIMESTAMP,
+                modified_by_user_id = @modified_by_user_id
+            WHERE id = @id;";
+        using  var command = connection.CreateCommand();
+        AddParameter(command, "@name", entity.Name);
+        AddParameter(command, "@first_last_name", entity.FirstLastname);
+        AddParameter(command, "@second_last_name", entity.SecondLastname);
+        AddParameter(command, "@phone_number", entity.PhoneNumber);
+        AddParameter(command, "@email", entity.Email);
+        AddParameter(command, "@document_number", entity.Ci);
+        AddParameter(command, "@address", entity.Address);
+        AddParameter(command, "@modified_by_user_id", 9999); //TODO Implement True ID's
+        connection.Open();
+        int rowsAffected = command.ExecuteNonQuery();
+        return rowsAffected > 0;
+    }
+
+    public bool DeleteById(int id)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+        string query = @"
+            UPDATE owner
+            SET 
+                is_active = false,
+                updated_at = CURRENT_TIMESTAMP,
+                modified_by_user_id = @modified_by_user_id
+            WHERE id = @id;";
+        using var command = connection.CreateCommand();
+        AddParameter(command, "@id", id);
+        AddParameter(command, "@modified_by_user_id", 8888); //TODO Implement True ID's
+        connection.Open();
+        int rowsAffected = command.ExecuteNonQuery();
+        return rowsAffected > 0;
+    }
 
     public Owner MapReaderToModel(IDataReader reader)
     {
