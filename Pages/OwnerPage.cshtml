@@ -5,58 +5,67 @@
     ViewData["Title"] = "Dueños";
 }
 <section id="owners" class="section bg-light">
-    <div class="container">
-        <div class="section-header text-center mb-5">
-            <h2 class="fw-bold">Listado de Dueños</h2>
-            <p class="text-muted">Gestiona los registros de los propietarios del sistema</p>
-        </div>
-        
-        <div class="d-flex justify-content-end mb-4">
-            <a asp-page="CategoriasCreate" class="btn btn-custom">
-                <i class="fas fa-plus-circle me-2"></i> Nueva Categoría
-            </a>
-        </div>
-        <div class="table-responsive shadow-sm rounded-3">
-            <table class="table align-middle text-center">
-                <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>ApellidoPaterno</th>
-                    <th>ApellidoMaterno</th>
-                    <th>Telefono</th>
-                    <th>Acciones</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var owner in Model.Owners)
-                {
-                    <tr>
-                        <td>@owner.Id</td>
-                        <td>@owner.Name</td>
-                        <td>@owner.FirstLastname</td>
-                        <td>@owner.SecondLastname</td>
-                        <td>@owner.PhoneNumber</td>
-                        <td>
-                            <a asp-page="CategoriasEdit" asp-route-id="@owner.Id" class="btn btn-warning btn-sm me-1">
-                                <i class="fas fa-edit"></i> Editar
-                            </a>
-                            <button class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> Eliminar
-                            </button>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-                <tfoot class="table-light">
-                <tr>
-                    <td colspan="6" class="text-end" style="font-weight: 400 !important; text-align: right !important;">
-                        <strong>@Model.Owners.Count()</strong> registro(s) encontrado(s)
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-        
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2 class="fw-bold">Listado de Dueños</h2>
+      <p class="text-muted">Gestiona los registros de los propietarios del sistema</p>
     </div>
+    
+    <div class="d-flex justify-content-end mb-4">
+      <a asp-page="/Owners/Create" class="btn btn-custom">
+        <i class="fas fa-plus-circle me-2"></i> Nuevo Dueño
+      </a>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded-3">
+      <table class="table align-middle text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>ApellidoPaterno</th>
+            <th>ApellidoMaterno</th>
+            <th>Telefono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        @foreach (var owner in Model.Owners)
+        {
+          <tr>
+            <td>@owner.Id</td>
+            <td>@owner.Name</td>
+            <td>@owner.FirstLastname</td>
+            <td>@owner.SecondLastname</td>
+            <td>@owner.PhoneNumber</td>
+            <td class="text-nowrap">
+              <a asp-page="/Owners/Edit" asp-route-id="@owner.Id" class="btn btn-warning btn-sm me-1">
+                <i class="fas fa-edit"></i> Editar
+              </a>
+            <form method="post"
+                asp-page="/OwnerPage"
+                asp-page-handler="Delete"
+                class="d-inline">
+            <input type="hidden" name="id" value="@owner.Id" />
+            <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Eliminar
+            </button>
+            </form>
+
+
+
+            </td>
+          </tr>
+        }
+        </tbody>
+        <tfoot class="table-light">
+          <tr>
+            <td colspan="6" class="text-end" style="font-weight: 400 !important; text-align: right !important;">
+              <strong>@Model.Owners.Count()</strong> registro(s) encontrado(s)
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
 </section>
