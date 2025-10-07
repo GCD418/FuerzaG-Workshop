@@ -1,5 +1,5 @@
 @page
-@model FuerzaG.Pages.Owner
+@model FuerzaG.Pages.OwnerPage
 
 @{
 }
@@ -26,11 +26,11 @@
         <tr>
             <td>@owner.Id</td>
             <td>@owner.Name</td>
-            <td>@categoria.Descripcion</td>
-            <td>@categoria.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
-            <td>@(categoria.UltimaModificacion?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</td>
+            <td>@owner.FirstLastname</td>
+            <td>@owner.SecondLastname</td>
+            <td>@owner.PhoneNumber</td>
             <td>
-                <a asp-page="CategoriasEdit" asp-route-id="@categoria.Id" class="btn btn-warning btn-sm">Editar</a>
+                <a asp-page="CategoriasEdit" asp-route-id="@owner.Id" class="btn btn-warning btn-sm">Editar</a>
                 <button class="btn btn-danger btn-sm">Eliminar</button>
             </td>
         </tr>
@@ -39,7 +39,7 @@
     <tfoot>
     <tr>
         <td colspan="6">
-            <strong>@Model.Categorias.Count()</strong> registro(s) encontrado(s)
+            <strong>@Model.Owners.Count()</strong> registro(s) encontrado(s)
         </td>
     </tr>
     </tfoot>

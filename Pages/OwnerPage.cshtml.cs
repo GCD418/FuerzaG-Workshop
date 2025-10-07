@@ -1,15 +1,16 @@
 using FuerzaG.Factories;
 using FuerzaG.Factories.ConcreteCreators;
+using FuerzaG.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages;
 
-public class Owner : PageModel
+public class OwnerPage : PageModel
 {
     public List<Owner> Owners { get; set; } = [];
     private readonly DataRepositoryFactory _dataRepositoryFactory;
 
-    public Owner(IDbConnectionFactory connectionFactory)
+    public OwnerPage(IDbConnectionFactory connectionFactory)
     {
         _dataRepositoryFactory = new OwnerRepositoryCreator(connectionFactory);
     }
