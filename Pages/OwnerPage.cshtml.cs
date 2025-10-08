@@ -3,7 +3,6 @@ using FuerzaG.Factories.ConcreteCreators;
 using FuerzaG.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc; // asegúrate de tener este using
 
 namespace FuerzaG.Pages;
 
@@ -27,7 +26,6 @@ public IActionResult OnPostDelete(int id)
     var repo = _dataRepositoryFactory.GetRepository<Owner>();
 
     var ok = repo.DeleteById(id);
-    // Comprobación: si GetById devuelve algo, sigue activo en BD
     var sigueActivo = repo.GetById(id) != null;
 
     TempData["Msg"] = ok

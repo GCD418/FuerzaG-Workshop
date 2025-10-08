@@ -15,8 +15,6 @@ namespace FuerzaG.Data.Repositories
         {
             _connectionFactory = connectionFactory;
         }
-
-        // --- COINCIDE CON LA INTERFAZ ---
         public List<Technician> GetAll()
         {
             const string sql = @"
@@ -39,8 +37,6 @@ namespace FuerzaG.Data.Repositories
             return list;
         }
 
-        // Nota: la interfaz retorna T (no-nullable). Si no existe, retornamos null;
-        // si tienes enabled NRT puedes cambiar la firma de la interfaz.
         public Technician GetById(int id)
         {
             const string sql = @"
@@ -144,8 +140,6 @@ namespace FuerzaG.Data.Repositories
             return rows > 0;
         }
 
-
-        // ====== requerido por la interfaz ======
         public Technician MapReaderToModel(IDataReader reader)
         {
             var r = (IDataRecord)reader;
@@ -167,7 +161,6 @@ namespace FuerzaG.Data.Repositories
             };
         }
 
-        // ---- helpers ----
         private static void AddParam(IDbCommand cmd, string name, object? value)
         {
             var p = cmd.CreateParameter();

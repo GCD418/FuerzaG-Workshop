@@ -29,9 +29,8 @@ public class Prueba : PageModel
         {
             using var command =  connection.CreateCommand();
             command.CommandText = query;
-            command.CommandType = CommandType.Text; //Podría ser también un procedimiento almacenado
+            command.CommandType = CommandType.Text; 
             connection.Open();
-            // IDbDataAdapter adapter = new IDbDataAdapter(command);
             
             using var reader = command.ExecuteReader();
             while (reader.Read())
@@ -46,7 +45,6 @@ public class Prueba : PageModel
                 });
             }
             
-            // NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(command);
         }
     }
 }

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using FuerzaG.Factories;                       // IDbConnectionFactory
-using FuerzaG.Factories.ConcreteCreators;      // OwnerRepositoryCreator
-using FuerzaG.Data.Interfaces;                 // IRepository<T>
-using FuerzaG.Models;                          // Owner
+using FuerzaG.Factories;                       
+using FuerzaG.Factories.ConcreteCreators;      
+using FuerzaG.Data.Interfaces;                 
+using FuerzaG.Models;                          
 
 namespace FuerzaG.Pages.Owners;
 
