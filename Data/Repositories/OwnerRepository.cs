@@ -162,7 +162,7 @@ public class OwnerRepository : IRepository<Owner>
             modified_by_user_id = @modified_by_user_id
         WHERE id = @id;";
         using var command = connection.CreateCommand();
-        command.CommandText = query;                  // <<-- IMPORTANTE
+        command.CommandText = query;                  
         AddParameter(command, "@id", id);
         AddParameter(command, "@modified_by_user_id", 8888);
 

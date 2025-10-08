@@ -134,7 +134,7 @@ public class ServiceRepository : IRepository<Service>
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        const string sql = "DELETE FROM service WHERE id = @id;"; // Hard delete
+        const string sql = "DELETE FROM service WHERE id = @id;";
         using var command = connection.CreateCommand();
         command.CommandText = sql;
         AddParameter(command, "@id", id);
