@@ -20,14 +20,12 @@
         <table class="table table-striped align-middle">
             <thead>
             <tr>
-                <th>Id</th>
                 <th>Nombre</th>
                 <th>Apellido Paterno</th>
                 <th>Apellido Materno</th>
                 <th>Telefono</th>
                 <th>Email</th>
                 <th>Salario Base</th>
-                <th>Activo</th>
                 <th style="width:160px;"></th>
             </tr>
             </thead>
@@ -35,14 +33,12 @@
             @foreach (var t in Model.List)
             {
                 <tr>
-                    <td>@t.Id</td>
                     <td>@t.Name</td>
                     <td>@t.First_Last_Name</td>
                     <td>@t.Second_Last_Name</td>
                     <td>@t.Phone_Number</td>
                     <td>@t.Email</td>
                     <td>@t.Base_Salary</td>
-                    <td>@t.Is_Active</td>
                     <td>
                         <a asp-page="./Edit" asp-route-id="@t.Id" class="btn btn-sm btn-warning">Edit</a>
                         <form method="post" asp-page-handler="Delete" asp-route-id="@t.Id" class="d-inline">
