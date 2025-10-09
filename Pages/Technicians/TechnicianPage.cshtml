@@ -25,7 +25,6 @@
                 <th>Apellido Materno</th>
                 <th>Telefono</th>
                 <th>Email</th>
-                <th>Salario Base</th>
                 <th style="width:160px;"></th>
             </tr>
             </thead>
@@ -34,11 +33,10 @@
             {
                 <tr>
                     <td>@t.Name</td>
-                    <td>@t.First_Last_Name</td>
-                    <td>@t.Second_Last_Name</td>
-                    <td>@t.Phone_Number</td>
+                    <td>@t.FirstLastName</td>
+                    <td>@t.SecondLastName</td>
+                    <td>@t.PhoneNumber</td>
                     <td>@t.Email</td>
-                    <td>@t.Base_Salary</td>
                     <td>
                         <a asp-page="./Edit" asp-route-id="@t.Id" class="btn btn-sm btn-warning">Edit</a>
                         <form method="post" asp-page-handler="Delete" asp-route-id="@t.Id" class="d-inline">
