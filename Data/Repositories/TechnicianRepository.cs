@@ -75,15 +75,15 @@ namespace FuerzaG.Data.Repositories
             cmd.CommandText = sql;
 
             AddParam(cmd, "@name", t.Name);
-            AddParam(cmd, "@first_last_name", t.First_Last_Name);
-            AddParam(cmd, "@second_last_name", t.Second_Last_Name);
-            AddParam(cmd, "@phone_number", t.Phone_Number);
+            AddParam(cmd, "@first_last_name", t.FirstLastName);
+            AddParam(cmd, "@second_last_name", t.SecondLastName);
+            AddParam(cmd, "@phone_number", t.PhoneNumber);
             AddParam(cmd, "@email", t.Email);
-            AddParam(cmd, "@document_number", t.Document_Number);
+            AddParam(cmd, "@document_number", t.DocumentNumber);
             AddParam(cmd, "@address", t.Address);
-            AddParam(cmd, "@base_salary", t.Base_Salary);
-            AddParam(cmd, "@is_active", t.Is_Active);
-            AddParam(cmd, "@modified_by_user_id", t.Modified_By_User_Id);
+            AddParam(cmd, "@base_salary", t.BaseSalary);
+            AddParam(cmd, "@is_active", t.IsActive);
+            AddParam(cmd, "@modified_by_user_id", t.ModifiedByUserId);
 
             var idObj = cmd.ExecuteScalar();
             return idObj is int i ? i : Convert.ToInt32(idObj);
@@ -113,15 +113,15 @@ namespace FuerzaG.Data.Repositories
 
             AddParam(cmd, "@id", t.Id);
             AddParam(cmd, "@name", t.Name);
-            AddParam(cmd, "@first_last_name", t.First_Last_Name);
-            AddParam(cmd, "@second_last_name", t.Second_Last_Name);
-            AddParam(cmd, "@phone_number", t.Phone_Number);
+            AddParam(cmd, "@first_last_name", t.FirstLastName);
+            AddParam(cmd, "@second_last_name", t.SecondLastName);
+            AddParam(cmd, "@phone_number", t.PhoneNumber);
             AddParam(cmd, "@email", t.Email);
-            AddParam(cmd, "@document_number", t.Document_Number);
+            AddParam(cmd, "@document_number", t.DocumentNumber);
             AddParam(cmd, "@address", t.Address);
-            AddParam(cmd, "@base_salary", t.Base_Salary);
-            AddParam(cmd, "@is_active", t.Is_Active);
-            AddParam(cmd, "@modified_by_user_id", t.Modified_By_User_Id);
+            AddParam(cmd, "@base_salary", t.BaseSalary);
+            AddParam(cmd, "@is_active", t.IsActive);
+            AddParam(cmd, "@modified_by_user_id", t.ModifiedByUserId);
 
             return cmd.ExecuteNonQuery() > 0;
         }
@@ -147,17 +147,17 @@ namespace FuerzaG.Data.Repositories
             {
                 Id = r.GetInt32(r.GetOrdinal("id")),
                 Name = r["name"] as string,
-                First_Last_Name = r["first_last_name"] as string,
-                Second_Last_Name = r["second_last_name"] as string,
-                Phone_Number = r["phone_number"] as string,
+                FirstLastName = r["first_last_name"] as string,
+                SecondLastName = r["second_last_name"] as string,
+                PhoneNumber = r["phone_number"] as string,
                 Email = r["email"] as string,
-                Document_Number = r["document_number"] as string,
+                DocumentNumber = r["document_number"] as string,
                 Address = r["address"] as string,
-                Base_Salary = r["base_salary"] is DBNull ? null : (decimal?)r.GetDecimal(r.GetOrdinal("base_salary")),
-                Created_At = r["created_at"] is DBNull ? null : (DateTime?)r.GetDateTime(r.GetOrdinal("created_at")),
-                Updated_At = r["updated_at"] is DBNull ? null : (DateTime?)r.GetDateTime(r.GetOrdinal("updated_at")),
-                Is_Active = r["is_active"] is DBNull ? true : (bool)r["is_active"],
-                Modified_By_User_Id = r["modified_by_user_id"] is DBNull ? null : (int?)Convert.ToInt32(r["modified_by_user_id"])
+                BaseSalary = r["base_salary"] is DBNull ? null : (decimal?)r.GetDecimal(r.GetOrdinal("base_salary")),
+                CreatedAt = r["created_at"] is DBNull ? null : (DateTime?)r.GetDateTime(r.GetOrdinal("created_at")),
+                UpdatedAt = r["updated_at"] is DBNull ? null : (DateTime?)r.GetDateTime(r.GetOrdinal("updated_at")),
+                IsActive = r["is_active"] is DBNull ? true : (bool)r["is_active"],
+                ModifiedByUserId = r["modified_by_user_id"] is DBNull ? null : (int?)Convert.ToInt32(r["modified_by_user_id"])
             };
         }
 
