@@ -96,7 +96,7 @@ public class OwnerRepository : IRepository<Owner>
         using var command = connection.CreateCommand();
         command.CommandText = query;                  
         AddParameter(command, "@id", id);
-        AddParameter(command, "@modified_by_user_id", 8888);
+        AddParameter(command, "@modified_by_user_id", 8888); //TODO implement real ids
 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
