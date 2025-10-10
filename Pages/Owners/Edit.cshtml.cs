@@ -19,7 +19,7 @@ public class EditModel : PageModel
     [BindProperty] public string Name { get; set; } = string.Empty;
     [BindProperty] public string FirstLastname { get; set; } = string.Empty;
     [BindProperty] public string? SecondLastname { get; set; }
-    [BindProperty] public string PhoneNumber { get; set; } = string.Empty;
+    [BindProperty] public int PhoneNumber { get; set; }
     [BindProperty] public string Email { get; set; } = string.Empty;
     [BindProperty] public string Ci { get; set; } = string.Empty;
     [BindProperty] public string Address { get; set; } = string.Empty;

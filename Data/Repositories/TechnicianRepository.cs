@@ -4,6 +4,7 @@ using System.Data;
 using FuerzaG.Data.Interfaces;
 using FuerzaG.Factories;
 using FuerzaG.Models;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace FuerzaG.Data.Repositories
 {
@@ -149,7 +150,7 @@ namespace FuerzaG.Data.Repositories
                 Name = r["name"] as string,
                 FirstLastName = r["first_last_name"] as string,
                 SecondLastName = r["second_last_name"] as string,
-                PhoneNumber = r["phone_number"] as string,
+                PhoneNumber = r.GetInt32(r.GetOrdinal("phone_number")),
                 Email = r["email"] as string,
                 DocumentNumber = r["document_number"] as string,
                 Address = r["address"] as string,
