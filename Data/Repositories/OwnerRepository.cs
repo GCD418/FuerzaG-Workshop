@@ -19,23 +19,7 @@ public class OwnerRepository : IRepository<Owner>
         var owners = new List<Owner>();
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        string query = @"
-            SELECT 
-                id,
-                name,
-                first_last_name,
-                second_last_name,
-                phone_number,
-                email,
-                document_number,
-                address,
-                created_at,
-                updated_at,
-                is_active,
-                modified_by_user_id
-            FROM owner
-            WHERE is_active = true
-            ORDER BY id ASC;";
+        string query = "SELECT * FROM fn_get_active_owners()";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;         
@@ -51,22 +35,7 @@ public class OwnerRepository : IRepository<Owner>
     public Owner? GetById(int id)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = @"
-            SELECT 
-                id,
-                name,
-                first_last_name,
-                second_last_name,
-                phone_number,
-                email,
-                document_number,
-                address,
-                created_at,
-                updated_at,
-                is_active,
-                modified_by_user_id
-            FROM owner
-            WHERE id = @id AND is_active = true;";
+        string query = "SELECT * FROM fn_get_owner_by_id(@id)";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;   
@@ -80,25 +49,7 @@ public class OwnerRepository : IRepository<Owner>
     public int Create(Owner entity)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = @"
-            INSERT INTO owner (
-                name,
-                first_last_name,
-                second_last_name,
-                phone_number,
-                email,
-                document_number,
-                address
-            ) VALUES (
-                @name,
-                @first_last_name,
-                @second_last_name,
-                @phone_number,
-                @email,
-                @document_number,
-                @address
-            )
-            RETURNING id;";
+        string query = "SELECT fn_insert_owner(@name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @address)";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;             
@@ -119,19 +70,7 @@ public class OwnerRepository : IRepository<Owner>
     public bool Update(Owner entity)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = @"
-            UPDATE owner
-            SET 
-                name = @name,
-                first_last_name = @first_last_name,
-                second_last_name = @second_last_name,
-                phone_number = @phone_number,
-                email = @email,
-                document_number = @document_number,
-                address = @address,
-                updated_at = CURRENT_TIMESTAMP,
-                modified_by_user_id = @modified_by_user_id
-            WHERE id = @id;";
+        string query = "SELECT fn_update_owner(@id, @name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @address, @modified_by_user_id)";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;           
@@ -147,27 +86,20 @@ public class OwnerRepository : IRepository<Owner>
         AddParameter(command, "@id",               entity.Id);
 
         connection.Open();
-        int rows = command.ExecuteNonQuery();
-        return rows > 0;
+        return Convert.ToBoolean(command.ExecuteScalar());
     }
 
     public bool DeleteById(int id)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        const string query = @"
-        UPDATE owner
-        SET 
-            is_active = false,
-            updated_at = CURRENT_TIMESTAMP,
-            modified_by_user_id = @modified_by_user_id
-        WHERE id = @id;";
+        const string query = "SELECT fn_soft_delete_owner(@id, @modified_by_user_id)";
         using var command = connection.CreateCommand();
         command.CommandText = query;                  
         AddParameter(command, "@id", id);
-        AddParameter(command, "@modified_by_user_id", 8888);
+        AddParameter(command, "@modified_by_user_id", 8888); //TODO implement real ids
 
         connection.Open();
-        return command.ExecuteNonQuery() > 0;
+        return Convert.ToBoolean(command.ExecuteScalar());
     }
 
 
@@ -182,7 +114,7 @@ public class OwnerRepository : IRepository<Owner>
             Name = reader.GetString(1),
             FirstLastname = reader.GetString(2),
             SecondLastname = reader.IsDBNull(3) ? null : reader.GetString(3),
-            PhoneNumber = reader.GetString(4),
+            PhoneNumber = reader.GetInt32(4),
             Email = reader.GetString(5),
             Ci = reader.GetString(6),
             Address = reader.GetString(7),

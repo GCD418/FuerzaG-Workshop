@@ -4,6 +4,7 @@ using System.Data;
 using FuerzaG.Data.Interfaces;
 using FuerzaG.Factories;
 using FuerzaG.Models;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace FuerzaG.Data.Repositories
 {
@@ -17,18 +18,13 @@ namespace FuerzaG.Data.Repositories
         }
         public List<Technician> GetAll()
         {
-            const string sql = @"
-                SELECT id, name, first_last_name, second_last_name, phone_number, email,
-                       document_number, address, base_salary, created_at, updated_at,
-                       is_active, modified_by_user_id
-                FROM technician
-                WHERE is_active = TRUE
-                ORDER BY id DESC;";
+            const string sql = "SELECT * FROM fn_get_active_technicians()";
 
             using var conn = _connectionFactory.CreateConnection();
             conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = sql;
+            cmd.CommandType = CommandType.Text;
 
             using var reader = cmd.ExecuteReader();
             var list = new List<Technician>();
@@ -39,12 +35,7 @@ namespace FuerzaG.Data.Repositories
 
         public Technician GetById(int id)
         {
-            const string sql = @"
-                SELECT id, name, first_last_name, second_last_name, phone_number, email,
-                       document_number, address, base_salary, created_at, updated_at,
-                       is_active, modified_by_user_id
-                FROM technician
-                WHERE id = @id;";
+            const string sql = "SELECT * FROM fn_get_technician_by_id(@id)";
 
             using var conn = _connectionFactory.CreateConnection();
             conn.Open();
@@ -58,16 +49,7 @@ namespace FuerzaG.Data.Repositories
 
         public int Create(Technician t)
         {
-            const string sql = @"
-                INSERT INTO technician
-                (name, first_last_name, second_last_name, phone_number, email,
-                 document_number, address, base_salary, created_at, updated_at,
-                 is_active, modified_by_user_id)
-                VALUES
-                (@name, @first_last_name, @second_last_name, @phone_number, @email,
-                 @document_number, @address, @base_salary, NOW(), NOW(),
-                 COALESCE(@is_active, TRUE), @modified_by_user_id)
-                RETURNING id;";
+            const string sql = "SELECT fn_insert_technician(@name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @address, @base_salary)";
 
             using var conn = _connectionFactory.CreateConnection();
             conn.Open();
@@ -82,32 +64,16 @@ namespace FuerzaG.Data.Repositories
             AddParam(cmd, "@document_number", t.DocumentNumber);
             AddParam(cmd, "@address", t.Address);
             AddParam(cmd, "@base_salary", t.BaseSalary);
-            AddParam(cmd, "@is_active", t.IsActive);
-            AddParam(cmd, "@modified_by_user_id", t.ModifiedByUserId);
 
             var idObj = cmd.ExecuteScalar();
-            return idObj is int i ? i : Convert.ToInt32(idObj);
+            return Convert.ToInt32(idObj);
         }
 
         public bool Update(Technician t)
         {
-            const string sql = @"
-                UPDATE technician SET
-                    name = @name,
-                    first_last_name = @first_last_name,
-                    second_last_name = @second_last_name,
-                    phone_number = @phone_number,
-                    email = @email,
-                    document_number = @document_number,
-                    address = @address,
-                    base_salary = @base_salary,
-                    updated_at = NOW(),
-                    is_active = @is_active,
-                    modified_by_user_id = @modified_by_user_id
-                WHERE id = @id;";
+            const string sql = "SELECT fn_update_technician(@id, @name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @address, @base_salary, @modified_by_user_id)";
 
             using var conn = _connectionFactory.CreateConnection();
-            conn.Open();
             using var cmd = conn.CreateCommand();
             cmd.CommandText = sql;
 
@@ -120,24 +86,23 @@ namespace FuerzaG.Data.Repositories
             AddParam(cmd, "@document_number", t.DocumentNumber);
             AddParam(cmd, "@address", t.Address);
             AddParam(cmd, "@base_salary", t.BaseSalary);
-            AddParam(cmd, "@is_active", t.IsActive);
             AddParam(cmd, "@modified_by_user_id", t.ModifiedByUserId);
+            conn.Open();
 
-            return cmd.ExecuteNonQuery() > 0;
+            return Convert.ToBoolean(cmd.ExecuteScalar());
         }
 
         public bool DeleteById(int id)
         {
             using var connection = _connectionFactory.CreateConnection();
 
-            const string sql = "DELETE FROM technician WHERE id = @id;";
+            const string sql = "SELECT fn_soft_delete_technician(@id, @modified_by_user_id)";
             using var command = connection.CreateCommand();
             command.CommandText = sql;
             AddParam(command, "@id", id);
-
+            AddParam(command, "@modified_by_user_id", 9999); //TODO implement real ids
             connection.Open();
-            var rows = command.ExecuteNonQuery();
-            return rows > 0;
+            return Convert.ToBoolean(command.ExecuteScalar());
         }
 
         public Technician MapReaderToModel(IDataReader reader)
@@ -149,7 +114,7 @@ namespace FuerzaG.Data.Repositories
                 Name = r["name"] as string,
                 FirstLastName = r["first_last_name"] as string,
                 SecondLastName = r["second_last_name"] as string,
-                PhoneNumber = r["phone_number"] as string,
+                PhoneNumber = r.GetInt32(r.GetOrdinal("phone_number")),
                 Email = r["email"] as string,
                 DocumentNumber = r["document_number"] as string,
                 Address = r["address"] as string,
