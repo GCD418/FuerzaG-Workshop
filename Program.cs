@@ -1,3 +1,4 @@
+using FuerzaG.Application.Services;
 using FuerzaG.Factories;
 using FuerzaG.Infrastructure.Connection;
 
@@ -10,6 +11,10 @@ var connectionManager = DatabaseConnectionManager.GetInstance(connectionString);
 builder.Services.AddSingleton(connectionManager);
 
 builder.Services.AddScoped<IDbConnectionFactory, PostgreSqlConnectionFactory>();
+
+
+// Services injection
+builder.Services.AddScoped<OwnerService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

@@ -1,3 +1,4 @@
+using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,10 +10,12 @@ namespace FuerzaG.Pages.Owners;
 
 public class EditModel : PageModel
 {
-    private readonly OwnerRepositoryCreator _creator;
+    private readonly OwnerService  _ownerService;
 
-    public EditModel(IDbConnectionFactory connectionFactory)
-        => _creator = new OwnerRepositoryCreator(connectionFactory);
+    public EditModel(OwnerService ownerService)
+    {
+        _ownerService = ownerService;
+    }
 
     
     [BindProperty] public int Id { get; set; }
@@ -27,19 +30,18 @@ public class EditModel : PageModel
     
     public IActionResult OnGet(int id)
     {
-        var repo = _creator.GetRepository<Owner>();
-        var o = repo.GetById(id);
-        if (o is null) return RedirectToPage("/Owners/OwnerPage");
+        Owner owner = _ownerService.GetById(id);
+        if (owner is null) return RedirectToPage("/Owners/OwnerPage");
 
         
-        Id = o.Id;
-        Name = o.Name;
-        FirstLastname = o.FirstLastname;
-        SecondLastname = o.SecondLastname;
-        PhoneNumber = o.PhoneNumber;
-        Email = o.Email;
-        Ci = o.Ci;
-        Address = o.Address;
+        Id = owner.Id;
+        Name = owner.Name;
+        FirstLastname = owner.FirstLastname;
+        SecondLastname = owner.SecondLastname;
+        PhoneNumber = owner.PhoneNumber;
+        Email = owner.Email;
+        Ci = owner.Ci;
+        Address = owner.Address;
 
         return Page();
     }
@@ -48,8 +50,7 @@ public class EditModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var repo = _creator.GetRepository<Owner>();
-        var ok = repo.Update(new Owner
+        var isSuccess = _ownerService.Update(new Owner
         {
             Id = Id,
             Name = Name,
@@ -61,7 +62,7 @@ public class EditModel : PageModel
             Address = Address
         });
 
-        if (!ok)
+        if (!isSuccess)
         {
             ModelState.AddModelError(string.Empty, "No se pudo actualizar el registro.");
             return Page();

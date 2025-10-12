@@ -46,7 +46,7 @@ public class OwnerRepository : IRepository<Owner>
         return reader.Read() ? MapReaderToModel(reader) : null;
     }
 
-    public int Create(Owner entity)
+    public int Create(Owner owner)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         string query = "SELECT fn_insert_owner(@name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @address)";
@@ -54,20 +54,20 @@ public class OwnerRepository : IRepository<Owner>
         using var command = connection.CreateCommand();
         command.CommandText = query;             
 
-        AddParameter(command, "@name",             entity.Name);
-        AddParameter(command, "@first_last_name",  entity.FirstLastname);
-        AddParameter(command, "@second_last_name", entity.SecondLastname);
-        AddParameter(command, "@phone_number",     entity.PhoneNumber);
-        AddParameter(command, "@email",            entity.Email);
-        AddParameter(command, "@document_number",  entity.Ci);
-        AddParameter(command, "@address",          entity.Address);
+        AddParameter(command, "@name",             owner.Name);
+        AddParameter(command, "@first_last_name",  owner.FirstLastname);
+        AddParameter(command, "@second_last_name", owner.SecondLastname);
+        AddParameter(command, "@phone_number",     owner.PhoneNumber);
+        AddParameter(command, "@email",            owner.Email);
+        AddParameter(command, "@document_number",  owner.Ci);
+        AddParameter(command, "@address",          owner.Address);
 
         connection.Open();
         var idObj = command.ExecuteScalar();        
         return Convert.ToInt32(idObj);
     }
 
-    public bool Update(Owner entity)
+    public bool Update(Owner owner)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         string query = "SELECT fn_update_owner(@id, @name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @address, @modified_by_user_id)";
@@ -75,15 +75,15 @@ public class OwnerRepository : IRepository<Owner>
         using var command = connection.CreateCommand();
         command.CommandText = query;           
 
-        AddParameter(command, "@name",             entity.Name);
-        AddParameter(command, "@first_last_name",  entity.FirstLastname);
-        AddParameter(command, "@second_last_name", entity.SecondLastname);
-        AddParameter(command, "@phone_number",     entity.PhoneNumber);
-        AddParameter(command, "@email",            entity.Email);
-        AddParameter(command, "@document_number",  entity.Ci);
-        AddParameter(command, "@address",          entity.Address);
+        AddParameter(command, "@name",             owner.Name);
+        AddParameter(command, "@first_last_name",  owner.FirstLastname);
+        AddParameter(command, "@second_last_name", owner.SecondLastname);
+        AddParameter(command, "@phone_number",     owner.PhoneNumber);
+        AddParameter(command, "@email",            owner.Email);
+        AddParameter(command, "@document_number",  owner.Ci);
+        AddParameter(command, "@address",          owner.Address);
         AddParameter(command, "@modified_by_user_id", 9999);
-        AddParameter(command, "@id",               entity.Id);
+        AddParameter(command, "@id",               owner.Id);
 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());

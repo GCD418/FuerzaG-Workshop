@@ -1,3 +1,4 @@
+using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
@@ -9,30 +10,21 @@ namespace FuerzaG.Pages.Owners;
 public class OwnerPage : PageModel
 {
     public List<Owner> Owners { get; set; } = [];
-    private readonly DataRepositoryFactory _dataRepositoryFactory;
+    private readonly OwnerService  _ownerService;
 
-    public OwnerPage(IDbConnectionFactory connectionFactory)
+    public OwnerPage(OwnerService ownerService)
     {
-        _dataRepositoryFactory = new OwnerRepositoryCreator(connectionFactory);
+        _ownerService = ownerService;
     }
     public void OnGet()
     {
-        Owners = _dataRepositoryFactory.GetRepository<Owner>().GetAll();
+        Owners = _ownerService.GetAll();
     }
     
     
 public IActionResult OnPostDelete(int id)
 {
-    var repo = _dataRepositoryFactory.GetRepository<Owner>();
-
-    var ok = repo.DeleteById(id);
-    var sigueActivo = repo.GetById(id) != null;
-
-    TempData["Msg"] = ok
-        ? (sigueActivo ? $"Se ejecutó DeleteById({id}) PERO el registro sigue activo en la BD." 
-                       : $"Registro #{id} eliminado (is_active=false).")
-        : $"No se actualizó ninguna fila para id={id}.";
-
+    _ownerService.DeleteById(id);
     return RedirectToPage();
 }
 

@@ -1,20 +1,20 @@
+using FuerzaG.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using FuerzaG.Domain.Entities;
-using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
 
 namespace FuerzaG.Pages.Owners;
 
 public class CreateModel : PageModel
 {
-    private readonly OwnerRepositoryCreator _creator;
+    private readonly OwnerService  _ownerService;
 
-    public CreateModel(IDbConnectionFactory connectionFactory)
-        => _creator = new OwnerRepositoryCreator(connectionFactory);
-
-    [BindProperty] public Owner Form { get; set; } = new();
+    public CreateModel(OwnerService ownerService)
+    {
+        _ownerService = ownerService;
+    }
+    [BindProperty] public Owner owner { get; set; } = new();
 
     public void OnGet() { }
 
@@ -22,8 +22,8 @@ public class CreateModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var id = _creator.GetRepository<Owner>().Create(Form);
-        if (id <= 0)
+        var newId = _ownerService.Create(owner);
+        if (newId <= 0)
         {
             ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
             return Page();
