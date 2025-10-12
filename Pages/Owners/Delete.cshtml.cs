@@ -18,6 +18,6 @@ public class DeleteModel : PageModel
     public IActionResult OnPost(int id)
     {
         _creator.GetRepository<Owner>().DeleteById(id);
-        return RedirectToPage("OwnerPage");
+        return RedirectToPage("/Owners/OwnerPage");
     }
 }

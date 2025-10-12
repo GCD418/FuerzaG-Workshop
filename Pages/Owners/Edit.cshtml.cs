@@ -29,7 +29,7 @@ public class EditModel : PageModel
     {
         var repo = _creator.GetRepository<Owner>();
         var o = repo.GetById(id);
-        if (o is null) return RedirectToPage("/OwnerPage");
+        if (o is null) return RedirectToPage("/Owners/OwnerPage");
 
         
         Id = o.Id;
@@ -67,6 +67,6 @@ public class EditModel : PageModel
             return Page();
         }
 
-        return RedirectToPage("/OwnerPage");
+        return RedirectToPage("/Owners/OwnerPage");
     }
 }

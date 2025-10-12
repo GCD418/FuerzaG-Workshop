@@ -28,6 +28,6 @@ public class CreateModel : PageModel
             ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
             return Page();
         }
-        return RedirectToPage("OwnerPage");
+        return RedirectToPage("/Owners/OwnerPage");
     }
 }
