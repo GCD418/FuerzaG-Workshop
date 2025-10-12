@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using FuerzaG.Factories;                       
-using FuerzaG.Factories.ConcreteCreators;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
-using FuerzaG.Models;                          
 
 namespace FuerzaG.Pages.Owners;
 
@@ -31,6 +28,6 @@ public class CreateModel : PageModel
             ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
             return Page();
         }
-        return RedirectToPage("/OwnerPage");
+        return RedirectToPage("OwnerPage");
     }
 }

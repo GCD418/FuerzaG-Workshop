@@ -1,13 +1,10 @@
 using FuerzaG.Domain.Entities;
-using FuerzaG.Factories;
-using FuerzaG.Factories.ConcreteCreators;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
-using FuerzaG.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FuerzaG.Pages;
+namespace FuerzaG.Pages.Owners;
 
 public class OwnerPage : PageModel
 {
