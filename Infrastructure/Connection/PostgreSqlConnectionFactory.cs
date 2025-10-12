@@ -1,8 +1,7 @@
 using System.Data;
-using FuerzaG.Configuration;
 using Npgsql;
 
-namespace FuerzaG.Factories;
+namespace FuerzaG.Infrastructure.Connection;
 
 public class PostgreSqlConnectionFactory : IDbConnectionFactory
 {

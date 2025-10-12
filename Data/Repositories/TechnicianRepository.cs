@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using FuerzaG.Data.Interfaces;
+using FuerzaG.Domain.Ports;
 using FuerzaG.Factories;
+using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Models;
 using Microsoft.VisualBasic.CompilerServices;
 

@@ -7,45 +7,45 @@
 
   <div class="row g-3">
     <div class="col-md-6">
-      <label asp-for="Form.Name" class="form-label"></label>
-      <input asp-for="Form.Name" class="form-control"/>
-      <span asp-validation-for="Form.Name" class="text-danger"></span>
+      <label asp-for="owner.Name" class="form-label"></label>
+      <input asp-for="owner.Name" class="form-control"/>
+      <span asp-validation-for="owner.Name" class="text-danger"></span>
     </div>
     <div class="col-md-6">
-      <label asp-for="Form.FirstLastname" class="form-label"></label>
-      <input asp-for="Form.FirstLastname" class="form-control"/>
-      <span asp-validation-for="Form.FirstLastname" class="text-danger"></span>
+      <label asp-for="owner.FirstLastname" class="form-label"></label>
+      <input asp-for="owner.FirstLastname" class="form-control"/>
+      <span asp-validation-for="owner.FirstLastname" class="text-danger"></span>
     </div>
     <div class="col-md-6">
-      <label asp-for="Form.SecondLastname" class="form-label"></label>
-      <input asp-for="Form.SecondLastname" class="form-control"/>
-      <span asp-validation-for="Form.SecondLastname" class="text-danger"></span>
+      <label asp-for="owner.SecondLastname" class="form-label"></label>
+      <input asp-for="owner.SecondLastname" class="form-control"/>
+      <span asp-validation-for="owner.SecondLastname" class="text-danger"></span>
     </div>
     <div class="col-md-6">
-      <label asp-for="Form.PhoneNumber" class="form-label"></label>
-      <input asp-for="Form.PhoneNumber" class="form-control"/>
-      <span asp-validation-for="Form.PhoneNumber" class="text-danger"></span>
+      <label asp-for="owner.PhoneNumber" class="form-label"></label>
+      <input asp-for="owner.PhoneNumber" class="form-control"/>
+      <span asp-validation-for="owner.PhoneNumber" class="text-danger"></span>
     </div>
     <div class="col-md-6">
-      <label asp-for="Form.Email" class="form-label"></label>
-      <input asp-for="Form.Email" class="form-control"/>
-      <span asp-validation-for="Form.Email" class="text-danger"></span>
+      <label asp-for="owner.Email" class="form-label"></label>
+      <input asp-for="owner.Email" class="form-control"/>
+      <span asp-validation-for="owner.Email" class="text-danger"></span>
     </div>
     <div class="col-md-6">
-      <label asp-for="Form.Ci" class="form-label">CI</label>
-      <input asp-for="Form.Ci" class="form-control"/>
-      <span asp-validation-for="Form.Ci" class="text-danger"></span>
+      <label asp-for="owner.Ci" class="form-label">CI</label>
+      <input asp-for="owner.Ci" class="form-control"/>
+      <span asp-validation-for="owner.Ci" class="text-danger"></span>
     </div>
     <div class="col-12">
-      <label asp-for="Form.Address" class="form-label"></label>
-      <input asp-for="Form.Address" class="form-control"/>
-      <span asp-validation-for="Form.Address" class="text-danger"></span>
+      <label asp-for="owner.Address" class="form-label"></label>
+      <input asp-for="owner.Address" class="form-control"/>
+      <span asp-validation-for="owner.Address" class="text-danger"></span>
     </div>
   </div>
 
   <div class="mt-3">
     <button class="btn btn-primary" type="submit">Guardar</button>
-    <a asp-page="/OwnerPage" class="btn btn-outline-secondary">Cancelar</a>
+    <a asp-page="/Owners/OwnerPage" class="btn btn-outline-secondary">Cancelar</a>
   </div>
 </form>
 

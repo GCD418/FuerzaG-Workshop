@@ -1,4 +1,4 @@
-namespace FuerzaG.Models;
+namespace FuerzaG.Domain.Entities;
 
 public class Brand
 {

@@ -1,5 +1,7 @@
-using FuerzaG.Data.Interfaces;
 using FuerzaG.Data.Repositories;
+using FuerzaG.Domain.Ports;
+using FuerzaG.Infrastructure.Connection;
+using FuerzaG.Infrastructure.Persistence.Factories;
 using FuerzaG.Models;
 
 namespace FuerzaG.Factories.ConcreteCreators;
