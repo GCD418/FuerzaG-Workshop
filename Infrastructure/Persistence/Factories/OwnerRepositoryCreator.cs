@@ -1,8 +1,8 @@
-using FuerzaG.Data.Interfaces;
 using FuerzaG.Data.Repositories;
-using FuerzaG.Models;
+using FuerzaG.Domain.Ports;
+using FuerzaG.Infrastructure.Connection;
 
-namespace FuerzaG.Factories.ConcreteCreators;
+namespace FuerzaG.Infrastructure.Persistence.Factories;
 
 public class OwnerRepositoryCreator : DataRepositoryFactory
 {

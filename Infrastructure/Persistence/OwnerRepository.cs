@@ -1,9 +1,9 @@
 using System.Data;
-using FuerzaG.Data.Interfaces;
-using FuerzaG.Factories;
-using FuerzaG.Models;
+using FuerzaG.Domain.Entities;
+using FuerzaG.Domain.Ports;
+using FuerzaG.Infrastructure.Connection;
 
-namespace FuerzaG.Data.Repositories;
+namespace FuerzaG.Infrastructure.Persistence;
 
 public class OwnerRepository : IRepository<Owner>
 {

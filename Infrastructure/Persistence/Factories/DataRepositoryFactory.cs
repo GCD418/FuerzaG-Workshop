@@ -1,6 +1,6 @@
-using FuerzaG.Data.Interfaces;
+using FuerzaG.Domain.Ports;
 
-namespace FuerzaG.Factories;
+namespace FuerzaG.Infrastructure.Persistence.Factories;
 
 public abstract class DataRepositoryFactory
 {

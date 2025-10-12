@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace FuerzaG.Data.Interfaces;
+namespace FuerzaG.Domain.Ports;
 
 public interface IRepository<T>
 {

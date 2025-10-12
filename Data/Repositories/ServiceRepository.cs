@@ -1,6 +1,7 @@
 using System.Data;
-using FuerzaG.Data.Interfaces;
+using FuerzaG.Domain.Ports;
 using FuerzaG.Factories;
+using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Models;
 
 namespace FuerzaG.Data.Repositories;

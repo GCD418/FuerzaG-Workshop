@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FuerzaG.Models;
+namespace FuerzaG.Domain.Entities;
 
 public class Owner
 {

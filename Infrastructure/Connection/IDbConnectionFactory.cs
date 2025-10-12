@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace FuerzaG.Factories;
+namespace FuerzaG.Infrastructure.Connection;
 
 public interface IDbConnectionFactory
 {
