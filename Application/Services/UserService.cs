@@ -29,6 +29,8 @@ public class UserService
     {
         // Generación automática del username antes de guardar
         user.UserName = GenerateUserName(user.Name, user.FirstLastName, user.Ci);
+        // Generación de una contraseña temporal
+        user.Password = GenerateTemporaryPassword();
         return _dataRepositoryFactory.GetRepository<User>().Create(user);
     }
 
@@ -43,6 +45,13 @@ public class UserService
     }
 
     // --- Métodos auxiliares ---
+    private string GenerateTemporaryPassword()
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var random = new Random();
+        return new string(Enumerable.Repeat(chars, 8)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
     private string GenerateUserName(string name, string firstLastName, string ci)
     {
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(firstLastName) || string.IsNullOrWhiteSpace(ci))
