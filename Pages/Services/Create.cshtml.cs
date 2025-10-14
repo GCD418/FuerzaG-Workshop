@@ -28,6 +28,6 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        return RedirectToPage("/Servicess/ServicePage");
+        return RedirectToPage("/Services/ServicePage");
     }
 }

@@ -28,7 +28,7 @@ public class EditModel : PageModel
     {
         var repo = _creator.GetRepository<Service>();
         var s = repo.GetById(id);
-        if (s is null) return RedirectToPage("/Servicess/ServicePage");
+        if (s is null) return RedirectToPage("/Services/ServicePage");
 
         Id = s.Id;
         Name = s.Name;
@@ -61,6 +61,6 @@ public class EditModel : PageModel
             return Page();
         }
 
-        return RedirectToPage("/Servicess/ServicePage");
+        return RedirectToPage("/Services/ServicePage");
     }
 }

@@ -2,7 +2,7 @@ using FuerzaG.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FuerzaG.Pages.Servicess;
+namespace FuerzaG.Pages.Services;
 
 public class DeleteModel : PageModel
 {
@@ -17,6 +17,6 @@ public class DeleteModel : PageModel
     public IActionResult OnPost(int id)
     {
         _serviceService.DeleteById(id);
-        return RedirectToPage("/Servicess/ServicePage");
+        return RedirectToPage("/Services/ServicePage");
     }
 }
