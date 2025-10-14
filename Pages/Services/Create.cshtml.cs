@@ -1,12 +1,9 @@
 using FuerzaG.Application.Services;
+using FuerzaG.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using FuerzaG.Factories.ConcreteCreators;
-using FuerzaG.Domain.Entities;
-
-
-namespace FuerzaG.Pages.Servicess;
+namespace FuerzaG.Pages.Services;
 public class CreateModel : PageModel
 {
     private readonly ServiceService _serviceService;
