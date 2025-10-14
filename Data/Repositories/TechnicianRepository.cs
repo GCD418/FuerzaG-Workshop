@@ -7,6 +7,7 @@ using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Models;
 using Microsoft.VisualBasic.CompilerServices;
 
+
 namespace FuerzaG.Data.Repositories
 {
     public class TechnicianRepository : IRepository<Technician>

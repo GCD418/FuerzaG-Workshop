@@ -1,22 +1,24 @@
 using FuerzaG.Data.Repositories;
 using FuerzaG.Domain.Ports;
+using FuerzaG.Factories;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
-using FuerzaG.Models;
 
-namespace FuerzaG.Factories.ConcreteCreators;
-
-public class ServiceRepositoryCreator : DataRepositoryFactory
+namespace FuerzaG.Factories.ConcreteCreators
 {
-    private readonly IDbConnectionFactory _dbConnectionFactory;
-
-    public ServiceRepositoryCreator(IDbConnectionFactory dbConnectionFactory)
+    public class ServiceRepositoryCreator : DataRepositoryFactory
     {
-        _dbConnectionFactory = dbConnectionFactory;
-    }
+        private readonly IDbConnectionFactory _dbConnectionFactory;
 
-    public override IRepository<T> GetRepository<T>()
-    {
-        return (IRepository<T>)(object)new ServiceRepository(_dbConnectionFactory);
+        public ServiceRepositoryCreator(IDbConnectionFactory dbConnectionFactory)
+        {
+            _dbConnectionFactory = dbConnectionFactory;
+        }
+
+        public override IRepository<T> GetRepository<T>()
+        {
+            // Igual que tu TechnicianRepositoryCreator: retorna siempre el repo concreto
+            return (IRepository<T>)(object)new ServiceRepository(_dbConnectionFactory);
+        }
     }
 }

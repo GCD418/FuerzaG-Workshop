@@ -5,7 +5,7 @@ using FuerzaG.Infrastructure.Connection;
 
 namespace FuerzaG.Infrastructure.Persistence;
 
-//DE INFRASTRUCTURE/PERSISTENCE
+
 public class UserRepository : IRepository<User>
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
