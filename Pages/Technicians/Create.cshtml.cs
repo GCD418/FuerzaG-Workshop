@@ -1,3 +1,4 @@
+using FuerzaG.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Infrastructure.Connection;
@@ -9,10 +10,12 @@ namespace FuerzaG.Pages.Technicians
     public class CreateModel : PageModel
     {
         private readonly TechnicianRepositoryCreator _creator;
+        private readonly TechnicianService _technicianService;
 
-        public CreateModel(IDbConnectionFactory connectionFactory)
-            => _creator = new TechnicianRepositoryCreator(connectionFactory);
-
+        public CreateModel(TechnicianService technicianService)
+        {
+            _technicianService = technicianService;
+        }
         [BindProperty] public Technician Form { get; set; } = new();
 
         public void OnGet() { }
@@ -21,7 +24,7 @@ namespace FuerzaG.Pages.Technicians
         {
             if (!ModelState.IsValid) return Page();
 
-            var id = _creator.GetRepository<Technician>().Create(Form);
+            var id = _technicianService.Create(Form);
             if (id <= 0)
             {
                 ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");

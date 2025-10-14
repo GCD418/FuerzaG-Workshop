@@ -15,6 +15,7 @@ builder.Services.AddScoped<IDbConnectionFactory, PostgreSqlConnectionFactory>();
 // Services injection
 builder.Services.AddScoped<OwnerService>();
 builder.Services.AddScoped<ServiceService>();
+builder.Services.AddScoped<TechnicianService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
