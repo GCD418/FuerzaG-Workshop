@@ -1,10 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
 
 namespace FuerzaG.Application.Services
-
 
 {
     public class TechnicianService
