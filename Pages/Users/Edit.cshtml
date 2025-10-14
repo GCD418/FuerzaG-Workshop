@@ -1,0 +1,21 @@
+﻿@page "{id:int}"
+@model FuerzaG.Pages.Users.EditModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<h2>Editar Usuario</h2>
+
+<form method="post">
+    @await Html.PartialAsync("_UserFields", Model.User)
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a asp-page="UserPage" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["SuccessMessage"]
+    </div>
+}
