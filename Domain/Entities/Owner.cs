@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FuerzaG.Models;
+namespace FuerzaG.Domain.Entities;
 
 public class Owner
 {
@@ -21,9 +21,9 @@ public class Owner
     public string? SecondLastname { get; set; }
 
     [Required(ErrorMessage = "El teléfono es obligatorio")]
-    [RegularExpression(@"^\+591\d{7,8}$",
+    [RegularExpression(@"\d{7,8}$",
         ErrorMessage = "El teléfono debe empezar con +591 y tener 7 u 8 dígitos")]
-    public string PhoneNumber { get; set; } = string.Empty;
+    public int PhoneNumber { get; set; }
 
 
     [Required(ErrorMessage = "El correo es obligatorio")]

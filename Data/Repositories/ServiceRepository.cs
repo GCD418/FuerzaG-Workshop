@@ -1,6 +1,7 @@
 using System.Data;
-using FuerzaG.Data.Interfaces;
+using FuerzaG.Domain.Ports;
 using FuerzaG.Factories;
+using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Models;
 
 namespace FuerzaG.Data.Repositories;
@@ -19,20 +20,7 @@ public class ServiceRepository : IRepository<Service>
         var services = new List<Service>();
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        string query = @"
-            SELECT 
-                id,
-                name,
-                type,
-                price,
-                description,
-                created_at,
-                updated_at,
-                is_active,
-                modified_by_user_id
-            FROM service
-            WHERE is_active = true
-            ORDER BY id ASC;";
+        string query = "SELECT * FROM fn_get_active_services()";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;
@@ -48,19 +36,7 @@ public class ServiceRepository : IRepository<Service>
     public Service? GetById(int id)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = @"
-            SELECT 
-                id,
-                name,
-                type,
-                price,
-                description,
-                created_at,
-                updated_at,
-                is_active,
-                modified_by_user_id
-            FROM service
-            WHERE id = @id AND is_active = true;";
+        string query = "SELECT * FROM fn_get_service_by_id(@id)";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;
@@ -74,19 +50,7 @@ public class ServiceRepository : IRepository<Service>
     public int Create(Service entity)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = @"
-            INSERT INTO service (
-                name,
-                type,
-                price,
-                description
-            ) VALUES (
-                @name,
-                @type,
-                @price,
-                @description
-            )
-            RETURNING id;";
+        string query = "SELECT fn_insert_service(@name, @type, @price, @description)";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;
@@ -104,44 +68,32 @@ public class ServiceRepository : IRepository<Service>
     public bool Update(Service entity)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = @"
-            UPDATE service
-            SET 
-                name = @name,
-                type = @type,
-                price = @price,
-                description = @description,
-                updated_at = CURRENT_TIMESTAMP,
-                modified_by_user_id = @modified_by_user_id
-            WHERE id = @id;";
+        string query = "SELECT fn_update_service(@id, @name, @type, @price, @description, @modified_by_user_id)";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;
 
+        AddParameter(command, "@id", entity.Id);
         AddParameter(command, "@name", entity.Name);
         AddParameter(command, "@type", entity.Type);
         AddParameter(command, "@price", entity.Price);
         AddParameter(command, "@description", entity.Description);
-        AddParameter(command, "@modified_by_user_id", 9999);
-        AddParameter(command, "@id", entity.Id);
+        AddParameter(command, "@modified_by_user_id", 9999); //TODO implement real ids
 
         connection.Open();
-        int rows = command.ExecuteNonQuery();
-        return rows > 0;
+        return Convert.ToBoolean(command.ExecuteScalar());
     }
 
     public bool DeleteById(int id)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-
-        const string sql = "DELETE FROM service WHERE id = @id;";
+        string query = "SELECT fn_soft_delete_service(@id, @modified_by_user_id)";
         using var command = connection.CreateCommand();
-        command.CommandText = sql;
+        command.CommandText = query;
         AddParameter(command, "@id", id);
-
+        AddParameter(command, "@modified_by_user_id", 8888); //TODO implement real ids
         connection.Open();
-        var rows = command.ExecuteNonQuery();
-        return rows > 0;
+        return Convert.ToBoolean(command.ExecuteScalar());
     }
 
     public Service MapReaderToModel(IDataReader reader)

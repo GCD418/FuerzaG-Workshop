@@ -1,6 +1,4 @@
-using Npgsql;
-
-namespace FuerzaG.Configuration;
+namespace FuerzaG.Infrastructure.Connection;
 
 public class DatabaseConnectionManager
 {

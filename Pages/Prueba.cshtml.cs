@@ -1,7 +1,8 @@
 using System.Data;
 using System.Data.Common;
-using FuerzaG.Configuration;
+using FuerzaG.Domain.Entities;
 using FuerzaG.Factories;
+using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Npgsql;
