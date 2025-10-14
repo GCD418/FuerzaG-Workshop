@@ -1,6 +1,7 @@
-using FuerzaG.Factories;
-using FuerzaG.Factories.ConcreteCreators;
-using FuerzaG.Models;
+using FuerzaG.Application.Services;
+using FuerzaG.Domain.Entities;
+using FuerzaG.Infrastructure.Connection;
+using FuerzaG.Infrastructure.Persistence.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

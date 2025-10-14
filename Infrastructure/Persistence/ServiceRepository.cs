@@ -1,10 +1,10 @@
 using System.Data;
 using FuerzaG.Domain.Ports;
-using FuerzaG.Factories;
+using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Models;
 
-namespace FuerzaG.Data.Repositories;
+
+namespace FuerzaG.Infrastructure.Persistence;
 
 public class ServiceRepository : IRepository<Service>
 {
@@ -78,7 +78,7 @@ public class ServiceRepository : IRepository<Service>
         AddParameter(command, "@type", entity.Type);
         AddParameter(command, "@price", entity.Price);
         AddParameter(command, "@description", entity.Description);
-        AddParameter(command, "@modified_by_user_id", 9999); //TODO implement real ids
+        AddParameter(command, "@modified_by_user_id", 9999); 
 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
@@ -91,7 +91,7 @@ public class ServiceRepository : IRepository<Service>
         using var command = connection.CreateCommand();
         command.CommandText = query;
         AddParameter(command, "@id", id);
-        AddParameter(command, "@modified_by_user_id", 8888); //TODO implement real ids
+        AddParameter(command, "@modified_by_user_id", 8888); 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
     }

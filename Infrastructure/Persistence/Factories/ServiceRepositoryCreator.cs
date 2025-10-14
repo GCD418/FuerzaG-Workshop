@@ -1,10 +1,8 @@
-using FuerzaG.Data.Repositories;
 using FuerzaG.Domain.Ports;
 using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
-using FuerzaG.Models;
+using FuerzaG.Infrastructure.Persistence;
 
-namespace FuerzaG.Factories.ConcreteCreators;
+namespace FuerzaG.Infrastructure.Persistence.Factories;
 
 public class ServiceRepositoryCreator : DataRepositoryFactory
 {
