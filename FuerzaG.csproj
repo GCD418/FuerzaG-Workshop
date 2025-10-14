@@ -12,8 +12,20 @@
 
     <ItemGroup>
       <Folder Include="Application\Interfaces\" />
-      <Folder Include="Data\Interfaces\" />
       <Folder Include="Domain\Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Users\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Users\UserPage.cshtml" />
+      <_ContentIncludedByDefault Remove="Users\_UserFields.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\UserPage.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\_UserFields.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -1,25 +1,23 @@
+using FuerzaG.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FuerzaG.Factories;
-using FuerzaG.Factories.ConcreteCreators;
-using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Models;
 
 namespace FuerzaG.Pages.Technicians
 {
     public class EditModel : PageModel
     {
-        private readonly TechnicianRepositoryCreator _creator;
+        private readonly TechnicianService _technicianService;
 
-        public EditModel(IDbConnectionFactory connectionFactory)
-            => _creator = new TechnicianRepositoryCreator(connectionFactory);
-
+        public EditModel(TechnicianService technicianService)
+        {
+            _technicianService = technicianService;
+        }
         [BindProperty] public Technician Form { get; set; } = new();
 
         public IActionResult OnGet(int id)
         {
-            var repo = _creator.GetRepository<Technician>();
-            var entity = repo.GetById(id);
+            var entity = _technicianService.GetById(id);
             if (entity is null) return RedirectToPage("/Technicians/TechnicianPage");
 
             Form = entity;
@@ -30,7 +28,7 @@ namespace FuerzaG.Pages.Technicians
         {
             if (!ModelState.IsValid) return Page();
 
-            var ok = _creator.GetRepository<Technician>().Update(Form);
+            var ok = _technicianService.Update(Form);
             if (!ok)
             {
                 ModelState.AddModelError(string.Empty, "No se pudo actualizar.");

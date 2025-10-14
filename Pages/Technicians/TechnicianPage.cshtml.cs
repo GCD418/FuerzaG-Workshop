@@ -1,31 +1,31 @@
 using System.Collections.Generic;
+using FuerzaG.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FuerzaG.Factories;
-using FuerzaG.Factories.ConcreteCreators;
 using FuerzaG.Infrastructure.Connection;
+using FuerzaG.Infrastructure.Persistence.Factories;
 using FuerzaG.Models;
 
 namespace FuerzaG.Pages.Technicians
 {
     public class TechnicianPageModel : PageModel
     {
-        private readonly TechnicianRepositoryCreator _creator;
+        public List<Technician> Technicians { get; set; } = new();
+        private readonly TechnicianService _technicianService;
 
-        public TechnicianPageModel(IDbConnectionFactory connectionFactory)
-            => _creator = new TechnicianRepositoryCreator(connectionFactory);
-
-        public List<Technician> List { get; set; } = new();
+        public TechnicianPageModel(TechnicianService technicianService)
+        {
+            _technicianService = technicianService;
+        }
 
         public void OnGet()
         {
-            var repo = _creator.GetRepository<Technician>();
-            List = new List<Technician>(repo.GetAll());
+            Technicians = _technicianService.GetAll();
         }
 
         public IActionResult OnPostDelete(int id)
         {
-            _creator.GetRepository<Technician>().DeleteById(id);
+            _technicianService.DeleteById(id);
             return RedirectToPage("/Technicians/TechnicianPage");
         }
     }

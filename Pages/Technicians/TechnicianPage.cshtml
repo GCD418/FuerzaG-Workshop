@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var t in Model.List.OrderBy(x => x.FirstLastName + " " + x.SecondLastName + " " + x.Name).Select((item, index) => new { item, index = index + 1 }))
+            @foreach (var t in Model.Technicians.OrderBy(x => x.FirstLastName + " " + x.SecondLastName + " " + x.Name).Select((item, index) => new { item, index = index + 1 }))
             {
                 <tr>
                     <td class="text-center"><strong>@t.index</strong></td>
@@ -51,7 +51,7 @@
             </tbody>
         </table>
         
-        @foreach (var t in Model.List)
+        @foreach (var t in Model.Technicians)
         {
             <div class="modal fade" id="deleteModal@(t.Id)" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel@(t.Id)" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
