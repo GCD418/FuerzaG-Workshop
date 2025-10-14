@@ -1,4 +1,3 @@
-using FuerzaG.Data.Repositories;
 using FuerzaG.Domain.Ports;
 using FuerzaG.Infrastructure.Connection;
 

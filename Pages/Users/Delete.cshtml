@@ -1,46 +1,46 @@
-﻿@page "{id:int}"
-@model FuerzaG.Pages.Users.DeleteModel
-@{
-    ViewData["Title"] = "Eliminar Usuario";
-}
-<h2>Eliminar Usuario</h2>
-
-<div class="mb-3">
-    <label>Usuario:</label>
-    <strong>@Model.User.UserName</strong>
-</div>  
-
-<!-- Botón para abrir modal -->
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-    Eliminar Usuario
-</button>
-<a asp-page="UserPage" class="btn btn-secondary">Cancelar</a>
-
-<!-- Modal de confirmación -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                ¿Está seguro que desea eliminar el usuario <strong>@Model.User.UserName</strong>?
-            </div>
-            <div class="modal-footer">
-                <form method="post">
-                    <input type="hidden" asp-for="User.Id" />
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success mt-3">
-        @TempData["SuccessMessage"]
-    </div>
-}
+﻿<!-- @page "{id:int}" -->
+<!-- @model FuerzaG.Pages.Users.DeleteModel -->
+<!-- @{ -->
+<!--     ViewData["Title"] = "Eliminar Usuario"; -->
+<!-- } -->
+<!-- <h2>Eliminar Usuario</h2> -->
+<!---->
+<!-- <div class="mb-3"> -->
+<!--     <label>Usuario:</label> -->
+<!--     <strong>@Model.User.UserName</strong> -->
+<!-- </div>   -->
+<!---->
+<!-- <!-- Botón para abrir modal --> -->
+<!-- <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"> -->
+<!--     Eliminar Usuario -->
+<!-- </button> -->
+<!-- <a asp-page="UserPage" class="btn btn-secondary">Cancelar</a> -->
+<!---->
+<!-- <!-- Modal de confirmación --> -->
+<!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"> -->
+<!--     <div class="modal-dialog"> -->
+<!--         <div class="modal-content"> -->
+<!--             <div class="modal-header"> -->
+<!--                 <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5> -->
+<!--                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button> -->
+<!--             </div> -->
+<!--             <div class="modal-body"> -->
+<!--                 ¿Está seguro que desea eliminar el usuario <strong>@Model.User.UserName</strong>? -->
+<!--             </div> -->
+<!--             <div class="modal-footer"> -->
+<!--                 <form method="post"> -->
+<!--                     <input type="hidden" asp-for="User.Id" /> -->
+<!--                     <button type="submit" class="btn btn-danger">Eliminar</button> -->
+<!--                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> -->
+<!--                 </form> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--     </div> -->
+<!-- </div> -->
+<!---->
+<!-- @if (TempData["SuccessMessage"] != null) -->
+<!-- { -->
+<!--     <div class="alert alert-success mt-3"> -->
+<!--         @TempData["SuccessMessage"] -->
+<!--     </div> -->
+<!-- } -->

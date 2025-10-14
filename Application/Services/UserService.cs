@@ -1,6 +1,5 @@
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Ports;
-using FuerzaG.Factories.ConcreteCreators;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
 
@@ -27,9 +26,9 @@ public class UserService
 
     public int Create(User user)
     {
-        // Generación automática del username antes de guardar
+        // Generaciï¿½n automï¿½tica del username antes de guardar
         user.UserName = GenerateUserName(user.Name, user.FirstLastName, user.Ci);
-        // Generación de una contraseña temporal
+        // Generaciï¿½n de una contraseï¿½a temporal
         user.Password = GenerateTemporaryPassword();
         return _dataRepositoryFactory.GetRepository<User>().Create(user);
     }
@@ -44,7 +43,7 @@ public class UserService
         return _dataRepositoryFactory.GetRepository<User>().DeleteById(id);
     }
 
-    // --- Métodos auxiliares ---
+    // --- Mï¿½todos auxiliares ---
     private string GenerateTemporaryPassword()
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -57,10 +56,10 @@ public class UserService
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(firstLastName) || string.IsNullOrWhiteSpace(ci))
             throw new ArgumentException("Nombre, Primer apellido y CI son requeridos para generar el nombre de usuario.");
 
-        // Primera letra del nombre, primer apellido y últimos 3 dígitos del CI
+        // Primera letra del nombre, primer apellido y ï¿½ltimos 3 dï¿½gitos del CI
         var firstLetter = name.Trim()[0].ToString().ToUpper();
         var lastNamePart = firstLastName.Trim().ToLower();
-        var ciPart = ci.Length >= 3 ? ci[^3..] : ci; // últimos 3 dígitos o el número completo si es más corto
+        var ciPart = ci.Length >= 3 ? ci[^3..] : ci; // ï¿½ltimos 3 dï¿½gitos o el nï¿½mero completo si es mï¿½s corto
 
         return $"{firstLetter}.{lastNamePart}.{ciPart}";
     }

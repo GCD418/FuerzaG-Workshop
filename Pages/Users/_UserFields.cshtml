@@ -1,52 +1,52 @@
-﻿@model FuerzaG.Models.User
-
-<div class="mb-3">
-    <label asp-for="Name" class="form-label"></label>
-    <input asp-for="Name" class="form-control" placeholder="Ingrese el nombre del usuario" />
-    <span asp-validation-for="Name" class="text-danger"></span>
-</div>
-
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <label asp-for="FirstLastName" class="form-label"></label>
-        <input asp-for="FirstLastName" class="form-control" placeholder="Ingrese el apellido paterno" />
-        <span asp-validation-for="FirstLastName" class="text-danger"></span>
-    </div>
-    <div class="col-md-6 mb-3">
-        <label asp-for="SecondLastName" class="form-label"></label>
-        <input asp-for="SecondLastName" class="form-control" placeholder="Ingrese el apellido materno (opcional)" />
-        <span asp-validation-for="SecondLastName" class="text-danger"></span>
-    </div>
-</div>
-
-<div class="mb-3">
-    <label asp-for="Ci" class="form-label"></label>
-    <input asp-for="Ci" class="form-control" maxlength="7" placeholder="Ingrese el número de CI (7 dígitos)" />
-    <span asp-validation-for="Ci" class="text-danger"></span>
-</div>
-
-<div class="mb-3">
-    <label asp-for="UserName" class="form-label"></label>
-    <input asp-for="UserName" class="form-control" readonly />
-    <div class="form-text">El nombre de usuario se genera automáticamente.</div>
-</div>
-
-<div class="mb-3">
-    <label asp-for="Role" class="form-label"></label>
-    <select asp-for="Role" class="form-select">
-        <option value="Administrador" selected>Administrador</option>
-        <option value="Propietario del taller">Propietario del taller</option>
-    </select>
-    <span asp-validation-for="Role" class="text-danger"></span>
-</div>
-
-<div class="form-check mb-3">
-    <input asp-for="IsActive" class="form-check-input" />
-    <label asp-for="IsActive" class="form-check-label"></label>
-</div>
-
-<!-- Fechas ocultas y contraseña autogenerada -->
-<input type="hidden" asp-for="Password" />
-<input type="hidden" asp-for="CreatedAt" />
-<input type="hidden" asp-for="UpdatedAt" />
-<input type="hidden" asp-for="ModifiedByUserId" />
+﻿<!-- @model FuerzaG.Models.Users.CreateModel -->
+<!---->
+<!-- <div class="mb-3"> -->
+<!--     <label asp-for="Name" class="form-label"></label> -->
+<!--     <input asp-for="Name" class="form-control" placeholder="Ingrese el nombre del usuario" /> -->
+<!--     <span asp-validation-for="Name" class="text-danger"></span> -->
+<!-- </div> -->
+<!---->
+<!-- <div class="row"> -->
+<!--     <div class="col-md-6 mb-3"> -->
+<!--         <label asp-for="FirstLastName" class="form-label"></label> -->
+<!--         <input asp-for="FirstLastName" class="form-control" placeholder="Ingrese el apellido paterno" /> -->
+<!--         <span asp-validation-for="FirstLastName" class="text-danger"></span> -->
+<!--     </div> -->
+<!--     <div class="col-md-6 mb-3"> -->
+<!--         <label asp-for="SecondLastName" class="form-label"></label> -->
+<!--         <input asp-for="SecondLastName" class="form-control" placeholder="Ingrese el apellido materno (opcional)" /> -->
+<!--         <span asp-validation-for="SecondLastName" class="text-danger"></span> -->
+<!--     </div> -->
+<!-- </div> -->
+<!---->
+<!-- <div class="mb-3"> -->
+<!--     <label asp-for="Ci" class="form-label"></label> -->
+<!--     <input asp-for="Ci" class="form-control" maxlength="7" placeholder="Ingrese el número de CI (7 dígitos)" /> -->
+<!--     <span asp-validation-for="Ci" class="text-danger"></span> -->
+<!-- </div> -->
+<!---->
+<!-- <div class="mb-3"> -->
+<!--     <label asp-for="UserName" class="form-label"></label> -->
+<!--     <input asp-for="UserName" class="form-control" readonly /> -->
+<!--     <div class="form-text">El nombre de usuario se genera automáticamente.</div> -->
+<!-- </div> -->
+<!---->
+<!-- <div class="mb-3"> -->
+<!--     <label asp-for="Role" class="form-label"></label> -->
+<!--     <select asp-for="Role" class="form-select"> -->
+<!--         <option value="Administrador" selected>Administrador</option> -->
+<!--         <option value="Propietario del taller">Propietario del taller</option> -->
+<!--     </select> -->
+<!--     <span asp-validation-for="Role" class="text-danger"></span> -->
+<!-- </div> -->
+<!---->
+<!-- <div class="form-check mb-3"> -->
+<!--     <input asp-for="IsActive" class="form-check-input" /> -->
+<!--     <label asp-for="IsActive" class="form-check-label"></label> -->
+<!-- </div> -->
+<!---->
+<!-- <!-- Fechas ocultas y contraseña autogenerada --> -->
+<!-- <input type="hidden" asp-for="Password" /> -->
+<!-- <input type="hidden" asp-for="CreatedAt" /> -->
+<!-- <input type="hidden" asp-for="UpdatedAt" /> -->
+<!-- <input type="hidden" asp-for="ModifiedByUserId" /> -->
