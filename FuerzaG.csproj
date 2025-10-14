@@ -21,14 +21,11 @@
       <_ContentIncludedByDefault Remove="Users\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Users\UserPage.cshtml" />
       <_ContentIncludedByDefault Remove="Users\_UserFields.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Pages\Users\Create.cshtml" />
-      <AdditionalFiles Include="Pages\Users\Delete.cshtml" />
-      <AdditionalFiles Include="Pages\Users\Edit.cshtml" />
-      <AdditionalFiles Include="Pages\Users\UserPage.cshtml" />
-      <AdditionalFiles Include="Pages\Users\_UserFields.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\UserPage.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Users\_UserFields.cshtml" />
     </ItemGroup>
 
 </Project>
