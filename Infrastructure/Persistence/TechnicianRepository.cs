@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using FuerzaG.Domain.Ports;
-using FuerzaG.Factories;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Models;
-using Microsoft.VisualBasic.CompilerServices;
 
-namespace FuerzaG.Data.Repositories
+namespace FuerzaG.Infrastructure.Persistence
 {
     public class TechnicianRepository : IRepository<Technician>
     {

@@ -1,5 +1,4 @@
 using FuerzaG.Application.Services;
-using FuerzaG.Factories;
 using FuerzaG.Infrastructure.Connection;
 
 var builder = WebApplication.CreateBuilder(args);

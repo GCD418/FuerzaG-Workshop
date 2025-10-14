@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FuerzaG.Factories;
-using FuerzaG.Factories.ConcreteCreators;
 using FuerzaG.Infrastructure.Connection;
+using FuerzaG.Infrastructure.Persistence.Factories;
 
 namespace FuerzaG.Pages.Technicians
 {
