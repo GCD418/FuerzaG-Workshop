@@ -5,35 +5,26 @@ using FuerzaG.Infrastructure.Persistence.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FuerzaG.Pages;
+namespace FuerzaG.Pages.Servicess;
 
 public class ServicePage : PageModel
 {
     public List<Service> Services { get; set; } = new();
-    private readonly DataRepositoryFactory _dataRepositoryFactory;
+    private readonly ServiceService _serviceService;
 
     public ServicePage(IDbConnectionFactory connectionFactory)
     {
-        _dataRepositoryFactory = new ServiceRepositoryCreator(connectionFactory);
+        _serviceService = serviceService;
     }
 
     public void OnGet()
     {
-        Services = _dataRepositoryFactory.GetRepository<Service>().GetAll();
+        Servicess = _serviceService.GetAll();
     }
 
     public IActionResult OnPostDelete(int id)
     {
-        var repo = _dataRepositoryFactory.GetRepository<Service>();
-
-        var ok = repo.DeleteById(id);
-        var sigueActivo = repo.GetById(id) != null;
-
-        TempData["Msg"] = ok
-            ? (sigueActivo ? $"Se ejecutó DeleteById({id}) PERO el registro sigue activo en la BD."
-                           : $"Registro #{id} eliminado (is_active=false).")
-            : $"No se actualizó ninguna fila para id={id}.";
-
+        _serviceService.DeleteById(id);
         return RedirectToPage();
     }
 }

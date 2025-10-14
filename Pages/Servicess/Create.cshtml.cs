@@ -1,24 +1,21 @@
+using FuerzaG.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using FuerzaG.Factories;
 using FuerzaG.Factories.ConcreteCreators;
 using FuerzaG.Domain.Entities;
-using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
 
-using FuerzaG.Models;
 
-namespace FuerzaG.Pages.Services;
+namespace FuerzaG.Pages.Servicess;
 public class CreateModel : PageModel
 {
-    private readonly ServiceRepositoryCreator _creator;
+    private readonly ServiceService _serviceService;
 
-    public CreateModel(IDbConnectionFactory connectionFactory)
-        => _creator = new ServiceRepositoryCreator(connectionFactory);
-
-    [BindProperty]
-    public Service Form { get; set; } = new();
+    public CreateModel(ServiceService serviceService)
+    {
+        _serviceService = serviceService;
+    }
+    [BindProperty] public Service service { get; set; } = new();
 
     public void OnGet() { }
 
@@ -27,8 +24,8 @@ public class CreateModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        var id = _creator.GetRepository<Service>().Create(Form);
-        if (id <= 0)
+        var newId = _serviceService.Create(service);
+        if (newId <= 0)
         {
             ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
             return Page();

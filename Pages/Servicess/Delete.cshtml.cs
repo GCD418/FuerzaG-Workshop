@@ -1,46 +1,22 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using FuerzaG.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-using FuerzaG.Factories;
-using FuerzaG.Factories.ConcreteCreators;
-using FuerzaG.Domain.Entities;
-using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
-using FuerzaG.Models;
+namespace FuerzaG.Pages.Servicess;
 
-namespace FuerzaG.Pages.Services
+public class DeleteModel : PageModel
 {
-    public class ServicePageModel : PageModel
+    private readonly ServiceService _serviceService;
+
+    public DeleteModel(ServiceService serviceService)
     {
-        private readonly ServiceRepositoryCreator _creator;
+        _serviceService = serviceService;
+    }
 
-        public ServicePageModel(IDbConnectionFactory connectionFactory)
-        {
-            _creator = new ServiceRepositoryCreator(connectionFactory);
-        }
 
-        public List<Service> Services { get; set; } = new();
-
-        public void OnGet()
-        {
-            var repo = _creator.GetRepository<Service>();
-            
-            Services = repo.GetAll().Where(s => s.IsActive).ToList();
-        }
-
-        public IActionResult OnPostDelete(int id)
-        {
-            var repo = _creator.GetRepository<Service>();
-            var service = repo.GetById(id);
-
-            if (service == null)
-                return RedirectToPage("/ServicePage");
-
-            
-            service.IsActive = false;
-            repo.Update(service);
-
-            return RedirectToPage("/ServicePage");
-        }
+    public IActionResult OnPost(int id)
+    {
+        _serviceService.DeleteById(id);
+        return RedirectToPage("/Servicess/ServicePage");
     }
 }

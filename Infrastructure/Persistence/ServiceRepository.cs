@@ -47,7 +47,7 @@ public class ServiceRepository : IRepository<Service>
         return reader.Read() ? MapReaderToModel(reader) : null;
     }
 
-    public int Create(Service entity)
+    public int Create(Service service)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         string query = "SELECT fn_insert_service(@name, @type, @price, @description)";
@@ -55,17 +55,17 @@ public class ServiceRepository : IRepository<Service>
         using var command = connection.CreateCommand();
         command.CommandText = query;
 
-        AddParameter(command, "@name", entity.Name);
-        AddParameter(command, "@type", entity.Type);
-        AddParameter(command, "@price", entity.Price);
-        AddParameter(command, "@description", entity.Description);
+        AddParameter(command, "@name", service.Name);
+        AddParameter(command, "@type", service.Type);
+        AddParameter(command, "@price", service.Price);
+        AddParameter(command, "@description", service.Description);
 
         connection.Open();
         var idObj = command.ExecuteScalar();
         return Convert.ToInt32(idObj);
     }
 
-    public bool Update(Service entity)
+    public bool Update(Service service)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         string query = "SELECT fn_update_service(@id, @name, @type, @price, @description, @modified_by_user_id)";
@@ -73,11 +73,11 @@ public class ServiceRepository : IRepository<Service>
         using var command = connection.CreateCommand();
         command.CommandText = query;
 
-        AddParameter(command, "@id", entity.Id);
-        AddParameter(command, "@name", entity.Name);
-        AddParameter(command, "@type", entity.Type);
-        AddParameter(command, "@price", entity.Price);
-        AddParameter(command, "@description", entity.Description);
+        AddParameter(command, "@id", service.Id);
+        AddParameter(command, "@name", service.Name);
+        AddParameter(command, "@type", service.Type);
+        AddParameter(command, "@price", service.Price);
+        AddParameter(command, "@description", service.Description);
         AddParameter(command, "@modified_by_user_id", 9999); 
 
         connection.Open();
