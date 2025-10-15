@@ -2,44 +2,59 @@
 @model FuerzaG.Pages.Owners.CreateModel
 <h2>Nuevo Dueño</h2>
 
+@if (Model.ValidationErrors.Any())
+{
+  <div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">Errores de validación:</h5>
+    <ul class="mb-0">
+      @foreach (var error in Model.ValidationErrors)
+      {
+        <li>@error</li>
+      }
+    </ul>
+  </div>
+}
+
+@* <div asp-validation-summary="All" class="text-danger"></div> *@
+
 <form method="post" class="card card-body">
-  <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+  @* <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div> *@
 
   <div class="row g-3">
     <div class="col-md-6">
       <label asp-for="Owner.Name" class="form-label"></label>
       <input asp-for="Owner.Name" class="form-control"/>
-      <span asp-validation-for="Owner.Name" class="text-danger"></span>
+      @* <span asp-validation-for="Owner.Name" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
       <label asp-for="Owner.FirstLastname" class="form-label"></label>
       <input asp-for="Owner.FirstLastname" class="form-control"/>
-      <span asp-validation-for="Owner.FirstLastname" class="text-danger"></span>
+      @* <span asp-validation-for="Owner.FirstLastname" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
       <label asp-for="Owner.SecondLastname" class="form-label"></label>
       <input asp-for="Owner.SecondLastname" class="form-control"/>
-      <span asp-validation-for="Owner.SecondLastname" class="text-danger"></span>
+      @* <span asp-validation-for="Owner.SecondLastname" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
       <label asp-for="Owner.PhoneNumber" class="form-label"></label>
       <input asp-for="Owner.PhoneNumber" class="form-control"/>
-      <span asp-validation-for="Owner.PhoneNumber" class="text-danger"></span>
+      @* <span asp-validation-for="Owner.PhoneNumber" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
       <label asp-for="Owner.Email" class="form-label"></label>
       <input asp-for="Owner.Email" class="form-control"/>
-      <span asp-validation-for="Owner.Email" class="text-danger"></span>
+      @* <span asp-validation-for="Owner.Email" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
       <label asp-for="Owner.Ci" class="form-label">CI</label>
       <input asp-for="Owner.Ci" class="form-control"/>
-      <span asp-validation-for="Owner.Ci" class="text-danger"></span>
+      @* <span asp-validation-for="Owner.Ci" class="text-danger"></span> *@
     </div>
     <div class="col-12">
       <label asp-for="Owner.Address" class="form-label"></label>
       <input asp-for="Owner.Address" class="form-control"/>
-      <span asp-validation-for="Owner.Address" class="text-danger"></span>
+      @* <span asp-validation-for="Owner.Address" class="text-danger"></span> *@
     </div>
   </div>
 
