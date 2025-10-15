@@ -1,4 +1,6 @@
 using FuerzaG.Application.Services;
+using FuerzaG.Domain.Entities;
+using FuerzaG.Domain.Services.Validations;
 using FuerzaG.Infrastructure.Connection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,9 @@ builder.Services.AddScoped<IDbConnectionFactory, PostgreSqlConnectionFactory>();
 builder.Services.AddScoped<OwnerService>();
 builder.Services.AddScoped<ServiceService>();
 builder.Services.AddScoped<TechnicianService>();
+
+// Validators
+builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
