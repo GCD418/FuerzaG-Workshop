@@ -9,6 +9,7 @@ public class OwnerValidator : IValidator<Owner>
     public Result Validate(Owner entity)
     {
         _errors.Clear();
+        ValidateName(entity.Name);
         
         return _errors.Count == 0
             ? Result.Success()
