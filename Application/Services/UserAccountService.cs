@@ -27,8 +27,8 @@ public class UserAccountService
     public int Create(UserAccount userAccount)
     {
 
-        userAccount.UserName = GenerateUserName(userAccount);
-        userAccount.Password = GeneratePassword(userAccount);
+        // userAccount.UserName = GenerateUserName(userAccount);
+        // userAccount.Password = GeneratePassword(userAccount);
 
         return _dataRepositoryFactory.GetRepository<UserAccount>().Create(userAccount);
     }
