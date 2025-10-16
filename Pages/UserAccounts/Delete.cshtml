@@ -1,0 +1,27 @@
+﻿@page "{id:int}"
+@model FuerzaG.Pages.UserAccounts.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Cuenta";
+}
+
+<h2>Eliminar Cuenta</h2>
+
+@if (Model.UserAccount == null)
+{
+    <div class="alert alert-danger">Cuenta no encontrada.</div>
+}
+else
+{
+    <div class="card card-body">
+        <p>
+            ¿Estás seguro de eliminar la cuenta de
+            <strong>@Model.UserAccount.Name @Model.UserAccount.FirstLastName</strong>?
+        </p>
+
+        <form method="post">
+            <input type="hidden" asp-for="UserAccount.Id" />
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a asp-page="/Accounts/AccountPage" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+}
