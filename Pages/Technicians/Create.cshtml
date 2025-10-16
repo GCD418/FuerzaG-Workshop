@@ -1,16 +1,68 @@
 ﻿@page
 @model FuerzaG.Pages.Technicians.CreateModel
 @{
-    ViewData["Title"] = "Create Technician";
+    ViewData["Title"] = "Crear Técnico";
 }
 
-<h2>Create Technician</h2>
-<hr />
+<h2 class="mb-3">Crear Técnico</h2>
 
 <form method="post">
-    <partial name="_TechnicianFields" for="Form" />
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-page="/Technicians/TechnicianPage" class="btn btn-secondary">Cancel</a>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label asp-for="Form.Name" class="form-label"></label>
+            <input asp-for="Form.Name" class="form-control" />
+            <span asp-validation-for="Form.Name" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Form.FirstLastName" class="form-label"></label>
+            <input asp-for="Form.FirstLastName" class="form-control" />
+            <span asp-validation-for="Form.FirstLastName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Form.SecondLastName" class="form-label"></label>
+            <input asp-for="Form.SecondLastName" class="form-control" />
+            <span asp-validation-for="Form.SecondLastName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Form.PhoneNumber" class="form-label"></label>
+            <input asp-for="Form.PhoneNumber" class="form-control" />
+            <span asp-validation-for="Form.PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Form.Email" class="form-label"></label>
+            <input asp-for="Form.Email" class="form-control" />
+            <span asp-validation-for="Form.Email" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Form.DocumentNumber" class="form-label"></label>
+            <input asp-for="Form.DocumentNumber" class="form-control" />
+            <span asp-validation-for="Form.DocumentNumber" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-8">
+            <label asp-for="Form.Address" class="form-label"></label>
+            <input asp-for="Form.Address" class="form-control" />
+            <span asp-validation-for="Form.Address" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Form.BaseSalary" class="form-label"></label>
+            <input asp-for="Form.BaseSalary" class="form-control" />
+            <span asp-validation-for="Form.BaseSalary" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-page="/Technicians/TechnicianPage" class="btn btn-secondary">Cancelar</a>
+    </div>
 </form>
 
 @section Scripts {
