@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
+using FuerzaG.Pages.Shared;
 
 namespace FuerzaG.Pages.Owners;
 
-public class CreateModel : PageModel
+public class CreateModel : SecurePageModel
 {
     private readonly OwnerService  _ownerService;
     private readonly IValidator<Owner> _validator;
@@ -20,7 +21,13 @@ public class CreateModel : PageModel
     }
     [BindProperty] public Owner UserAccount { get; set; } = new();
 
-    public void OnGet() { }
+    public IActionResult OnGet()
+    {
+        if (!ValidateSession(out var role)) return new EmptyResult();
+        if (role != "Boss") return RedirectToPage("/Owners/OwnerPage");
+        
+        return Page();
+    }
 
     public IActionResult OnPost()
     {
