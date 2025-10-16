@@ -1,5 +1,6 @@
+using System.Net;
+using System.Net.Mail;
 using FuerzaG.Domain.Ports;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 
 namespace FuerzaG.Infrastructure;
@@ -16,14 +17,37 @@ public class MailSettings
 
 public class SmtpEmailSender : IMailSender
 {
+    private readonly MailSettings _settings;
+
+    public SmtpEmailSender(IOptions<MailSettings> settings)
+    {
+        _settings = settings.Value;
+    }
+
     public void SendEmail(string email, string subject, string htmlMessage)
     {
-        private readonly MailSettings _settings;
-
-        public SmtpEmailSender(IOptions<MailSettings> settings)
+        try
         {
-            _settings = settings.Value;
+            using var smtpClient = new SmtpClient(_settings.SmtpHost, _settings.SmtpPort);
+            smtpClient.EnableSsl = true;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential(_settings.SmtpUser, _settings.SmtpPass);
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(_settings.FromEmail, _settings.FromName),
+                Subject = subject,
+                Body = htmlMessage,
+                IsBodyHtml = true
+            };
+            
+            mailMessage.To.Add(email);
+
+            smtpClient.Send(mailMessage);
         }
-        
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Error al enviar el correo: {ex.Message}", ex);
+        }
     }
 }

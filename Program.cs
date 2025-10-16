@@ -2,6 +2,7 @@ using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Ports;
 using FuerzaG.Domain.Services.Validations;
+using FuerzaG.Infrastructure;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence;
 using FuerzaG.Infrastructure.Security;
@@ -16,6 +17,9 @@ builder.Services.AddSingleton(connectionManager);
 
 builder.Services.AddScoped<IDbConnectionFactory, PostgreSqlConnectionFactory>();
 
+// Email Configuration
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IMailSender, SmtpEmailSender>();
 
 // Services injection
 builder.Services.AddScoped<OwnerService>();
