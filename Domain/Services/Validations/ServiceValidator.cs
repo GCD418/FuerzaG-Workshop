@@ -41,6 +41,12 @@ public class ServiceValidator : IValidator<Service>
         var prohibited = new[] { '<', '>', '/', '\\', '|' };
         if (name.Any(c => prohibited.Contains(c)))
             _errors.Add("El nombre contiene caracteres no permitidos");
+        var ok = System.Text.RegularExpressions.Regex.IsMatch(
+        name, @"^[\p{L}\d]+(?:\s[\p{L}\d]+)*$"
+        );
+        if (!ok)
+            _errors.Add("El nombre solo puede contener letras, números y espacios (sin caracteres especiales).");
+
     }
 
     

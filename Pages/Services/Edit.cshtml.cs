@@ -20,20 +20,41 @@ public class EditModel : PageModel
         _validator = validator;
     }
 
-    [BindProperty] public Service service { get; set; } = new();
+
+    [BindProperty] public int Id { get; set; }
+    [BindProperty] public string Name { get; set; } = string.Empty;
+    [BindProperty] public string Type { get; set; } = string.Empty;
+    [BindProperty] public decimal Price { get; set; }
+    [BindProperty] public string Description { get; set; } = string.Empty;
 
     public IActionResult OnGet(int id)
     {
         var existing = _serviceService.GetById(id);
-        if (existing is null) return RedirectToPage("/Services/ServicePage");
+        if (existing is null)
+            return RedirectToPage("/Services/ServicePage");
 
-        service = existing;
+        // Cargar datos existentes
+        Id = existing.Id;
+        Name = existing.Name;
+        Type = existing.Type;
+        Price = existing.Price;
+        Description = existing.Description;
+
         return Page();
     }
 
     public IActionResult OnPost()
     {
-       
+      
+        var service = new Service
+        {
+            Id = Id,
+            Name = Name,
+            Type = Type,
+            Price = Price,
+            Description = Description,
+            IsActive = true
+        };
 
         var validationResult = _validator.Validate(service);
         if (validationResult.IsFailure)
@@ -41,12 +62,12 @@ public class EditModel : PageModel
             ValidationErrors = validationResult.Errors;
             foreach (var error in validationResult.Errors)
                 ModelState.AddModelError(string.Empty, error);
-
             return Page();
         }
 
-        var ok = _serviceService.Update(service);
-        if (!ok)
+        
+        var success = _serviceService.Update(service);
+        if (!success)
         {
             ModelState.AddModelError(string.Empty, "No se pudo actualizar el servicio.");
             return Page();
