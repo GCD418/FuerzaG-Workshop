@@ -3,21 +3,22 @@ using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace FuerzaG.Pages.Accounts
+namespace FuerzaG.Pages.UserAccounts
 {
     public class CreateModel : PageModel
     {
         private readonly UserAccountService _accountService;
         private readonly IValidator<UserAccount> _validator;
 
+        [BindProperty]
+        public UserAccountModel UserAccount { get; set; } = new UserAccountModel();
+
         public List<string> ValidationErrors { get; set; } = new List<string>();
 
-        [BindProperty]
-        public UserAccount UserAccount { get; set; } = new();
-
-        // Para mostrar el username generado despu√©s de la creaci√≥n
-        public string GeneratedUserName { get; set; } = string.Empty;
+        public string GeneratedUserName { get; set; }
 
         public CreateModel(UserAccountService accountService, IValidator<UserAccount> validator)
         {
@@ -25,84 +26,43 @@ namespace FuerzaG.Pages.Accounts
             _validator = validator;
         }
 
-        public void OnGet() { }
+        public void OnGet(int currentUserId)
+        {
+            // InicializaciÛn si es necesario
+        }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(int currentUserId)
         {
             ValidationErrors.Clear();
 
-            // Obtener el usuario actual desde su Id (simulaci√≥n aqu√≠; reemplazar con Claims o Session)
-            var currentUserId = 1; // TODO: reemplazar por Id real del usuario autenticado
-            var currentUser = _accountService.GetById(currentUserId);
+            // ValidaciÛn simple de ejemplo
+            if (string.IsNullOrWhiteSpace(UserAccount.Name))
+                ValidationErrors.Add("El nombre es obligatorio.");
+            if (string.IsNullOrWhiteSpace(UserAccount.Email))
+                ValidationErrors.Add("El correo electrÛnico es obligatorio.");
 
-            if (currentUser == null)
-            {
-                ModelState.AddModelError(string.Empty, "Usuario actual no encontrado.");
+            if (ValidationErrors.Count > 0)
                 return Page();
-            }
 
-            // Validar si el usuario actual puede asignar el rol seleccionado
-            if (!CanCreate(currentUser, UserAccount.Role))
-            {
-                ValidationErrors.Add("No tienes permiso para asignar este rol.");
-                ModelState.AddModelError(string.Empty, "No tienes permiso para asignar este rol.");
-                return Page();
-            }
+            // SimulaciÛn de creaciÛn de usuario
+            GeneratedUserName = $"{UserAccount.Name}.{UserAccount.FirstLastName}".ToLower();
 
-            // Validar los campos del UserAccount
-            var validationResult = _validator.Validate(UserAccount);
-            if (validationResult.IsFailure)
-            {
-                ValidationErrors = validationResult.Errors;
-                foreach (var error in validationResult.Errors)
-                    ModelState.AddModelError(string.Empty, error);
-                return Page();
-            }
-
-            // Limpiar y sanear campos
-            SanitizeUserAccountFields(UserAccount);
-
-            // Crear la cuenta (username y password generados autom√°ticamente)
-            var newId = _accountService.Create(UserAccount);
-            if (newId <= 0)
-            {
-                ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
-                return Page();
-            }
-
-            // Mostrar el username generado
-            GeneratedUserName = UserAccount.UserName;
-
-            // Limpiar modelo para crear otra cuenta si se desea
-            UserAccount = new UserAccount();
+            // AquÌ irÌa la lÛgica para guardar el usuario y enviar el correo
 
             return Page();
         }
+    }
 
-        private bool CanCreate(UserAccount currentUser, string roleToAssign)
-        {
-            switch (currentUser.Role.Trim().ToLower())
-            {
-                case "propietario":
-                    return roleToAssign.ToLower() switch
-                    {
-                        "administrador" => true,
-                        "technician" => true,
-                        "service" => true,
-                        "owner" => true,
-                        "vehicle" => true,
-                        _ => false
-                    };
-                case "administrador":
-                    return roleToAssign.ToLower() switch
-                    {
-                        "owner" => true,
-                        "vehicle" => true,
-                        _ => false
-                    };
-                default:
-                    return false;
-            }
-        }
+    public class UserAccountModel
+    {
+        [Required]
+        public string Name { get; set; }
+        public string FirstLastName { get; set; }
+        public string SecondLastName { get; set; }
+        public string PhoneNumber { get; set; }
+        [Required]
+        public string Email { get; set; }
+        public string DocumentNumber { get; set; }
+        public string Role { get; set; }
     }
 }

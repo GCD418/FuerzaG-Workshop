@@ -1,5 +1,5 @@
-﻿@page
-@model FuerzaG.Pages.Accounts.CreateModel
+﻿@page "{currentUserId:int}"
+@model FuerzaG.Pages.UserAccounts.CreateModel
 <h2>Nueva Cuenta</h2>
 
 @if (Model.ValidationErrors.Any())
@@ -16,7 +16,7 @@
 }
 
 <form method="post" class="card card-body">
-
+    @* Campos de UserAccount *@
     <div class="row g-3">
         <div class="col-md-6">
             <label asp-for="UserAccount.Name" class="form-label"></label>

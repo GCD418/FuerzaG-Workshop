@@ -23,7 +23,7 @@ public class AccountValidator : IValidator<UserAccount>
             : Result.Failure(_errors);
     }
 
-    private void SanitizeAccountFields(UserAccount account)
+    public void SanitizeAccountFields(UserAccount account)
     {
         account.Name = account.Name.Trim();
         account.FirstLastName = account.FirstLastName.Trim();
@@ -32,7 +32,7 @@ public class AccountValidator : IValidator<UserAccount>
         account.DocumentNumber = account.DocumentNumber.Trim();
     }
 
-    private void ValidateName(string name)
+    public void ValidateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -67,7 +67,7 @@ public class AccountValidator : IValidator<UserAccount>
         }
     }
 
-    private void ValidateFirstLastName(string firstLastName)
+    public void ValidateFirstLastName(string firstLastName)
     {
         if (string.IsNullOrWhiteSpace(firstLastName))
             _errors.Add("El primer apellido es requerido");
@@ -78,7 +78,7 @@ public class AccountValidator : IValidator<UserAccount>
         }
     }
 
-    private void ValidateSecondLastName(string? secondLastName)
+    public void ValidateSecondLastName(string? secondLastName)
     {
         if (string.IsNullOrWhiteSpace(secondLastName))
             return;
@@ -90,7 +90,7 @@ public class AccountValidator : IValidator<UserAccount>
         }
     }
 
-    private void ValidateDocumentNumber(string documentNumber)
+    public void ValidateDocumentNumber(string documentNumber)
     {
         if (string.IsNullOrWhiteSpace(documentNumber))
         {
@@ -104,7 +104,7 @@ public class AccountValidator : IValidator<UserAccount>
         }
     }
 
-    private void ValidateEmail(string? email)
+    public void ValidateEmail(string? email)
     {
         if (string.IsNullOrWhiteSpace(email))
             return; // Opcional
