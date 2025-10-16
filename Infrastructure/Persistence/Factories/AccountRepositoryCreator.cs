@@ -2,18 +2,17 @@ using FuerzaG.Domain.Ports;
 using FuerzaG.Infrastructure.Connection;
 
 namespace FuerzaG.Infrastructure.Persistence.Factories;
-//DE INFRASTRUCTURE/PERSISTENCE/FACTORIES
-public class UserRepositoryCreator : DataRepositoryFactory
+public class AccountRepositoryCreator : DataRepositoryFactory
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
-    public UserRepositoryCreator(IDbConnectionFactory dbConnectionFactory)
+    public AccountRepositoryCreator(IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;
     }
 
     public override IRepository<T> GetRepository<T>()
     {
-        return (IRepository<T>)(object)new UserRepository(_dbConnectionFactory);
+        return (IRepository<T>)(object)new AccountRepository(_dbConnectionFactory);
     }
 }
