@@ -1,3 +1,5 @@
+using System.Net.NetworkInformation;
+using System.Reflection;
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Ports;
@@ -6,6 +8,7 @@ using FuerzaG.Infrastructure;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence;
 using FuerzaG.Infrastructure.Security;
+using FuerzaG.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,7 @@ builder.Services.AddScoped<LoginService>();
 // Validators
 builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
 builder.Services.AddScoped<IValidator<UserAccount>,  AccountValidator>();
+builder.Services.AddScoped<IValidator<Technician>, TechnicianValidator>();
 
 // Login Repository by injection
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
