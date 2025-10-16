@@ -43,7 +43,7 @@ public class UserAccountService
     {
         return _dataRepositoryFactory.GetRepository<UserAccount>().DeleteById(id);
     }
-    private string GenerateUserName(UserAccount userAccount)
+    public string GenerateUserName(UserAccount userAccount)
     {
         var firstName = userAccount.Name.Split(' ')[0];
         var firstLetter = firstName[0]; 

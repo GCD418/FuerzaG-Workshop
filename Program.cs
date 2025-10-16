@@ -1,7 +1,10 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
+using FuerzaG.Domain.Ports;
 using FuerzaG.Domain.Services.Validations;
 using FuerzaG.Infrastructure.Connection;
+using FuerzaG.Infrastructure.Persistence;
+using FuerzaG.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,10 @@ builder.Services.AddScoped<UserAccountService>();
 // Validators
 builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
 builder.Services.AddScoped<IValidator<UserAccount>,  AccountValidator>();
+
+// Login Repository by injection
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

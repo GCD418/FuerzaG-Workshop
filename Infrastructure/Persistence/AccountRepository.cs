@@ -44,33 +44,6 @@ public class AccountRepository : IRepository<UserAccount>
         using var reader = command.ExecuteReader();
         return reader.Read() ? MapReaderToModel(reader) : null;
     }
-
-    public UserAccount? GetByUserName(string userName)
-    {
-        using var connection = _dbConnectionFactory.CreateConnection();
-        string query = "SELECT * FROM fn_get_account_by_username(@user_name)";
-
-        using var command = connection.CreateCommand();
-        command.CommandText = query;
-        AddParameter(command, "@user_name", userName);
-
-        connection.Open();
-        using var reader = command.ExecuteReader();
-        return reader.Read() ? MapReaderToModel(reader) : null;
-    }
-
-    public bool IsUserNameUsed(string userName)
-    {
-        using var connection = _dbConnectionFactory.CreateConnection();
-        string query = "SELECT fn_account_exists_by_username(@user_name)";
-        using var command = connection.CreateCommand();
-        command.CommandText = query;
-        AddParameter(command, "@user_name", userName);
-
-        connection.Open();
-        return Convert.ToBoolean(command.ExecuteScalar());
-    }
-
     public int Create(UserAccount userAccount)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
