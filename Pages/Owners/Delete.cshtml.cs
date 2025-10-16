@@ -1,11 +1,13 @@
 using FuerzaG.Application.Services;
+using FuerzaG.Domain.Entities;
+using FuerzaG.Pages.Shared;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Owners;
 
-public class DeleteModel : PageModel
+public class DeleteModel : SecurePageModel
 {
     private readonly OwnerService  _ownerService;
     private readonly IDataProtector _protector;
@@ -16,6 +18,12 @@ public class DeleteModel : PageModel
         _protector = provider.CreateProtector("OwnerProtector");
     }
 
+    public IActionResult OnGet()
+    {
+        if (!ValidateSession(out var role)) return new EmptyResult();
+        if (role != UserRoles.Manager) return RedirectToPage("/Owners/OwnerPage");
+        return Page();
+    }
 
     public IActionResult OnPost(string id)
     {

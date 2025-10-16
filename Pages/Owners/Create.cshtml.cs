@@ -24,7 +24,7 @@ public class CreateModel : SecurePageModel
     public IActionResult OnGet()
     {
         if (!ValidateSession(out var role)) return new EmptyResult();
-        if (role != "Boss") return RedirectToPage("/Owners/OwnerPage");
+        if (role != UserRoles.Manager) return RedirectToPage("/Owners/OwnerPage");
         
         return Page();
     }
