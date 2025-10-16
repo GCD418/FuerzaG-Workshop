@@ -26,24 +26,33 @@ namespace FuerzaG.Pages.Technicians
 
         public IActionResult OnPost()
         {
-            // Validación con el patrón Result
             var validationResult = _validator.Validate(Form);
 
             if (validationResult.IsFailure)
             {
                 ValidationErrors = validationResult.Errors;
-                foreach (var error in validationResult.Errors)
-                    ModelState.AddModelError("Form.Name", error); // <— en vez de string.Empty
 
+                foreach (var error in validationResult.Errors)
+                {
+                    var sepIndex = error.IndexOf('|');
+                    if (sepIndex > 0 && sepIndex < error.Length - 1)
+                    {
+                        var field = error[..sepIndex].Trim();
+                        var message = error[(sepIndex + 1)..].Trim();
+                        ModelState.AddModelError($"Form.{field}", message);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
+                }
                 return Page();
             }
-
 
             if (!ModelState.IsValid)
                 return Page();
 
             var id = _technicianService.Create(Form);
-
             if (id <= 0)
             {
                 ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
