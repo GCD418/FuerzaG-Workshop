@@ -4,16 +4,32 @@ namespace FuerzaG.Domain.Services.Validations;
 
 public class AccountValidator : IValidator<UserAccount>
 {
-    private readonly List<string> _errors = [];
+    private readonly List<string> _errors = new();
 
     public Result Validate(UserAccount entity)
     {
         _errors.Clear();
+
+        SanitizeAccountFields(entity);
+
         ValidateName(entity.Name);
-        
+        ValidateFirstLastName(entity.FirstLastName);
+        ValidateSecondLastName(entity.SecondLastName);
+        ValidateDocumentNumber(entity.DocumentNumber);
+        ValidateEmail(entity.Email);
+
         return _errors.Count == 0
             ? Result.Success()
             : Result.Failure(_errors);
+    }
+
+    private void SanitizeAccountFields(UserAccount account)
+    {
+        account.Name = account.Name.Trim();
+        account.FirstLastName = account.FirstLastName.Trim();
+        account.SecondLastName = account.SecondLastName?.Trim();
+        account.Email = account.Email?.Trim();
+        account.DocumentNumber = account.DocumentNumber.Trim();
     }
 
     private void ValidateName(string name)
@@ -47,15 +63,63 @@ public class AccountValidator : IValidator<UserAccount>
 
         if (name.Any(char.IsDigit))
         {
-            _errors.Add("El nombre no puede contener n�meros");
+            _errors.Add("El nombre no puede contener números");
         }
     }
-    //A su vez la funcion es flexible y puede ser reutilizada en diferentes partes de la aplicaci�n.
-    public bool HasPermission(UserAccount userAccount, string requiredRole)
+
+    private void ValidateFirstLastName(string firstLastName)
     {
-        if (string.IsNullOrEmpty(userAccount.Role))
+        if (string.IsNullOrWhiteSpace(firstLastName))
+            _errors.Add("El primer apellido es requerido");
+        var prohibitedCharacters = new[] { '<', '>', '/', '\\', '|', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        if (firstLastName.Any(c => prohibitedCharacters.Contains(c)))
+        {
+            _errors.Add("El segundo apellido no puede contener números ni caracteres especiales");
+        }
+    }
+
+    private void ValidateSecondLastName(string? secondLastName)
+    {
+        if (string.IsNullOrWhiteSpace(secondLastName))
+            return;
+
+        var prohibitedCharacters = new[] { '<', '>', '/', '\\', '|', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        if (secondLastName.Any(c => prohibitedCharacters.Contains(c)))
+        {
+            _errors.Add("El segundo apellido no puede contener números ni caracteres especiales");
+        }
+    }
+
+    private void ValidateDocumentNumber(string documentNumber)
+    {
+        if (string.IsNullOrWhiteSpace(documentNumber))
+        {
+            _errors.Add("El número de documento es requerido");
+            return;
+        }
+
+        if (documentNumber.Length < 8 || documentNumber.Length > 14)
+        {
+            _errors.Add("El número de documento debe tener entre 8 y 14 caracteres");
+        }
+    }
+
+    private void ValidateEmail(string? email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return; // Opcional
+
+        if (!email.Contains("@"))
+        {
+            _errors.Add("El correo electrónico debe contener '@'");
+        }
+    }
+
+    public bool HasPermission(UserAccount account, string requiredRole)
+    {
+        if (string.IsNullOrEmpty(account.Role))
             return false;
 
-        return string.Equals(userAccount.Role.Trim(), requiredRole.Trim(), StringComparison.OrdinalIgnoreCase);
+        return string.Equals(account.Role.Trim(), requiredRole.Trim(), StringComparison.OrdinalIgnoreCase);
     }
 }

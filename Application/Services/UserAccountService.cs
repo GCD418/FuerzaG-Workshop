@@ -5,11 +5,11 @@ using FuerzaG.Infrastructure.Persistence.Factories;
 
 namespace FuerzaG.Application.Services;
 
-public class AccountService
+public class UserAccountService
 {
     private readonly DataRepositoryFactory _dataRepositoryFactory;
 
-    public AccountService(IDbConnectionFactory connectionFactory)
+    public UserAccountService(IDbConnectionFactory connectionFactory)
     {
         _dataRepositoryFactory = new AccountRepositoryCreator(connectionFactory);
     }
@@ -26,7 +26,6 @@ public class AccountService
 
     public int Create(UserAccount userAccount)
     {
-        SanitizeAccountFields(userAccount);
 
         userAccount.UserName = GenerateUserName(userAccount);
         userAccount.Password = GeneratePassword(userAccount);
@@ -37,8 +36,6 @@ public class AccountService
 
     public bool Update(UserAccount userAccount)
     {
-        SanitizeAccountFields(userAccount);
-
         return _dataRepositoryFactory.GetRepository<UserAccount>().Update(userAccount);
     }
 
@@ -60,14 +57,5 @@ public class AccountService
     private string GeneratePassword(UserAccount userAccount)
     {
         return userAccount.DocumentNumber;
-    }
-
-    private void SanitizeAccountFields(UserAccount userAccount)
-    {
-        userAccount.Name = userAccount.Name.Trim();
-        userAccount.FirstLastName = userAccount.FirstLastName.Trim();
-        userAccount.SecondLastName = userAccount.SecondLastName?.Trim();
-        userAccount.Email = userAccount.Email.Trim();
-        userAccount.DocumentNumber = userAccount.DocumentNumber.Trim();
     }
 }

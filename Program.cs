@@ -18,7 +18,7 @@ builder.Services.AddScoped<IDbConnectionFactory, PostgreSqlConnectionFactory>();
 builder.Services.AddScoped<OwnerService>();
 builder.Services.AddScoped<ServiceService>();
 builder.Services.AddScoped<TechnicianService>();
-builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<UserAccountService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
