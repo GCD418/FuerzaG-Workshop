@@ -43,6 +43,7 @@ public class ServiceValidator : IValidator<Service>
             _errors.Add("El nombre contiene caracteres no permitidos");
     }
 
+    
     private void ValidateType(string type)
     {
         if (string.IsNullOrWhiteSpace(type))
@@ -51,15 +52,15 @@ public class ServiceValidator : IValidator<Service>
             return;
         }
 
-        if (type.Length < 3)
-            _errors.Add("El tipo debe tener al menos 3 caracteres");
+        var t = type.Trim();
 
-        if (type.Length > 50)
-            _errors.Add("El tipo no puede superar los 50 caracteres");
+        var allowed = new[] { "Preventivo", "Correctivo" };
 
-        if (!char.IsLetter(type[0]))
-            _errors.Add("El tipo debe comenzar con una letra");
+        if (!allowed.Contains(t))
+            _errors.Add("El tipo debe ser Preventivo o Correctivo");
     }
+
+
 
     private void ValidatePrice(decimal price)
     {
@@ -72,7 +73,17 @@ public class ServiceValidator : IValidator<Service>
         // Verifica hasta 2 decimales
         if (decimal.Round(price, 2) != price)
             _errors.Add("El precio solo puede tener hasta dos decimales");
+
+        if (price > 1000000)
+        {
+            _errors.Add("El precio no puede superar 1.000.000");
+        }
+        
     }
+    
+
+    
+
 
     private void ValidateDescription(string? description)
     {

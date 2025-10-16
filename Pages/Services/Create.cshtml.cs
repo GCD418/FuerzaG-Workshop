@@ -9,7 +9,7 @@ namespace FuerzaG.Pages.Services;
 public class CreateModel : PageModel
 {
     private readonly ServiceService _serviceService;
-    private readonly IValidator<Service> _validator; 
+    private readonly IValidator<Service> _validator;
 
     public CreateModel(ServiceService serviceService, IValidator<Service> validator)
     {
@@ -19,25 +19,28 @@ public class CreateModel : PageModel
 
     [BindProperty] public Service service { get; set; } = new();
 
+    
+    public List<string> ValidationErrors { get; } = new();
+
     public void OnGet() { }
 
     public IActionResult OnPost()
     {
         if (!ModelState.IsValid) return Page();
 
-        
-        var validation = _validator.Validate(service);
-        if (!validation.IsSuccess)
+        ValidationErrors.Clear();
+
+        var result = _validator.Validate(service);
+        if (!result.IsSuccess)
         {
-            foreach (var error in validation.Errors)
-                ModelState.AddModelError(string.Empty, error);
+            ValidationErrors.AddRange(result.Errors);
             return Page();
         }
 
         var newId = _serviceService.Create(service);
         if (newId <= 0)
         {
-            ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
+            ValidationErrors.Add("No se pudo crear el registro.");
             return Page();
         }
 

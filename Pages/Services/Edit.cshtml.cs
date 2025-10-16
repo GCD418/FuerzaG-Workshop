@@ -25,6 +25,9 @@ public class EditModel : PageModel
     [BindProperty] public string Description { get; set; } = string.Empty;
     [BindProperty] public bool IsActive { get; set; }
 
+    
+    public List<string> ValidationErrors { get; } = new();
+
     public IActionResult OnGet(int id)
     {
         var repo = _creator.GetRepository<Service>();
@@ -45,6 +48,8 @@ public class EditModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
+        ValidationErrors.Clear();
+
         var updated = new Service
         {
             Id = Id,
@@ -58,8 +63,7 @@ public class EditModel : PageModel
         var validation = _validator.Validate(updated);
         if (!validation.IsSuccess)
         {
-            foreach (var error in validation.Errors)
-                ModelState.AddModelError(string.Empty, error);
+            ValidationErrors.AddRange(validation.Errors);
             return Page();
         }
 
@@ -68,7 +72,7 @@ public class EditModel : PageModel
 
         if (!ok)
         {
-            ModelState.AddModelError(string.Empty, "No se pudo actualizar el servicio.");
+            ValidationErrors.Add("No se pudo actualizar el servicio.");
             return Page();
         }
 
