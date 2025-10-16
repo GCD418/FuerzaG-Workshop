@@ -3,9 +3,7 @@ using FuerzaG.Domain.Entities;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
+using FuerzaG.Domain.Services.Validations;
 
 namespace FuerzaG.Pages.Owners;
 
@@ -53,19 +51,26 @@ public class EditModel : PageModel
 
     public IActionResult OnPost()
     {
-        if (!ModelState.IsValid) return Page();
+        ModelState.Clear();
 
-        var isSuccess = _ownerService.Update(new Owner
+        var validationResult = _validator.Validate(Owner);
+        if (validationResult.IsFailure)
         {
-            Id = Id,
-            Name = Name,
-            FirstLastname = FirstLastname,
-            SecondLastname = SecondLastname,
-            PhoneNumber = PhoneNumber,
-            Email = Email,
-            Ci = Ci,
-            Address = Address
-        });
+            ValidationErrors = validationResult.Errors;
+
+            foreach (var error in validationResult.Errors)
+            {
+                var fieldName = MapErrorToField(error);
+                if (!string.IsNullOrEmpty(fieldName))
+                    ModelState.AddModelError($"Owner.{fieldName}", error);
+                else
+                    ModelState.AddModelError(string.Empty, error);
+            }
+
+            return Page();
+        }
+
+        var isSuccess = _ownerService.Update(Owner);
 
         if (!isSuccess)
         {
@@ -74,5 +79,34 @@ public class EditModel : PageModel
         }
 
         return RedirectToPage("/Owners/OwnerPage");
+    }
+    
+    private string MapErrorToField(string error)
+    {
+        var errorLower = error.ToLower();
+
+        if (errorLower.Contains("apellido paterno"))
+            return "FirstLastname";
+
+        if (errorLower.Contains("apellido materno"))
+            return "SecondLastname";
+
+        if (errorLower.Contains("nombre") && !errorLower.Contains("apellido"))
+            return "Name";
+
+        if (errorLower.Contains("teléfono"))
+            return "PhoneNumber";
+
+        if (errorLower.Contains("correo") || errorLower.Contains("email"))
+            return "Email";
+
+        if (errorLower.Contains("carnet") || errorLower.Contains(" ci ") ||
+            errorLower.Contains("identidad"))
+            return "Ci";
+
+        if (errorLower.Contains("dirección"))
+            return "Address";
+
+        return string.Empty;
     }
 }
