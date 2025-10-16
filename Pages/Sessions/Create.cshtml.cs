@@ -37,7 +37,7 @@ public class CreateModel : PageModel
         // }
 
         var isSuccess = _loginService.CreateUserAccount(UserAccount);
-        if (isSuccess)
+        if (!isSuccess)
         {
             ModelState.AddModelError(string.Empty, "No se pudo crear el usuario.");
             return Page();
