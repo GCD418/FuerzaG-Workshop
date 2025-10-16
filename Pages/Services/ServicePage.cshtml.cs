@@ -1,6 +1,7 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,20 +11,28 @@ public class ServicePage : PageModel
 {
     public List<Service> Services { get; set; } = new();
     private readonly ServiceService _serviceService;
+    private readonly IDataProtector _protector;
 
-    public ServicePage(ServiceService serviceService)
+    public ServicePage(ServiceService serviceService, IDataProtectionProvider provider)
     {
         _serviceService = serviceService;
+        _protector = provider.CreateProtector("ServiceProtector");
     }
 
     public void OnGet()
     {
         Services = _serviceService.GetAll();
     }
-
-    public IActionResult OnPostDelete(int id)
+    
+    public string EncryptId(int id)
     {
-        _serviceService.DeleteById(id);
+        return _protector.Protect(id.ToString());
+    }
+
+    public IActionResult OnPostDelete(string id)
+    {
+        var decryptedId = int.Parse(_protector.Unprotect(id));
+        _serviceService.DeleteById(decryptedId);
         return RedirectToPage();
     }
 }

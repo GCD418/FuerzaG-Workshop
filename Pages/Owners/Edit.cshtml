@@ -1,4 +1,4 @@
-@page "{id:int}"
+@page "{id}"
 @model FuerzaG.Pages.Owners.EditModel
 @{
     ViewData["Title"] = "Editar Dueño";
@@ -8,7 +8,7 @@
 <form method="post" class="card card-body shadow-sm">
   <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-
+  <input type="hidden" asp-for="EncryptedId" />
   <input type="hidden" asp-for="Id" />
 
   <div class="row g-3">

@@ -21,6 +21,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddDataProtection();
+
 string connectionString = builder.Configuration.GetConnectionString("PostgreSql")!;
 
 var connectionManager = DatabaseConnectionManager.GetInstance(connectionString);

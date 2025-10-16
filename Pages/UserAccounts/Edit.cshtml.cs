@@ -1,6 +1,7 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,13 +11,18 @@ namespace FuerzaG.Pages.UsersAccounts
     {
         private readonly UserAccountService _accountService;
         private readonly IValidator<UserAccount> _validator;
+        private readonly IDataProtector _protector;
 
-        public EditModel(UserAccountService accountService, IValidator<UserAccount> validator)
+        public EditModel(UserAccountService accountService, IValidator<UserAccount> validator, IDataProtectionProvider provider)
         {
             _accountService = accountService;
             _validator = validator;
+            _protector = provider.CreateProtector("AccountProtector");
         }
 
+        [BindProperty]
+        public string EncryptedId { get; set; } = string.Empty;
+        
         [BindProperty]
         public UserAccount UserAccount { get; set; } = new();
 
@@ -24,14 +30,17 @@ namespace FuerzaG.Pages.UsersAccounts
 
         public List<string> ValidationErrors { get; set; } = new List<string>();
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(string id)
         {
-            UserAccount = _accountService.GetById(id);
+            var decryptedId = int.Parse(_protector.Unprotect(id));
+            UserAccount = _accountService.GetById(decryptedId);
 
             if (UserAccount == null)
             {
                 return Page(); 
             }
+
+            EncryptedId = id;
 
             if (!(_validator is AccountValidator accountValidator) || !accountValidator.HasPermission(CurrentUser, "Propietario"))
             {

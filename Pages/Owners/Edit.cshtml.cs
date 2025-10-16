@@ -1,5 +1,6 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,13 +12,16 @@ namespace FuerzaG.Pages.Owners;
 public class EditModel : PageModel
 {
     private readonly OwnerService  _ownerService;
+    private readonly IDataProtector _protector;
 
-    public EditModel(OwnerService ownerService)
+    public EditModel(OwnerService ownerService, IDataProtectionProvider provider)
     {
         _ownerService = ownerService;
+        _protector = provider.CreateProtector("OwnerProtector");
     }
 
     
+    [BindProperty] public string EncryptedId { get; set; } = string.Empty;
     [BindProperty] public int Id { get; set; }
     [BindProperty] public string Name { get; set; } = string.Empty;
     [BindProperty] public string FirstLastname { get; set; } = string.Empty;
@@ -28,12 +32,13 @@ public class EditModel : PageModel
     [BindProperty] public string Address { get; set; } = string.Empty;
 
     
-    public IActionResult OnGet(int id)
+    public IActionResult OnGet(string id)
     {
-        Owner owner = _ownerService.GetById(id);
+        var decryptedId = int.Parse(_protector.Unprotect(id));
+        Owner owner = _ownerService.GetById(decryptedId);
         if (owner is null) return RedirectToPage("/Owners/OwnerPage");
 
-        
+        EncryptedId = id;
         Id = owner.Id;
         Name = owner.Name;
         FirstLastname = owner.FirstLastname;

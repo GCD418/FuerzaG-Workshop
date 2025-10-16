@@ -1,4 +1,5 @@
 using FuerzaG.Application.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -7,16 +8,19 @@ namespace FuerzaG.Pages.Owners;
 public class DeleteModel : PageModel
 {
     private readonly OwnerService  _ownerService;
+    private readonly IDataProtector _protector;
 
-    public DeleteModel(OwnerService ownerService)
+    public DeleteModel(OwnerService ownerService, IDataProtectionProvider provider)
     {
         _ownerService = ownerService;
+        _protector = provider.CreateProtector("OwnerProtector");
     }
 
 
-    public IActionResult OnPost(int id)
+    public IActionResult OnPost(string id)
     {
-        _ownerService.DeleteById(id);
+        var decryptedId = int.Parse(_protector.Unprotect(id));
+        _ownerService.DeleteById(decryptedId);
         return RedirectToPage("/Owners/OwnerPage");
     }
 }
