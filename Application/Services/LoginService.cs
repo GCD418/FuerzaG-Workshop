@@ -47,10 +47,21 @@ public class LoginService
         var password = _passwordService.GenerateRandomPassword();
         userAccount.Password = _passwordService.HashPassword(password);
         
-        //TODO SEND CREDENTIALS
         SendEmail(userAccount.Name, userAccount.UserName, userAccount.Email, password);
         _logger.LogInformation("Creating user account with password {password}", password);
         return _userAccountService.Create(userAccount) > 0;
+    }
+
+    public UserAccount LogIn(string username, string password)
+    {
+        UserAccount ? userAccount = GetByUserName(username);
+        if (userAccount == null || !_passwordService.VerifyPassword(password, userAccount.Password))
+        {
+            return null!;
+        }
+        
+        return userAccount;
+
     }
 
     private void SendEmail(string name, string username, string email, string password)

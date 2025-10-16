@@ -1,3 +1,4 @@
+@page "{id}"
 @page
 @model FuerzaG.Pages.Services.EditModel
 <h2>Editar Servicio</h2>
@@ -17,6 +18,11 @@
 
 @* <div asp-validation-summary="All" class="text-danger"></div> *@
 
+<form method="post" class="card card-body shadow-sm">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+    <input type="hidden" asp-for="EncryptedId" />
+    <input type="hidden" asp-for="Id" />
 <form method="post" class="card card-body">
   @* <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div> *@
 

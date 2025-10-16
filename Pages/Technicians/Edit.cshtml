@@ -1,4 +1,4 @@
-﻿@page "{id:int}"
+﻿@page "{id}"
 @model FuerzaG.Pages.Technicians.EditModel
 @{
     ViewData["Title"] = "Edit Technician";
@@ -8,6 +8,7 @@
 <hr />
 
 <form method="post">
+    <input type="hidden" asp-for="EncryptedId" />
     <input type="hidden" asp-for="Form.Id" />
 
     <partial name="_TechnicianFields" for="Form" />

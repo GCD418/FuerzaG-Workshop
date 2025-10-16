@@ -40,7 +40,7 @@
                         <td>@s.service.Description</td>
                         
                         <td class="text-nowrap text-center">
-                            <a asp-page="/Services/Edit" asp-route-id="@s.service.Id" class="btn btn-warning btn-sm me-1">
+                            <a asp-page="/Services/Edit" asp-route-id="@Model.EncryptId(s.service.Id)" class="btn btn-warning btn-sm me-1">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
                             <button type="button"
@@ -90,7 +90,7 @@
                             </button>
                             <form method="post"
                                   asp-page-handler="Delete"
-                                  asp-route-id="@s.Id"
+                                  asp-route-id="@Model.EncryptId(s.Id)"
                                   style="display: inline;">
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash me-2"></i> Eliminar
