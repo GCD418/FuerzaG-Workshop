@@ -18,14 +18,14 @@ public class CreateModel : PageModel
         _ownerService = ownerService;
         _validator = validator;
     }
-    [BindProperty] public Owner UserAccount { get; set; } = new();
+    [BindProperty] public Owner Owner { get; set; } = new();
 
     public void OnGet() { }
 
     public IActionResult OnPost()
     {
         // if (!ModelState.IsValid) return Page();
-        var validationResult = _validator.Validate(UserAccount);
+        var validationResult = _validator.Validate(Owner);
         if (validationResult.IsFailure)
         {
             ValidationErrors = validationResult.Errors;
@@ -37,7 +37,7 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        var newId = _ownerService.Create(UserAccount);
+        var newId = _ownerService.Create(Owner);
         if (newId <= 0)
         {
             ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
