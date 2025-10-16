@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using FuerzaG.Application.Services;
+using FuerzaG.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,8 +8,14 @@ namespace FuerzaG.Pages
 {
     public class LoginModel : PageModel
     {
+        private readonly LoginService _loginService;
         [BindProperty]
         public InputModel Input { get; set; } = new();
+
+        public LoginModel(LoginService loginService)
+        {
+            _loginService = loginService;
+        }
 
         public void OnGet() { }
 
@@ -19,16 +27,25 @@ namespace FuerzaG.Pages
                 return Page(); 
             }
 
+            UserAccount userAccount = _loginService.LogIn(Input.Username, Input.Password);
             // Si la validación pasó, redirige a Index
-            return RedirectToPage("/Index");
+            if (userAccount == null)
+            {
+                var ErrorMessage = "Usuario o contraseña incorrectos.";
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+                return Page();
+            }
+
+            HttpContext.Session.SetString("userName", userAccount.UserName);
+            HttpContext.Session.SetString("role", userAccount.Role);
+            return RedirectToPage("/Owners/OwnerPage");
         }
 
         public class InputModel
         {
-            [Display(Name = "Correo electrónico")]
-            [Required(ErrorMessage = "El correo es obligatorio.")]
-            [EmailAddress(ErrorMessage = "Ingresa un correo válido (debe contener @ y punto).")]
-            public string Email { get; set; } = string.Empty;
+            [Display(Name = "Nombre de usuario")]
+            [Required(ErrorMessage = "El nombre de usuario es obligatorio.")]
+            public string Username { get; set; } = string.Empty;
 
             [Display(Name = "Contraseña")]
             [Required(ErrorMessage = "La contraseña es obligatoria.")]

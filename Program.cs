@@ -12,6 +12,15 @@ using FuerzaG.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Session management
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 string connectionString = builder.Configuration.GetConnectionString("PostgreSql")!;
 
 var connectionManager = DatabaseConnectionManager.GetInstance(connectionString);
@@ -52,6 +61,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 
