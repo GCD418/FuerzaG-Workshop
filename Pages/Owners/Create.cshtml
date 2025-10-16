@@ -1,66 +1,147 @@
 @page
 @model FuerzaG.Pages.Owners.CreateModel
-<h2>Nuevo Dueño</h2>
 
-@if (Model.ValidationErrors.Any())
-{
-  <div class="alert alert-danger" role="alert">
-    <h5 class="alert-heading">Errores de validación:</h5>
-    <ul class="mb-0">
-      @foreach (var error in Model.ValidationErrors)
-      {
-        <li>@error</li>
-      }
-    </ul>
-  </div>
+<div class="container mt-4">
+  <h2>Nuevo Dueño</h2>
+
+  @if (Model.ValidationErrors.Any())
+  {
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h6 class="alert-heading mb-2"><i class="fas fa-exclamation-triangle"></i> Por favor corrija los siguientes errores:</h6>
+      <ul class="mb-0 small">
+        @foreach (var error in Model.ValidationErrors)
+        {
+          <li>@error</li>
+        }
+      </ul>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  }
+
+  <form method="post" class="card card-body shadow-sm" id="ownerForm" novalidate>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label asp-for="Owner.Name" class="form-label">Nombre *</label>
+        <input asp-for="Owner.Name" class="form-control" placeholder="Ingrese el nombre" required/>
+        <span asp-validation-for="Owner.Name" class="text-danger small"></span>
+        <div class="invalid-feedback">
+          El nombre es obligatorio.
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <label asp-for="Owner.FirstLastname" class="form-label">Apellido Paterno *</label>
+        <input asp-for="Owner.FirstLastname" class="form-control" placeholder="Ingrese apellido paterno" required/>
+        <div class="invalid-feedback">
+          El apellido paterno es obligatorio.
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <label asp-for="Owner.SecondLastname" class="form-label">Apellido Materno</label>
+        <input asp-for="Owner.SecondLastname" class="form-control" placeholder="Ingrese apellido materno (opcional)"/>
+      </div>
+      
+      <div class="col-md-6">
+        <label asp-for="Owner.PhoneNumber" class="form-label">Teléfono *</label>
+        <input asp-for="Owner.PhoneNumber" class="form-control" placeholder="Ej: 76543210" type="tel" pattern="[0-9]{8}" required value="@(Model.Owner.PhoneNumber == 0 ? "" : Model.Owner.PhoneNumber.ToString())"/>
+        <div class="invalid-feedback">
+          Ingrese un teléfono válido de 8 dígitos.
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <label asp-for="Owner.Email" class="form-label">Correo Electrónico *</label>
+        <input asp-for="Owner.Email" class="form-control" placeholder="ejemplo@correo.com" type="email" required/>
+        <div class="invalid-feedback">
+          Ingrese un correo electrónico válido.
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <label asp-for="Owner.Ci" class="form-label">Carnet de Identidad *</label>
+        <input asp-for="Owner.Ci" class="form-control" placeholder="Ej: 1234567" type="ci" maxlength="9" pattern="[0-9]{7,9}" required/>
+        <div class="invalid-feedback">
+          El CI debe contener entre 7 y 9 dígitos.
+        </div>
+      </div>
+      
+      <div class="col-12">
+        <label asp-for="Owner.Address" class="form-label">Dirección *</label>
+        <textarea asp-for="Owner.Address" class="form-control" rows="2" placeholder="Ingrese la dirección completa" required></textarea>
+        <div class="invalid-feedback">
+          La dirección es obligatoria.
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-primary" type="submit">
+        <i class="fas fa-save"></i> Guardar
+      </button>
+      <a asp-page="/Owners/OwnerPage" class="btn btn-outline-secondary">
+        <i class="fas fa-times"></i> Cancelar
+      </a>
+    </div>
+    
+    <div class="mt-3">
+      <small class="text-muted">* Campos obligatorios</small>
+    </div>
+  </form>
+</div>
+
+@section Scripts {
+  <script>
+    $(document).ready(function() {
+      var form = document.getElementById('ownerForm');
+      
+      // Validación al enviar el formulario
+      form.addEventListener('submit', function(event) {
+        // Aplicar trim antes de validar
+        $('input[type="text"], input[type="email"], input[type="tel"], textarea').each(function() {
+          $(this).val($(this).val().trim());
+        });
+        
+        // Validar formulario
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+          
+          // Hacer scroll al primer campo con error
+          var firstInvalid = $('.form-control:invalid').first();
+          if (firstInvalid.length) {
+            $('html, body').animate({
+              scrollTop: firstInvalid.offset().top - 100
+            }, 500);
+            firstInvalid.focus();
+          }
+        }
+        
+        form.classList.add('was-validated');
+      }, false);
+      
+      // Limpiar validación al escribir
+      $('.form-control').on('input', function() {
+        if ($(this).is(':valid')) {
+          $(this).removeClass('is-invalid').addClass('is-valid');
+        } else if (form.classList.contains('was-validated')) {
+          $(this).removeClass('is-valid').addClass('is-invalid');
+        }
+      });
+      
+      // Validación en tiempo real para teléfono (solo números)
+      $('input[type="tel"]').on('keypress', function(e) {
+        if (e.which < 48 || e.which > 57) {
+          e.preventDefault();
+        }
+      });
+      
+      // Validación en tiempo real para CI (solo números)
+      $('input[type="ci"]').on('keypress', function(e) {
+        if (e.which < 48 || e.which > 57) {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
 }
-
-@* <div asp-validation-summary="All" class="text-danger"></div> *@
-
-<form method="post" class="card card-body">
-  @* <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div> *@
-
-  <div class="row g-3">
-    <div class="col-md-6">
-      <label asp-for="Owner.Name" class="form-label"></label>
-      <input asp-for="Owner.Name" class="form-control"/>
-      @* <span asp-validation-for="Owner.Name" class="text-danger"></span> *@
-    </div>
-    <div class="col-md-6">
-      <label asp-for="Owner.FirstLastname" class="form-label"></label>
-      <input asp-for="Owner.FirstLastname" class="form-control"/>
-      @* <span asp-validation-for="Owner.FirstLastname" class="text-danger"></span> *@
-    </div>
-    <div class="col-md-6">
-      <label asp-for="Owner.SecondLastname" class="form-label"></label>
-      <input asp-for="Owner.SecondLastname" class="form-control"/>
-      @* <span asp-validation-for="Owner.SecondLastname" class="text-danger"></span> *@
-    </div>
-    <div class="col-md-6">
-      <label asp-for="Owner.PhoneNumber" class="form-label"></label>
-      <input asp-for="Owner.PhoneNumber" class="form-control"/>
-      @* <span asp-validation-for="Owner.PhoneNumber" class="text-danger"></span> *@
-    </div>
-    <div class="col-md-6">
-      <label asp-for="Owner.Email" class="form-label"></label>
-      <input asp-for="Owner.Email" class="form-control"/>
-      @* <span asp-validation-for="Owner.Email" class="text-danger"></span> *@
-    </div>
-    <div class="col-md-6">
-      <label asp-for="Owner.Ci" class="form-label">CI</label>
-      <input asp-for="Owner.Ci" class="form-control"/>
-      @* <span asp-validation-for="Owner.Ci" class="text-danger"></span> *@
-    </div>
-    <div class="col-12">
-      <label asp-for="Owner.Address" class="form-label"></label>
-      <input asp-for="Owner.Address" class="form-control"/>
-      @* <span asp-validation-for="Owner.Address" class="text-danger"></span> *@
-    </div>
-  </div>
-
-  <div class="mt-3">
-    <button class="btn btn-primary" type="submit">Guardar</button>
-    <a asp-page="/Owners/OwnerPage" class="btn btn-outline-secondary">Cancelar</a>
-  </div>
-</form>
-
