@@ -18,10 +18,10 @@ public class Account
     public int? PhoneNumber { get; set; }
 
     [EmailAddress]
-    public string? Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 
     [MaxLength(14)]
-    public string? DocumentNumber { get; set; }
+    public string DocumentNumber { get; set; } = string.Empty;
 
     [Required]
     public string UserName { get; set; } = string.Empty;
