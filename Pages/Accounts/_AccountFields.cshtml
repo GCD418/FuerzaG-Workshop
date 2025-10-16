@@ -1,4 +1,4 @@
-@model FuerzaG.Domain.Entities.Account
+@model FuerzaG.Domain.Entities.UserAccount
 
 <div class="row g-3">
     <div class="col-md-6">
@@ -32,7 +32,7 @@
     </div>
 
     <div class="col-md-6">
-        <label asp-for="DocumentNumber" class="form-label">Número de documento</label>
+        <label asp-for="DocumentNumber" class="form-label">Nï¿½mero de documento</label>
         <input asp-for="DocumentNumber" class="form-control" maxlength="14" />
         <span asp-validation-for="DocumentNumber" class="text-danger"></span>
     </div>
@@ -43,13 +43,13 @@
             <option value="">Seleccione un rol</option>
             <option value="Administrador">Administrador</option>
             <option value="Propietario">Propietario</option>
-            <!-- Agregar más roles según la aplicación -->
+            <!-- Agregar mï¿½s roles segï¿½n la aplicaciï¿½n -->
         </select>
         <span asp-validation-for="Role" class="text-danger"></span>
     </div>
 </div>
 
-<!-- Información del UserName generado (readonly o solo visualización opcional) -->
+<!-- Informaciï¿½n del UserName generado (readonly o solo visualizaciï¿½n opcional) -->
 @if (!string.IsNullOrEmpty(Model.UserName))
 {
     <div class="col-12 mt-3">

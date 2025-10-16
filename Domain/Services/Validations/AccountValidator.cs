@@ -2,11 +2,11 @@ using FuerzaG.Domain.Entities;
 
 namespace FuerzaG.Domain.Services.Validations;
 
-public class AccountValidator : IValidator<Account>
+public class AccountValidator : IValidator<UserAccount>
 {
     private readonly List<string> _errors = [];
 
-    public Result Validate(Account entity)
+    public Result Validate(UserAccount entity)
     {
         _errors.Clear();
         ValidateName(entity.Name);
@@ -47,15 +47,15 @@ public class AccountValidator : IValidator<Account>
 
         if (name.Any(char.IsDigit))
         {
-            _errors.Add("El nombre no puede contener números");
+            _errors.Add("El nombre no puede contener nï¿½meros");
         }
     }
-    //A su vez la funcion es flexible y puede ser reutilizada en diferentes partes de la aplicación.
-    public bool HasPermission(Account account, string requiredRole)
+    //A su vez la funcion es flexible y puede ser reutilizada en diferentes partes de la aplicaciï¿½n.
+    public bool HasPermission(UserAccount userAccount, string requiredRole)
     {
-        if (string.IsNullOrEmpty(account.Role))
+        if (string.IsNullOrEmpty(userAccount.Role))
             return false;
 
-        return string.Equals(account.Role.Trim(), requiredRole.Trim(), StringComparison.OrdinalIgnoreCase);
+        return string.Equals(userAccount.Role.Trim(), requiredRole.Trim(), StringComparison.OrdinalIgnoreCase);
     }
 }

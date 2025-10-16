@@ -11,7 +11,7 @@ namespace FuerzaG.Pages.Accounts
     public class CreateModel : PageModel
     {
         private readonly AccountService _accountService;
-        private readonly IValidator<Account> _validator;
+        private readonly IValidator<Domain.Entities.UserAccount> _validator;
 
         public List<string> ValidationErrors { get; set; } = new List<string>();
 
@@ -24,10 +24,10 @@ namespace FuerzaG.Pages.Accounts
         //[BindProperty]
         //public Account Account { get; set; } = new();
 
-        //// Para mostrar el username generado después de la creación
+        //// Para mostrar el username generado despuï¿½s de la creaciï¿½n
         //public string GeneratedUserName { get; set; } = string.Empty;
 
-        //// Simulación de usuario actual; en producción usar claims o session
+        //// Simulaciï¿½n de usuario actual; en producciï¿½n usar claims o session
         //private Account CurrentUser => new Account { Role = "Propietario" };
 
         //public void OnGet() { }
@@ -59,7 +59,7 @@ namespace FuerzaG.Pages.Accounts
         //    // Limpiar y sanear campos
         //    SanitizeAccountFields(Account);
 
-        //    // Crear la cuenta (username y password generados automáticamente)
+        //    // Crear la cuenta (username y password generados automï¿½ticamente)
         //    var newId = _accountService.Create(Account);
         //    if (newId <= 0)
         //    {

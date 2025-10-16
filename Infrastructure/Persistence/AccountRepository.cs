@@ -5,7 +5,7 @@ using FuerzaG.Infrastructure.Connection;
 
 namespace FuerzaG.Infrastructure.Persistence;
 
-public class AccountRepository : IRepository<Account>
+public class AccountRepository : IRepository<UserAccount>
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -14,9 +14,9 @@ public class AccountRepository : IRepository<Account>
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public List<Account> GetAll()
+    public List<UserAccount> GetAll()
     {
-        var accounts = new List<Account>();
+        var accounts = new List<UserAccount>();
         using var connection = _dbConnectionFactory.CreateConnection();
 
         string query = "SELECT * FROM fn_get_active_accounts()";
@@ -31,7 +31,7 @@ public class AccountRepository : IRepository<Account>
         return accounts;
     }
 
-    public Account? GetById(int id)
+    public UserAccount? GetById(int id)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         string query = "SELECT * FROM fn_get_account_by_id(@id)";
@@ -45,7 +45,7 @@ public class AccountRepository : IRepository<Account>
         return reader.Read() ? MapReaderToModel(reader) : null;
     }
 
-    public int Create(Account account)
+    public int Create(UserAccount userAccount)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         string query = "SELECT fn_insert_account(@name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @user_name, @password, @role)";
@@ -53,22 +53,22 @@ public class AccountRepository : IRepository<Account>
         using var command = connection.CreateCommand();
         command.CommandText = query;
 
-        AddParameter(command, "@name", account.Name);
-        AddParameter(command, "@first_last_name", account.FirstLastName);
-        AddParameter(command, "@second_last_name", account.SecondLastName);
-        AddParameter(command, "@phone_number", account.PhoneNumber);
-        AddParameter(command, "@email", account.Email);
-        AddParameter(command, "@document_number", account.DocumentNumber);
-        AddParameter(command, "@user_name", account.UserName);
-        AddParameter(command, "@password", account.Password);
-        AddParameter(command, "@role", account.Role);
+        AddParameter(command, "@name", userAccount.Name);
+        AddParameter(command, "@first_last_name", userAccount.FirstLastName);
+        AddParameter(command, "@second_last_name", userAccount.SecondLastName);
+        AddParameter(command, "@phone_number", userAccount.PhoneNumber);
+        AddParameter(command, "@email", userAccount.Email);
+        AddParameter(command, "@document_number", userAccount.DocumentNumber);
+        AddParameter(command, "@user_name", userAccount.UserName);
+        AddParameter(command, "@password", userAccount.Password);
+        AddParameter(command, "@role", userAccount.Role);
 
         connection.Open();
         var idObj = command.ExecuteScalar();
         return Convert.ToInt32(idObj);
     }
 
-    public bool Update(Account account)
+    public bool Update(UserAccount userAccount)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
         const string query = "SELECT fn_update_account(@id, @name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @user_name, @password, @role, @modified_by_user_id)";
@@ -77,17 +77,17 @@ public class AccountRepository : IRepository<Account>
         command.CommandText = query;
         command.CommandType = CommandType.Text;
 
-        AddParameter(command, "@id", account.Id);
-        AddParameter(command, "@name", account.Name);
-        AddParameter(command, "@first_last_name", account.FirstLastName);
-        AddParameter(command, "@second_last_name", account.SecondLastName);
-        AddParameter(command, "@phone_number", account.PhoneNumber);
-        AddParameter(command, "@email", account.Email);
-        AddParameter(command, "@document_number", account.DocumentNumber);
-        AddParameter(command, "@user_name", account.UserName);
-        AddParameter(command, "@password", account.Password);
-        AddParameter(command, "@role", account.Role);
-        AddParameter(command, "@modified_by_user_id", account.ModifiedByUserId ?? 9999);
+        AddParameter(command, "@id", userAccount.Id);
+        AddParameter(command, "@name", userAccount.Name);
+        AddParameter(command, "@first_last_name", userAccount.FirstLastName);
+        AddParameter(command, "@second_last_name", userAccount.SecondLastName);
+        AddParameter(command, "@phone_number", userAccount.PhoneNumber);
+        AddParameter(command, "@email", userAccount.Email);
+        AddParameter(command, "@document_number", userAccount.DocumentNumber);
+        AddParameter(command, "@user_name", userAccount.UserName);
+        AddParameter(command, "@password", userAccount.Password);
+        AddParameter(command, "@role", userAccount.Role);
+        AddParameter(command, "@modified_by_user_id", userAccount.ModifiedByUserId ?? 9999);
 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
@@ -106,9 +106,9 @@ public class AccountRepository : IRepository<Account>
         return Convert.ToBoolean(command.ExecuteScalar());
     }
 
-    public Account MapReaderToModel(IDataReader reader)
+    public UserAccount MapReaderToModel(IDataReader reader)
     {
-        return new Account
+        return new UserAccount
         {
             Id = reader.GetInt32(reader.GetOrdinal("id")),
             Name = reader.GetString(reader.GetOrdinal("name")),

@@ -18,9 +18,11 @@ builder.Services.AddScoped<IDbConnectionFactory, PostgreSqlConnectionFactory>();
 builder.Services.AddScoped<OwnerService>();
 builder.Services.AddScoped<ServiceService>();
 builder.Services.AddScoped<TechnicianService>();
+builder.Services.AddScoped<AccountService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
+builder.Services.AddScoped<IValidator<UserAccount>,  AccountValidator>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

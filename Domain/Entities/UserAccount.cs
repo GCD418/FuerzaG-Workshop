@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FuerzaG.Domain.Entities;
 
-public class Account
+public class UserAccount
 {
     [Key]
     public int Id { get; set; }

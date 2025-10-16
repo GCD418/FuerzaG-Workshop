@@ -14,60 +14,60 @@ public class AccountService
         _dataRepositoryFactory = new AccountRepositoryCreator(connectionFactory);
     }
 
-    public List<Account> GetAll()
+    public List<UserAccount> GetAll()
     {
-        return _dataRepositoryFactory.GetRepository<Account>().GetAll();
+        return _dataRepositoryFactory.GetRepository<UserAccount>().GetAll();
     }
 
-    public Account? GetById(int id)
+    public UserAccount? GetById(int id)
     {
-        return _dataRepositoryFactory.GetRepository<Account>().GetById(id);
+        return _dataRepositoryFactory.GetRepository<UserAccount>().GetById(id);
     }
 
-    public int Create(Account account)
+    public int Create(UserAccount userAccount)
     {
-        SanitizeAccountFields(account);
+        SanitizeAccountFields(userAccount);
 
-        account.UserName = GenerateUserName(account);
-        account.Password = GeneratePassword(account);
+        userAccount.UserName = GenerateUserName(userAccount);
+        userAccount.Password = GeneratePassword(userAccount);
 
-        return _dataRepositoryFactory.GetRepository<Account>().Create(account);
+        return _dataRepositoryFactory.GetRepository<UserAccount>().Create(userAccount);
     }
 
 
-    public bool Update(Account account)
+    public bool Update(UserAccount userAccount)
     {
-        SanitizeAccountFields(account);
+        SanitizeAccountFields(userAccount);
 
-        return _dataRepositoryFactory.GetRepository<Account>().Update(account);
+        return _dataRepositoryFactory.GetRepository<UserAccount>().Update(userAccount);
     }
 
     public bool DeleteById(int id)
     {
-        return _dataRepositoryFactory.GetRepository<Account>().DeleteById(id);
+        return _dataRepositoryFactory.GetRepository<UserAccount>().DeleteById(id);
     }
-    private string GenerateUserName(Account account)
+    private string GenerateUserName(UserAccount userAccount)
     {
-        var firstName = account.Name.Split(' ')[0];
+        var firstName = userAccount.Name.Split(' ')[0];
         var firstLetter = firstName[0]; 
-        var firstLastName = account.FirstLastName;
-        var docNumber = account.DocumentNumber;
+        var firstLastName = userAccount.FirstLastName;
+        var docNumber = userAccount.DocumentNumber;
         var last3 = docNumber[^3..];
 
         return $"{firstLetter}{firstLastName}.{last3}";
     }
 
-    private string GeneratePassword(Account account)
+    private string GeneratePassword(UserAccount userAccount)
     {
-        return account.DocumentNumber;
+        return userAccount.DocumentNumber;
     }
 
-    private void SanitizeAccountFields(Account account)
+    private void SanitizeAccountFields(UserAccount userAccount)
     {
-        account.Name = account.Name.Trim();
-        account.FirstLastName = account.FirstLastName.Trim();
-        account.SecondLastName = account.SecondLastName?.Trim();
-        account.Email = account.Email.Trim();
-        account.DocumentNumber = account.DocumentNumber.Trim();
+        userAccount.Name = userAccount.Name.Trim();
+        userAccount.FirstLastName = userAccount.FirstLastName.Trim();
+        userAccount.SecondLastName = userAccount.SecondLastName?.Trim();
+        userAccount.Email = userAccount.Email.Trim();
+        userAccount.DocumentNumber = userAccount.DocumentNumber.Trim();
     }
 }
