@@ -1,6 +1,5 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Domain.Services.Validations;
@@ -10,42 +9,24 @@ namespace FuerzaG.Pages.Owners;
 public class EditModel : PageModel
 {
     private readonly OwnerService  _ownerService;
-    private readonly IDataProtector _protector;
+    private readonly IValidator<Owner> _validator;
+    
+    public List<string> ValidationErrors { get; set; } = [];
 
-    public EditModel(OwnerService ownerService, IDataProtectionProvider provider)
+    public EditModel(OwnerService ownerService, IValidator<Owner> validator)
     {
         _ownerService = ownerService;
-        _protector = provider.CreateProtector("OwnerProtector");
+        _validator = validator;
     }
 
     
-    [BindProperty] public string EncryptedId { get; set; } = string.Empty;
-    [BindProperty] public int Id { get; set; }
-    [BindProperty] public string Name { get; set; } = string.Empty;
-    [BindProperty] public string FirstLastname { get; set; } = string.Empty;
-    [BindProperty] public string? SecondLastname { get; set; }
-    [BindProperty] public int PhoneNumber { get; set; }
-    [BindProperty] public string Email { get; set; } = string.Empty;
-    [BindProperty] public string Ci { get; set; } = string.Empty;
-    [BindProperty] public string Address { get; set; } = string.Empty;
-
-    
-    public IActionResult OnGet(string id)
+    [BindProperty] public Owner Owner { get; set; } = new();
+    public IActionResult OnGet(int id)
     {
-        var decryptedId = int.Parse(_protector.Unprotect(id));
-        Owner owner = _ownerService.GetById(decryptedId);
+        var owner = _ownerService.GetById(id);
         if (owner is null) return RedirectToPage("/Owners/OwnerPage");
 
-        EncryptedId = id;
-        Id = owner.Id;
-        Name = owner.Name;
-        FirstLastname = owner.FirstLastname;
-        SecondLastname = owner.SecondLastname;
-        PhoneNumber = owner.PhoneNumber;
-        Email = owner.Email;
-        Ci = owner.Ci;
-        Address = owner.Address;
-
+        Owner = owner;
         return Page();
     }
 
