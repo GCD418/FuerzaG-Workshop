@@ -1,78 +1,54 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
+using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
-using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
 using FuerzaG.Domain.Services.Validations;
 
 namespace FuerzaG.Pages.Services;
 
 public class EditModel : PageModel
 {
-    private readonly ServiceRepositoryCreator _creator;
+    private readonly ServiceService _serviceService;
     private readonly IValidator<Service> _validator;
 
-    public EditModel(IDbConnectionFactory connectionFactory, IValidator<Service> validator)
+    public List<string> ValidationErrors { get; set; } = [];
+
+    public EditModel(ServiceService serviceService, IValidator<Service> validator)
     {
-        _creator = new ServiceRepositoryCreator(connectionFactory);
+        _serviceService = serviceService;
         _validator = validator;
     }
 
-    [BindProperty] public int Id { get; set; }
-    [BindProperty] public string Name { get; set; } = string.Empty;
-    [BindProperty] public string Type { get; set; } = string.Empty;
-    [BindProperty] public decimal Price { get; set; }
-    [BindProperty] public string Description { get; set; } = string.Empty;
-    [BindProperty] public bool IsActive { get; set; }
-
-    
-    public List<string> ValidationErrors { get; } = new();
+    [BindProperty] public Service service { get; set; } = new();
 
     public IActionResult OnGet(int id)
     {
-        var repo = _creator.GetRepository<Service>();
-        var s = repo.GetById(id);
-        if (s is null) return RedirectToPage("/Services/ServicePage");
+        var existing = _serviceService.GetById(id);
+        if (existing is null) return RedirectToPage("/Services/ServicePage");
 
-        Id = s.Id;
-        Name = s.Name;
-        Type = s.Type;
-        Price = s.Price;
-        Description = s.Description;
-        IsActive = s.IsActive;
-
+        service = existing;
         return Page();
     }
 
     public IActionResult OnPost()
     {
-        if (!ModelState.IsValid) return Page();
+       
 
-        ValidationErrors.Clear();
-
-        var updated = new Service
+        var validationResult = _validator.Validate(service);
+        if (validationResult.IsFailure)
         {
-            Id = Id,
-            Name = Name,
-            Type = Type,
-            Price = Price,
-            Description = Description,
-            IsActive = IsActive
-        };
+            ValidationErrors = validationResult.Errors;
+            foreach (var error in validationResult.Errors)
+                ModelState.AddModelError(string.Empty, error);
 
-        var validation = _validator.Validate(updated);
-        if (!validation.IsSuccess)
-        {
-            ValidationErrors.AddRange(validation.Errors);
             return Page();
         }
 
-        var repo = _creator.GetRepository<Service>();
-        var ok = repo.Update(updated);
-
+        var ok = _serviceService.Update(service);
         if (!ok)
         {
-            ValidationErrors.Add("No se pudo actualizar el servicio.");
+            ModelState.AddModelError(string.Empty, "No se pudo actualizar el servicio.");
             return Page();
         }
 
