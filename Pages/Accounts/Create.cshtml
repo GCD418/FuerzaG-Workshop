@@ -19,32 +19,32 @@
 
     <div class="row g-3">
         <div class="col-md-6">
-            <label asp-for="Account.Name" class="form-label"></label>
-            <input asp-for="Account.Name" class="form-control" />
+            <label asp-for="UserAccount.Name" class="form-label"></label>
+            <input asp-for="UserAccount.Name" class="form-control" />
         </div>
         <div class="col-md-6">
-            <label asp-for="Account.FirstLastName" class="form-label"></label>
-            <input asp-for="Account.FirstLastName" class="form-control" />
+            <label asp-for="UserAccount.FirstLastName" class="form-label"></label>
+            <input asp-for="UserAccount.FirstLastName" class="form-control" />
         </div>
         <div class="col-md-6">
-            <label asp-for="Account.SecondLastName" class="form-label"></label>
-            <input asp-for="Account.SecondLastName" class="form-control" />
+            <label asp-for="UserAccount.SecondLastName" class="form-label"></label>
+            <input asp-for="UserAccount.SecondLastName" class="form-control" />
         </div>
         <div class="col-md-6">
-            <label asp-for="Account.PhoneNumber" class="form-label"></label>
-            <input asp-for="Account.PhoneNumber" class="form-control" />
+            <label asp-for="UserAccount.PhoneNumber" class="form-label"></label>
+            <input asp-for="UserAccount.PhoneNumber" class="form-control" />
         </div>
         <div class="col-md-6">
-            <label asp-for="Account.Email" class="form-label"></label>
-            <input asp-for="Account.Email" class="form-control" />
+            <label asp-for="UserAccount.Email" class="form-label"></label>
+            <input asp-for="UserAccount.Email" class="form-control" />
         </div>
         <div class="col-md-6">
-            <label asp-for="Account.DocumentNumber" class="form-label">Número de documento</label>
-            <input asp-for="Account.DocumentNumber" class="form-control" maxlength="14" />
+            <label asp-for="UserAccount.DocumentNumber" class="form-label">Número de documento</label>
+            <input asp-for="UserAccount.DocumentNumber" class="form-control" maxlength="14" />
         </div>
         <div class="col-md-6">
-            <label asp-for="Account.Role" class="form-label"></label>
-            <select asp-for="Account.Role" class="form-select">
+            <label asp-for="UserAccount.Role" class="form-label"></label>
+            <select asp-for="UserAccount.Role" class="form-select">
                 <option value="">Seleccione un rol</option>
                 <option value="Administrador">Administrador</option>
                 <option value="Propietario">Propietario</option>
@@ -54,7 +54,7 @@
 
     <div class="mt-3">
         <button class="btn btn-primary" type="submit">Guardar</button>
-        <a asp-page="/Accounts/AccountPage" class="btn btn-outline-secondary">Cancelar</a>
+        <a asp-page="/UserAccounts/AccountPage" class="btn btn-outline-secondary">Cancelar</a>
     </div>
 </form>
 
