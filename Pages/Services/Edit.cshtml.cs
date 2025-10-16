@@ -1,18 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
-using FuerzaG.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
+using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
+using FuerzaG.Domain.Services.Validations;
 
 namespace FuerzaG.Pages.Services;
 
 public class EditModel : PageModel
 {
     private readonly ServiceRepositoryCreator _creator;
+    private readonly IValidator<Service> _validator;
 
-    public EditModel(IDbConnectionFactory connectionFactory)
-        => _creator = new ServiceRepositoryCreator(connectionFactory);
+    public EditModel(IDbConnectionFactory connectionFactory, IValidator<Service> validator)
+    {
+        _creator = new ServiceRepositoryCreator(connectionFactory);
+        _validator = validator;
+    }
 
     [BindProperty] public int Id { get; set; }
     [BindProperty] public string Name { get; set; } = string.Empty;
@@ -41,8 +45,7 @@ public class EditModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var repo = _creator.GetRepository<Service>();
-        var ok = repo.Update(new Service
+        var updated = new Service
         {
             Id = Id,
             Name = Name,
@@ -50,7 +53,18 @@ public class EditModel : PageModel
             Price = Price,
             Description = Description,
             IsActive = IsActive
-        });
+        };
+
+        var validation = _validator.Validate(updated);
+        if (!validation.IsSuccess)
+        {
+            foreach (var error in validation.Errors)
+                ModelState.AddModelError(string.Empty, error);
+            return Page();
+        }
+
+        var repo = _creator.GetRepository<Service>();
+        var ok = repo.Update(updated);
 
         if (!ok)
         {

@@ -21,6 +21,7 @@ builder.Services.AddScoped<TechnicianService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
+builder.Services.AddScoped<IValidator<Service>,  ServiceValidator>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
