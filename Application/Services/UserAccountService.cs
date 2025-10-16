@@ -26,10 +26,6 @@ public class UserAccountService
 
     public int Create(UserAccount userAccount)
     {
-
-        // userAccount.UserName = GenerateUserName(userAccount);
-        // userAccount.Password = GeneratePassword(userAccount);
-
         return _dataRepositoryFactory.GetRepository<UserAccount>().Create(userAccount);
     }
 
@@ -45,9 +41,9 @@ public class UserAccountService
     }
     public string GenerateUserName(UserAccount userAccount)
     {
-        var firstName = userAccount.Name.Split(' ')[0];
+        var firstName = userAccount.Name.Split(' ')[0].ToLower();
         var firstLetter = firstName[0]; 
-        var firstLastName = userAccount.FirstLastName;
+        var firstLastName = userAccount.FirstLastName.ToLower();
         var docNumber = userAccount.DocumentNumber;
         var last3 = docNumber[^3..];
 

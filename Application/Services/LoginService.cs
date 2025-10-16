@@ -59,7 +59,7 @@ public class LoginService
         string body = $@"
             <h1>Hola {name}!</h1>
             <p>Tu nombre de usuario es: <strong>{username}</strong></p>
-            <p>Tu contraseña es: <strong>{{password}}</strong></p>
+            <p>Tu contraseña es: <strong>{password}</strong></p>
             <p>Ya puedes iniciar sesión en el sistema. Recuerda cuidarla como las llaves de tu casa</p>
         ";
         _mailSender.SendEmail(email, subject, body);
