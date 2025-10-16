@@ -1,6 +1,6 @@
 @page
-@model FuerzaG.Pages.Owners.CreateModel
-<h2>Nuevo Dueño</h2>
+@model FuerzaG.Pages.Sessions.CreateModel
+<h2>Nueva Cuenta</h2>
 
 @if (Model.ValidationErrors.Any())
 {
@@ -27,13 +27,13 @@
       @* <span asp-validation-for="Owner.Name" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
-      <label asp-for="UserAccount.FirstLastname" class="form-label"></label>
-      <input asp-for="UserAccount.FirstLastname" class="form-control"/>
+      <label asp-for="UserAccount.FirstLastName" class="form-label"></label>
+      <input asp-for="UserAccount.FirstLastName" class="form-control"/>
       @* <span asp-validation-for="Owner.FirstLastname" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
-      <label asp-for="UserAccount.SecondLastname" class="form-label"></label>
-      <input asp-for="UserAccount.SecondLastname" class="form-control"/>
+      <label asp-for="UserAccount.SecondLastName" class="form-label"></label>
+      <input asp-for="UserAccount.SecondLastName" class="form-control"/>
       @* <span asp-validation-for="Owner.SecondLastname" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
@@ -47,20 +47,20 @@
       @* <span asp-validation-for="Owner.Email" class="text-danger"></span> *@
     </div>
     <div class="col-md-6">
-      <label asp-for="UserAccount.Ci" class="form-label">CI</label>
-      <input asp-for="UserAccount.Ci" class="form-control"/>
+      <label asp-for="UserAccount.DocumentNumber" class="form-label">CI</label>
+      <input asp-for="UserAccount.DocumentNumber" class="form-control"/>
       @* <span asp-validation-for="Owner.Ci" class="text-danger"></span> *@
     </div>
     <div class="col-12">
-      <label asp-for="UserAccount.Address" class="form-label"></label>
-      <input asp-for="UserAccount.Address" class="form-control"/>
+      <label asp-for="UserAccount.Role" class="form-label"></label>
+      <input asp-for="UserAccount.Role" class="form-control"/>
       @* <span asp-validation-for="Owner.Address" class="text-danger"></span> *@
     </div>
   </div>
 
   <div class="mt-3">
     <button class="btn btn-primary" type="submit">Guardar</button>
-    <a asp-page="/Owners/OwnerPage" class="btn btn-outline-secondary">Cancelar</a>
+    <a asp-page="/UserAccounts/AccountPage" class="btn btn-outline-secondary">Cancelar</a>
   </div>
 </form>
 
