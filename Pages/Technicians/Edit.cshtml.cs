@@ -1,4 +1,5 @@
 using FuerzaG.Application.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Models;
@@ -8,18 +9,24 @@ namespace FuerzaG.Pages.Technicians
     public class EditModel : PageModel
     {
         private readonly TechnicianService _technicianService;
+        private readonly IDataProtector _protector;
 
-        public EditModel(TechnicianService technicianService)
+        public EditModel(TechnicianService technicianService, IDataProtectionProvider provider)
         {
             _technicianService = technicianService;
+            _protector = provider.CreateProtector("TechnicianProtector");
         }
+        
+        [BindProperty] public string EncryptedId { get; set; } = string.Empty;
         [BindProperty] public Technician Form { get; set; } = new();
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(string id)
         {
-            var entity = _technicianService.GetById(id);
+            var decryptedId = int.Parse(_protector.Unprotect(id));
+            var entity = _technicianService.GetById(decryptedId);
             if (entity is null) return RedirectToPage("/Technicians/TechnicianPage");
 
+            EncryptedId = id;
             Form = entity;
             return Page();
         }

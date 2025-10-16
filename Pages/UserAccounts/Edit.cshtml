@@ -1,4 +1,4 @@
-﻿@page "{id:int}"
+﻿@page "{id}"
 @model FuerzaG.Pages.UsersAccounts.EditModel
 <h2>Editar Cuenta</h2>
 
@@ -22,6 +22,7 @@
 else
 {
     <form method="post" class="card card-body">
+        <input type="hidden" asp-for="EncryptedId" />
         <div class="row g-3">
             <div class="col-md-6">
                 <label asp-for="UserAccount.Name" class="form-label"></label>

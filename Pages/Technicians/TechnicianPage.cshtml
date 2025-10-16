@@ -36,7 +36,7 @@
                     <td class="text-center">@t.item.PhoneNumber</td>
                     <td>@t.item.Email</td>
                     <td class="text-center">
-                        <a asp-page="./Edit" asp-route-id="@t.item.Id" class="btn btn-sm btn-warning">
+                        <a asp-page="./Edit" asp-route-id="@Model.EncryptId(t.item.Id)" class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
                         <button type="button" class="btn btn-sm btn-danger"
@@ -78,7 +78,7 @@
                             </button>
                             <form method="post"
                                   asp-page-handler="Delete"
-                                  asp-route-id="@t.Id"
+                                  asp-route-id="@Model.EncryptId(t.Id)"
                                   style="display: inline;">
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-trash me-2"></i> Eliminar
