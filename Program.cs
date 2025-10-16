@@ -1,8 +1,10 @@
+using System.Net.NetworkInformation;
+using System.Reflection;
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
 using FuerzaG.Infrastructure.Connection;
-
+using FuerzaG.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 string connectionString = builder.Configuration.GetConnectionString("PostgreSql")!;
@@ -20,8 +22,8 @@ builder.Services.AddScoped<ServiceService>();
 builder.Services.AddScoped<TechnicianService>();
 
 // Validators
-builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
-
+builder.Services.AddScoped<IValidator<Owner>, OwnerValidator>();
+builder.Services.AddScoped<IValidator<Technician>, TechnicianValidator>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
