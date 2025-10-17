@@ -44,6 +44,7 @@ builder.Services.AddScoped<LoginService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
+builder.Services.AddScoped<IValidator<Service>,  ServiceValidator>();
 builder.Services.AddScoped<IValidator<UserAccount>,  AccountValidator>();
 builder.Services.AddScoped<IValidator<Technician>, TechnicianValidator>();
 

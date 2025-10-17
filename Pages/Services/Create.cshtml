@@ -13,9 +13,13 @@
         </div>
 
         <div class="col-md-6">
-            <label asp-for="service.Type" class="form-label"></label>
-            <input asp-for="service.Type" class="form-control" maxlength="12"/>
-            <span asp-validation-for="service.Type" class="text-danger"></span>
+            <label asp-for="service.Type" class="form-label">Tipo</label> 
+            <select asp-for="service.Type" class="form-select"> 
+            <option value="">-- Selecciona el tipo --</option> 
+            <option value="Preventivo">Preventivo</option> 
+            <option value="Correctivo">Correctivo</option> 
+            </select> 
+            @* <span asp-validation-for="Type" class="text-danger"></span> *@
         </div>
 
         <div class="col-md-6">
@@ -30,12 +34,7 @@
             <span asp-validation-for="service.Description" class="text-danger"></span>
         </div>
 
-        <div class="col-12">
-            <div class="form-check">
-                <input asp-for="service.IsActive" class="form-check-input"/>
-                <label asp-for="service.IsActive" class="form-check-label"></label>
-            </div>
-        </div>
+       
     </div>
 
     <div class="mt-3">
