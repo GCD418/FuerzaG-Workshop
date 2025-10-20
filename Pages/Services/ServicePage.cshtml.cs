@@ -29,10 +29,5 @@ public class ServicePage : PageModel
         return _protector.Protect(id.ToString());
     }
 
-    public IActionResult OnPostDelete(string id)
-    {
-        var decryptedId = int.Parse(_protector.Unprotect(id));
-        _serviceService.DeleteById(decryptedId);
-        return RedirectToPage();
-    }
+    
 }

@@ -1,40 +1,48 @@
 @page
 @model FuerzaG.Pages.Services.CreateModel
-<h2>Nuevo Servicio</h2>
+@{
+    ViewData["Title"] = "Nuevo Servicio";
+}
 
-<form method="post" class="card card-body">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+<h2 class="mb-3">Nuevo Servicio</h2>
 
+@if (Model.ValidationErrors.Any())
+{
+  <div class="alert alert-danger" role="alert">
+      <h5 class="alert-heading">Errores de validación:</h5>
+      <ul class="mb-0">
+          @foreach (var error in Model.ValidationErrors)
+          {
+              <li>@error</li>
+          }
+      </ul>
+  </div>
+}
+
+<form method="post" class="card card-body shadow-sm" novalidate>
     <div class="row g-3">
         <div class="col-md-6">
-            <label asp-for="service.Name" class="form-label"></label>
-            <input asp-for="service.Name" class="form-control"/>
-            <span asp-validation-for="service.Name" class="text-danger"></span>
+            <label asp-for="Service.Name" class="form-label">Nombre del servicio</label>
+            <input asp-for="Service.Name" class="form-control" />
         </div>
 
         <div class="col-md-6">
-            <label asp-for="service.Type" class="form-label"></label>
-            <input asp-for="service.Type" class="form-control" maxlength="12"/>
-            <span asp-validation-for="service.Type" class="text-danger"></span>
+            <label asp-for="Service.Type" class="form-label">Tipo</label>
+            <select asp-for="Service.Type" class="form-select">
+                <option value="">-- Selecciona el tipo --</option>
+                <option value="Preventivo">Preventivo</option>
+                <option value="Correctivo">Correctivo</option>
+            </select>
         </div>
 
         <div class="col-md-6">
-            <label asp-for="service.Price" class="form-label"></label>
-            <input asp-for="service.Price" class="form-control"/>
-            <span asp-validation-for="service.Price" class="text-danger"></span>
+            <label asp-for="Service.Price" class="form-label">Precio</label>
+            <input asp-for="Service.Price" class="form-control" />
         </div>
 
         <div class="col-12">
-            <label asp-for="service.Description" class="form-label"></label>
-            <textarea asp-for="service.Description" class="form-control"></textarea>
-            <span asp-validation-for="service.Description" class="text-danger"></span>
-        </div>
-
-        <div class="col-12">
-            <div class="form-check">
-                <input asp-for="service.IsActive" class="form-check-input"/>
-                <label asp-for="service.IsActive" class="form-check-label"></label>
-            </div>
+            <label asp-for="Service.Description" class="form-label">Descripción</label>
+            <textarea asp-for="Service.Description" class="form-control" rows="3"></textarea>
         </div>
     </div>
 
