@@ -2,13 +2,14 @@ using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
+using FuerzaG.Pages.Shared;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Owners;
 
-public class OwnerPage : PageModel
+public class OwnerPage : SecurePageModel
 {
     public List<Owner> Owners { get; set; } = [];
     private readonly OwnerService  _ownerService;
@@ -20,9 +21,12 @@ public class OwnerPage : PageModel
         _protector = provider.CreateProtector("OwnerProtector");
     }
     
-    public void OnGet()
+    public IActionResult OnGet()
     {
+        if (!ValidateSession(out var role)) return new EmptyResult();
+        if (role != UserRoles.Manager) return RedirectToPage("/Owners/OwnerPage");
         Owners = _ownerService.GetAll();
+        return Page();
     }
     
     public string EncryptId(int id)

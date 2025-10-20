@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Models;
 using FuerzaG.Domain.Services.Validations;
 using FuerzaG.Application.Services;
+using FuerzaG.Domain.Entities;
+using FuerzaG.Pages.Shared;
 
 namespace FuerzaG.Pages.Technicians
 {
-    public class CreateModel : PageModel
+    public class CreateModel : SecurePageModel
     {
         private readonly IValidator<Technician> _validator;
         private readonly TechnicianService _technicianService;
@@ -22,7 +24,12 @@ namespace FuerzaG.Pages.Technicians
             _technicianService = technicianService;
         }
 
-        public void OnGet() { }
+        public IActionResult OnGet()
+        {
+            if (!ValidateSession(out var role)) return new EmptyResult();
+            if (role != UserRoles.Manager) return RedirectToPage("/Technicians/TechnicianPage");
+            return Page();
+        }
 
         public IActionResult OnPost()
         {
