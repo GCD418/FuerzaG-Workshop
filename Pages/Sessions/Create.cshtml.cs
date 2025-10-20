@@ -1,12 +1,13 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
+using FuerzaG.Pages.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Sessions;
 
-public class CreateModel : PageModel
+public class CreateModel : SecurePageModel
 {
     private readonly LoginService  _loginService;
     private readonly IValidator<Owner> _validator;
@@ -19,7 +20,12 @@ public class CreateModel : PageModel
     }
     [BindProperty] public UserAccount UserAccount { get; set; } = new();
 
-    public void OnGet() { }
+    public IActionResult OnGet()
+    {
+        if (!ValidateSession(out var role)) return new EmptyResult();
+        if (role != UserRoles.CEO) return RedirectToPage("/Login");
+        return Page();
+    }
 
     public IActionResult OnPost()
     {

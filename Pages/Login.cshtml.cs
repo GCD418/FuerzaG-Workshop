@@ -38,7 +38,8 @@ namespace FuerzaG.Pages
 
             HttpContext.Session.SetString("userName", userAccount.UserName);
             HttpContext.Session.SetString("role", userAccount.Role);
-            return RedirectToPage("/Owners/OwnerPage");
+            HttpContext.Session.SetInt32("id", userAccount.Id);
+            return RedirectToPage("/Index");
         }
 
         public class InputModel
