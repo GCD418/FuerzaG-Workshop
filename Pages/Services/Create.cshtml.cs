@@ -8,7 +8,7 @@ using System.Globalization;
 namespace FuerzaG.Pages.Services;
 
 public class CreateModel : PageModel
-{model
+{
     private readonly ServiceService _serviceService;
     private readonly IValidator<Service> _validator;
 
