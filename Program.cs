@@ -26,6 +26,8 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddHttpContextAccessor();
+
 string connectionString = builder.Configuration.GetConnectionString("PostgreSql")!;
 
 var connectionManager = DatabaseConnectionManager.GetInstance(connectionString);

@@ -3,12 +3,14 @@ using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
 using FuerzaG.Pages.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Owners;
 
+[Authorize(Roles = UserRoles.Manager)]
 public class OwnerPage : PageModel
 {
     public List<Owner> Owners { get; set; } = [];

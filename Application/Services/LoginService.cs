@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Ports;
 using FuerzaG.Infrastructure.Security;
 using FuerzaG.Pages;
+using Microsoft.AspNetCore.Authentication;
 
 namespace FuerzaG.Application.Services;
 
@@ -11,20 +13,20 @@ public class LoginService
     private readonly ILoginRepository _loginRepository;
     private readonly UserAccountService _userAccountService;
     private readonly IPasswordService _passwordService;
-    private readonly ILogger<IndexModel> _logger;
     private readonly IMailSender _mailSender;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     
     public LoginService(ILoginRepository loginRepository,  
         UserAccountService userAccountService, 
         IPasswordService passwordService,
-        ILogger<IndexModel> logger,
-        IMailSender mailSender)
+        IMailSender mailSender,
+        IHttpContextAccessor httpContextAccessor)
     {
         _loginRepository = loginRepository;
         _userAccountService = userAccountService;
         _passwordService = passwordService;
-        _logger = logger;
         _mailSender = mailSender;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public bool IsUserNameUsed(string userName)
@@ -48,20 +50,65 @@ public class LoginService
         userAccount.Password = _passwordService.HashPassword(password);
         
         SendEmail(userAccount.Name, userAccount.UserName, userAccount.Email, password);
-        _logger.LogInformation("Creating user account with password {password}", password);
         return _userAccountService.Create(userAccount) > 0;
     }
 
-    public UserAccount LogIn(string username, string password)
+    public async Task<bool> LogIn(string username, string password)
     {
         UserAccount ? userAccount = GetByUserName(username);
-        if (userAccount == null || !_passwordService.VerifyPassword(password, userAccount.Password))
+        if (!VerifyCredentials(userAccount, password))
         {
-            return null!;
+            return false;
         }
         
-        return userAccount;
+        await SetupAuthentication(userAccount);
+        
+        return true;
+    }
 
+    private bool VerifyCredentials(UserAccount userAccount, string password)
+    {
+        if (userAccount == null || !_passwordService.VerifyPassword(password, userAccount.Password))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public UserSessionData GetCurrentUser()
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+        if (user?.Identity?.IsAuthenticated != true)
+        {
+            return null;
+        }
+
+        var userData = new UserSessionData
+        {
+            UserId = Int32.Parse(user.FindFirst(ClaimTypes.Sid).Value),
+            Username = user.FindFirst(ClaimTypes.NameIdentifier).Value,
+            Role = user.FindFirst(ClaimTypes.Role).Value,
+        };
+        return userData;
+    }
+
+    private async Task SetupAuthentication(UserAccount userAccount)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, userAccount.UserName),
+            new Claim(ClaimTypes.Sid, userAccount.Id.ToString()),
+            new Claim(ClaimTypes.Role, userAccount.Role),
+        };
+
+        var identity = new ClaimsIdentity(claims, "GForceAuth");
+        var principal = new  ClaimsPrincipal(identity);
+
+        await _httpContextAccessor.HttpContext.SignInAsync(
+            "GForceAuth",
+            principal,
+            new AuthenticationProperties { IsPersistent = false }
+        );
     }
 
     private void SendEmail(string name, string username, string email, string password)
