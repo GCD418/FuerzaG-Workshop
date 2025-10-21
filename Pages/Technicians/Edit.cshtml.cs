@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Models;
 using FuerzaG.Pages.Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FuerzaG.Pages.Technicians
 {
-    public class EditModel : SecurePageModel
+    
+    [Authorize(Roles = UserRoles.Manager)]
+    public class EditModel : PageModel
     {
         private readonly TechnicianService _technicianService;
         private readonly IDataProtector _protector;
@@ -24,8 +27,6 @@ namespace FuerzaG.Pages.Technicians
 
         public IActionResult OnGet(string id)
         {
-            if (!ValidateSession(out var role)) return new EmptyResult();
-            if (role != UserRoles.Manager) return RedirectToPage("/Technicians/TechnicianPage");
             var decryptedId = int.Parse(_protector.Unprotect(id));
             var entity = _technicianService.GetById(decryptedId);
             if (entity is null) return RedirectToPage("/Technicians/TechnicianPage");

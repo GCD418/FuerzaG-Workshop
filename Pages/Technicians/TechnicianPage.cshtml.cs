@@ -8,10 +8,13 @@ using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
 using FuerzaG.Models;
 using FuerzaG.Pages.Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FuerzaG.Pages.Technicians
 {
-    public class TechnicianPageModel : SecurePageModel
+    
+    [Authorize(Roles = UserRoles.Manager)]
+    public class TechnicianPageModel : PageModel
     {
         public List<Technician> Technicians { get; set; } = new();
         private readonly TechnicianService _technicianService;
@@ -25,8 +28,6 @@ namespace FuerzaG.Pages.Technicians
 
         public IActionResult OnGet()
         {
-            if (!ValidateSession(out var role)) return new EmptyResult();
-            if (role != UserRoles.Manager) return RedirectToPage("/Technicians/TechnicianPage");
             Technicians = _technicianService.GetAll();
             return Page();
         }
