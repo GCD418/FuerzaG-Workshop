@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Owners;
 
-public class OwnerPage : SecurePageModel
+public class OwnerPage : PageModel
 {
     public List<Owner> Owners { get; set; } = [];
     private readonly OwnerService  _ownerService;
@@ -21,13 +21,8 @@ public class OwnerPage : SecurePageModel
         _protector = provider.CreateProtector("OwnerProtector");
     }
     
-    public IActionResult OnGet()
-    {
-        if (!ValidateSession(out var role)) return new EmptyResult();
-        if (role != UserRoles.Manager) return RedirectToPage("/Owners/OwnerPage");
-        Owners = _ownerService.GetAll();
-        return Page();
-    }
+    public void OnGet()
+    { }
     
     public string EncryptId(int id)
     {

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Owners;
 
-public class DeleteModel : SecurePageModel
+public class DeleteModel : PageModel
 {
     private readonly OwnerService  _ownerService;
     private readonly IDataProtector _protector;
@@ -18,12 +18,8 @@ public class DeleteModel : SecurePageModel
         _protector = provider.CreateProtector("OwnerProtector");
     }
 
-    public IActionResult OnGet()
-    {
-        if (!ValidateSession(out var role)) return new EmptyResult();
-        if (role != UserRoles.Manager) return RedirectToPage("/Owners/OwnerPage");
-        return Page();
-    }
+    public void OnGet()
+    { }
 
     public IActionResult OnPost(string id)
     {

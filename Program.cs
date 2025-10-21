@@ -12,16 +12,19 @@ using FuerzaG.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Session management
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+//Authentication management
+builder.Services
+    .AddAuthentication("GForceAuth")
+    .AddCookie("GForceAuth", options =>
+    {
+        options.Cookie.Name = "GForceCookie";
+        options.LoginPath = "/Login";
+        //options.AccessDeniedPath = "/AccessDenied"; //TODO
+        // options.LogoutPath = "/Logout"; //TODO
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    });
 
-builder.Services.AddDataProtection();
+builder.Services.AddAuthorization();
 
 string connectionString = builder.Configuration.GetConnectionString("PostgreSql")!;
 
@@ -66,6 +69,7 @@ app.UseRouting();
 
 app.UseSession();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

@@ -8,7 +8,7 @@ using FuerzaG.Pages.Shared;
 
 namespace FuerzaG.Pages.Owners;
 
-public class CreateModel : SecurePageModel
+public class CreateModel : PageModel
 {
     private readonly OwnerService  _ownerService;
     private readonly IValidator<Owner> _validator;
@@ -21,13 +21,8 @@ public class CreateModel : SecurePageModel
     }
     [BindProperty] public Owner Owner { get; set; } = new();
 
-    public IActionResult OnGet()
-    {
-        if (!ValidateSession(out var role)) return new EmptyResult();
-        if (role != UserRoles.Manager) return RedirectToPage("/Owners/OwnerPage");
-        
-        return Page();
-    }
+    public void OnGet()
+    { }
 
     public IActionResult OnPost()
     {
