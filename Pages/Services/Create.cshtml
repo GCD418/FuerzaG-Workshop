@@ -4,62 +4,45 @@
     ViewData["Title"] = "Nuevo Servicio";
 }
 
-<div class="container mt-4 mb-5">
-    <h2>Nuevo Servicio</h2>
+<h2 class="mb-3">Nuevo Servicio</h2>
 
-    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""]?.Errors.Any() == true)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <h6 class="alert-heading mb-2"><i class="fas fa-exclamation-triangle"></i> Errores generales:</h6>
-            <ul class="mb-0 small">
-                @foreach (var error in ViewData.ModelState[""].Errors)
-                {
-                    <li>@error.ErrorMessage</li>
-                }
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+@if (Model.ValidationErrors.Any())
+{
+  <div class="alert alert-danger" role="alert">
+      <h5 class="alert-heading">Errores de validaci√≥n:</h5>
+      <ul class="mb-0">
+          @foreach (var error in Model.ValidationErrors)
+          {
+              <li>@error</li>
+          }
+      </ul>
+  </div>
+}
+
+<form method="post" class="card card-body shadow-sm" novalidate>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="Service.Name" class="form-label">Nombre del servicio</label>
+            <input asp-for="Service.Name" class="form-control" />
         </div>
-    }
 
-    <form method="post" class="card card-body shadow-sm" id="serviceForm" novalidate>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label asp-for="service.Name" class="form-label">Nombre del servicio *</label>
-                <input asp-for="service.Name" class="form-control" placeholder="Ej: Cambio de aceite"
-                       required minlength="3" maxlength="100" />
-                <span asp-validation-for="service.Name" class="text-danger small"></span>
-                <div class="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>
-            </div>
+        <div class="col-md-6">
+            <label asp-for="Service.Type" class="form-label">Tipo</label>
+            <select asp-for="Service.Type" class="form-select">
+                <option value="">-- Selecciona el tipo --</option>
+                <option value="Preventivo">Preventivo</option>
+                <option value="Correctivo">Correctivo</option>
+            </select>
+        </div>
 
-            <div class="col-md-6">
-                <label asp-for="service.Type" class="form-label">Tipo *</label>
-                <input asp-for="service.Type" class="form-control" placeholder="Ej: Mantenimiento"
-                       required minlength="3" maxlength="50" />
-                <span asp-validation-for="service.Type" class="text-danger small"></span>
-                <div class="invalid-feedback">El tipo debe tener al menos 3 caracteres.</div>
-            </div>
+        <div class="col-md-6">
+            <label asp-for="Service.Price" class="form-label">Precio</label>
+            <input asp-for="Service.Price" class="form-control" />
+        </div>
 
-            <div class="col-md-6">
-                <label asp-for="service.Price" class="form-label">Precio *</label>
-                <input asp-for="service.Price" class="form-control" type="number" step="0.01" min="0"
-                       placeholder="Ej: 150.00" required />
-                <span asp-validation-for="service.Price" class="text-danger small"></span>
-                <div class="invalid-feedback">Ingrese un precio v·lido mayor o igual a 0.</div>
-            </div>
-
-            <div class="col-12">
-                <label asp-for="service.Description" class="form-label">DescripciÛn</label>
-                <textarea asp-for="service.Description" class="form-control" rows="3"
-                          placeholder="Detalles del servicio" maxlength="300"></textarea>
-                <span asp-validation-for="service.Description" class="text-danger small"></span>
-            </div>
-
-            <div class="col-12">
-                <div class="form-check">
-                    <input asp-for="service.IsActive" class="form-check-input" />
-                    <label asp-for="service.IsActive" class="form-check-label">Activo</label>
-                </div>
-            </div>
+        <div class="col-12">
+            <label asp-for="Service.Description" class="form-label">Descripci√≥n</label>
+            <textarea asp-for="Service.Description" class="form-control" rows="3"></textarea>
         </div>
 
         <div class="mt-4">
@@ -69,11 +52,12 @@
             </a>
         </div>
 
-        <div class="mt-3">
-            <small class="text-muted">* Campos obligatorios</small>
-        </div>
+    <div class="mt-3">
+        <small class="text-muted">* Campos obligatorios</small>
+    </div>
+    </div>
     </form>
-</div>
+
 
 @section Scripts {
     <script>

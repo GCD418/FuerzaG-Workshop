@@ -10,6 +10,9 @@ using FuerzaG.Infrastructure.Persistence;
 using FuerzaG.Infrastructure.Security;
 using FuerzaG.Models;
 
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Authentication management
@@ -23,6 +26,32 @@ builder.Services
         options.LogoutPath = "/Logout"; //TODO
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     });
+// Razor Pages + localización
+builder.Services.AddRazorPages()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
+
+// Mensajes del model binding en ESPAÑOL
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>
+{
+    var m = options.ModelBindingMessageProvider;
+    m.SetValueIsInvalidAccessor(v => $"El valor '{v}' no es válido.");
+    m.SetAttemptedValueIsInvalidAccessor((v, f) => $"El valor '{v}' no es válido para {f}.");
+    m.SetMissingBindRequiredValueAccessor(f => $"El valor para '{f}' es obligatorio.");
+    m.SetMissingKeyOrValueAccessor(() => "Este campo es obligatorio.");
+    m.SetUnknownValueIsInvalidAccessor(f => $"El valor para '{f}' es inválido.");
+    m.SetValueMustBeANumberAccessor(f => $"El campo '{f}' debe ser numérico.");
+});
+
+var culture = new CultureInfo("es-BO");
+//Session management
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddAuthorization();
 
@@ -49,6 +78,7 @@ builder.Services.AddScoped<LoginService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<Owner>,  OwnerValidator>();
+builder.Services.AddScoped<IValidator<Service>,  ServiceValidator>();
 builder.Services.AddScoped<IValidator<UserAccount>,  AccountValidator>();
 builder.Services.AddScoped<IValidator<Technician>, TechnicianValidator>();
 
