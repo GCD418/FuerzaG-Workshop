@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FuerzaG.Pages.Services;
 
+
+[Authorize(Roles = UserRoles.Manager)]
 public class EditModel : PageModel
 {
     private readonly ServiceRepositoryCreator _creator;
