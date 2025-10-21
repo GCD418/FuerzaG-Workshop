@@ -19,8 +19,8 @@ builder.Services
     {
         options.Cookie.Name = "GForceCookie";
         options.LoginPath = "/Login";
-        //options.AccessDeniedPath = "/AccessDenied"; //TODO
-        // options.LogoutPath = "/Logout"; //TODO
+        options.AccessDeniedPath = "/AccessDenied"; //TODO
+        options.LogoutPath = "/Logout"; //TODO
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     });
 
@@ -56,6 +56,7 @@ builder.Services.AddScoped<IValidator<Technician>, TechnicianValidator>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -68,8 +69,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-
-app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

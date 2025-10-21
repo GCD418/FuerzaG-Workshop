@@ -22,9 +22,12 @@ public class OwnerPage : PageModel
         _ownerService = ownerService;
         _protector = provider.CreateProtector("OwnerProtector");
     }
-    
-    public void OnGet()
-    { }
+
+    public IActionResult OnGet()
+    {
+        Owners = _ownerService.GetAll();
+        return Page();
+    }
     
     public string EncryptId(int id)
     {
