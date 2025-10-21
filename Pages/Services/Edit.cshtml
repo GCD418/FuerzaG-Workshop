@@ -4,49 +4,77 @@
     ViewData["Title"] = "Editar Servicio";
 }
 
-<h2 class="mb-3">Editar Servicio</h2>
+<div class="container mt-4 mb-5">
+    <h2 class="mb-3">Editar Servicio</h2>
 
-<form method="post" class="card card-body shadow-sm">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-    <input type="hidden" asp-for="EncryptedId" />
-    <input type="hidden" asp-for="Id" />
-
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label asp-for="Name" class="form-label">Nombre del servicio</label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""]?.Errors.Any() == true)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h6 class="alert-heading mb-2"><i class="fas fa-exclamation-triangle"></i> Errores generales:</h6>
+            <ul class="mb-0 small">
+                @foreach (var error in ViewData.ModelState[""].Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    }
 
-        <div class="col-md-6">
-            <label asp-for="Type" class="form-label">Tipo</label>
-            <input asp-for="Type" class="form-control" maxlength="50" />
-            <span asp-validation-for="Type" class="text-danger"></span>
-        </div>
+    <form method="post" class="card card-body shadow-sm" id="serviceForm" novalidate>
+        <input type="hidden" asp-for="EncryptedId" />
+        <input type="hidden" asp-for="Id" />
 
-        <div class="col-md-6">
-            <label asp-for="Price" class="form-label">Precio</label>
-            <input asp-for="Price" class="form-control" type="number" step="0.01" />
-            <span asp-validation-for="Price" class="text-danger"></span>
-        </div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label">Nombre del servicio *</label>
+                <input asp-for="Name" class="form-control" required minlength="3" maxlength="100" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+                <div class="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>
+            </div>
 
-        <div class="col-12">
-            <label asp-for="Description" class="form-label">Descripci�n</label>
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
+            <div class="col-md-6">
+                <label asp-for="Type" class="form-label">Tipo *</label>
+                <input asp-for="Type" class="form-control" required minlength="3" maxlength="50" />
+                <span asp-validation-for="Type" class="text-danger small"></span>
+                <div class="invalid-feedback">El tipo debe tener al menos 3 caracteres.</div>
+            </div>
 
-        <div class="col-12">
-            <div class="form-check">
-                <input asp-for="IsActive" class="form-check-input" />
-                <label asp-for="IsActive" class="form-check-label">Activo</label>
+            <div class="col-md-6">
+                <label asp-for="Price" class="form-label">Precio *</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" required />
+                <span asp-validation-for="Price" class="text-danger small"></span>
+                <div class="invalid-feedback">Ingrese un precio válido mayor o igual a 0.</div>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Description" class="form-label">Descripción</label>
+                <textarea asp-for="Description" class="form-control" rows="3" maxlength="300"></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12">
+                <div class="form-check">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">Activo</label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="mt-3">
-        <button class="btn btn-primary" type="submit">Actualizar</button>
-        <a asp-page="/Service/ServicePage" class="btn btn-outline-secondary">Cancelar</a>
-    </div>
-</form>
+        <div class="mt-4">
+            <button class="btn btn-dark" type="submit"><i class="fas fa-save"></i> Actualizar</button>
+            <a asp-page="/Services/ServicePage" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+          const $price = $('input[asp-for="Price"]');
+          $price.on('input', function () {
+            if (this.value < 0) this.value = 0;
+          });
+        });
+    </script>
+}
