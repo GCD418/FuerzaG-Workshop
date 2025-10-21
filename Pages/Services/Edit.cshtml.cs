@@ -5,9 +5,13 @@ using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
+using Microsoft.AspNetCore.Authorization;
+
 using System.ComponentModel.DataAnnotations;
 namespace FuerzaG.Pages.Services;
 
+
+[Authorize(Roles = UserRoles.Manager)]
 public class EditModel : PageModel
 {
     private readonly ServiceRepositoryCreator _creator;

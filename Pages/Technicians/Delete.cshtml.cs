@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
 using FuerzaG.Pages.Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FuerzaG.Pages.Technicians
 {
-    public class DeleteModel : SecurePageModel
+    
+    [Authorize(Roles = UserRoles.Manager)]
+    public class DeleteModel : PageModel
     {
         private readonly TechnicianService  _technicianService;
         private readonly IDataProtector _protector;
@@ -20,12 +23,8 @@ namespace FuerzaG.Pages.Technicians
             _protector = provider.CreateProtector("TechnicianProtector");
         }
 
-        public IActionResult OnGet()
-        {
-            if (!ValidateSession(out var role)) return new EmptyResult();
-            if (role != UserRoles.Manager) return RedirectToPage("/Technicians/TechnicianPage");
-            return Page();
-        }
+        public void OnGet()
+        { }
         
         public IActionResult OnPost(string id)
         {

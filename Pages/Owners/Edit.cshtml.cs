@@ -3,27 +3,34 @@ using FuerzaG.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Domain.Services.Validations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace FuerzaG.Pages.Owners;
 
+
+[Authorize(Roles = UserRoles.Manager)]
 public class EditModel : PageModel
 {
     private readonly OwnerService  _ownerService;
     private readonly IValidator<Owner> _validator;
+    private readonly IDataProtector _protector;
     
     public List<string> ValidationErrors { get; set; } = [];
 
-    public EditModel(OwnerService ownerService, IValidator<Owner> validator)
+    public EditModel(OwnerService ownerService, IValidator<Owner> validator, IDataProtectionProvider provider)
     {
         _ownerService = ownerService;
         _validator = validator;
+        _protector = provider.CreateProtector("OwnerProtector");
     }
 
     
     [BindProperty] public Owner Owner { get; set; } = new();
-    public IActionResult OnGet(int id)
+    public IActionResult OnGet(string id)
     {
-        var owner = _ownerService.GetById(id);
+        var decryptedId = int.Parse(_protector.Unprotect(id));
+        var owner = _ownerService.GetById(decryptedId);
         if (owner is null) return RedirectToPage("/Owners/OwnerPage");
 
         Owner = owner;

@@ -14,6 +14,18 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Authentication management
+builder.Services
+    .AddAuthentication("GForceAuth")
+    .AddCookie("GForceAuth", options =>
+    {
+        options.Cookie.Name = "GForceCookie";
+        options.LoginPath = "/Login";
+        options.AccessDeniedPath = "/AccessDenied"; //TODO
+        options.LogoutPath = "/Logout"; //TODO
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    });
 // Razor Pages + localización
 builder.Services.AddRazorPages()
     .AddViewLocalization()
@@ -41,7 +53,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddDataProtection();
+builder.Services.AddAuthorization();
+
+builder.Services.AddHttpContextAccessor();
 
 string connectionString = builder.Configuration.GetConnectionString("PostgreSql")!;
 
@@ -72,6 +86,7 @@ builder.Services.AddScoped<IValidator<Technician>, TechnicianValidator>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -85,8 +100,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseSession();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

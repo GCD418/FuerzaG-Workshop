@@ -1,11 +1,14 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using FuerzaG.Domain.Services.Validations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Globalization;
 
 namespace FuerzaG.Pages.Services;
+
+[Authorize(Roles = UserRoles.Manager)]
 
 public class CreateModel : PageModel
 {
