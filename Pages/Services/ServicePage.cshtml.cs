@@ -1,12 +1,15 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Services;
 
+
+[Authorize(Roles = UserRoles.Manager)]
 public class ServicePage : PageModel
 {
     public List<Service> Services { get; set; } = new();

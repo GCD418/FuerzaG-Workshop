@@ -3,9 +3,12 @@ using FuerzaG.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Domain.Services.Validations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FuerzaG.Pages.Owners;
 
+
+[Authorize(Roles = UserRoles.Manager)]
 public class EditModel : PageModel
 {
     private readonly OwnerService  _ownerService;

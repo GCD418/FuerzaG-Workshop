@@ -19,7 +19,7 @@ namespace FuerzaG.Pages
 
         public void OnGet() { }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             
             if (!ModelState.IsValid)
@@ -27,18 +27,14 @@ namespace FuerzaG.Pages
                 return Page(); 
             }
 
-            UserAccount userAccount = _loginService.LogIn(Input.Username, Input.Password);
+            bool isSuccess = await _loginService.LogIn(Input.Username, Input.Password);
             // Si la validación pasó, redirige a Index
-            if (userAccount == null)
+            if (!isSuccess)
             {
                 var ErrorMessage = "Usuario o contraseña incorrectos.";
                 ModelState.AddModelError(string.Empty, ErrorMessage);
                 return Page();
             }
-
-            HttpContext.Session.SetString("userName", userAccount.UserName);
-            HttpContext.Session.SetString("role", userAccount.Role);
-            HttpContext.Session.SetInt32("id", userAccount.Id);
             return RedirectToPage("/Index");
         }
 

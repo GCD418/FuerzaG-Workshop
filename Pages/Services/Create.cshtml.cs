@@ -1,9 +1,12 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Services;
+
+[Authorize(Roles = UserRoles.Manager)]
 public class CreateModel : PageModel
 {
     private readonly ServiceService _serviceService;
