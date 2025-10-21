@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
 using FuerzaG.Pages.Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FuerzaG.Pages.Owners;
 
+
+[Authorize(Roles = UserRoles.Manager)]
 public class CreateModel : PageModel
 {
     private readonly OwnerService  _ownerService;

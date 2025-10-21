@@ -1,12 +1,15 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Pages.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.Owners;
 
+
+[Authorize(Roles = UserRoles.Manager)]
 public class DeleteModel : PageModel
 {
     private readonly OwnerService  _ownerService;
