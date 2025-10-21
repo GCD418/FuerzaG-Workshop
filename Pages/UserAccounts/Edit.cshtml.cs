@@ -1,12 +1,15 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FuerzaG.Pages.UsersAccounts
 {
+    
+    [Authorize(Roles = UserRoles.CEO)]
     public class EditModel : PageModel
     {
         private readonly UserAccountService _accountService;

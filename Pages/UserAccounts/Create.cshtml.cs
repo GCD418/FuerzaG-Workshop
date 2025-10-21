@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FuerzaG.Pages.UserAccounts
 {
+    
+    [Authorize(Roles = UserRoles.CEO)]
     public class CreateModel : PageModel
     {
         private readonly UserAccountService _accountService;
@@ -28,26 +31,26 @@ namespace FuerzaG.Pages.UserAccounts
 
         public void OnGet(int currentUserId)
         {
-            // Inicialización si es necesario
+            // Inicializaciï¿½n si es necesario
         }
 
         public IActionResult OnPost(int currentUserId)
         {
             ValidationErrors.Clear();
 
-            // Validación simple de ejemplo
+            // Validaciï¿½n simple de ejemplo
             if (string.IsNullOrWhiteSpace(UserAccount.Name))
                 ValidationErrors.Add("El nombre es obligatorio.");
             if (string.IsNullOrWhiteSpace(UserAccount.Email))
-                ValidationErrors.Add("El correo electrónico es obligatorio.");
+                ValidationErrors.Add("El correo electrï¿½nico es obligatorio.");
 
             if (ValidationErrors.Count > 0)
                 return Page();
 
-            // Simulación de creación de usuario
+            // Simulaciï¿½n de creaciï¿½n de usuario
             GeneratedUserName = $"{UserAccount.Name}.{UserAccount.FirstLastName}".ToLower();
 
-            // Aquí iría la lógica para guardar el usuario y enviar el correo
+            // Aquï¿½ irï¿½a la lï¿½gica para guardar el usuario y enviar el correo
 
             return Page();
         }
