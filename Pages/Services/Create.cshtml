@@ -7,7 +7,6 @@
 <div class="container mt-4 mb-5">
     <h2>Nuevo Servicio</h2>
 
-    @* Mantengo tu fuente de errores: Model.ValidationErrors *@
     @if (Model.ValidationErrors.Any())
     {
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -26,52 +25,67 @@
 
     <form method="post" class="card card-body shadow-sm" id="serviceForm" novalidate>
         <div class="row g-3">
-            <!-- Nombre -->
             <div class="col-md-6">
                 <label asp-for="Service.Name" class="form-label">Nombre del servicio *</label>
                 <input asp-for="Service.Name"
                        class="form-control"
-                       placeholder="Ej: Cambio de aceite" />
-                <!-- <div class="form-text">Debe tener entre 3 y 100 caracteres.</div> -->
+                       placeholder="Ej: Cambio de aceite"
+                       required
+                       minlength="3"
+                       maxlength="100" />
+                <span asp-validation-for="Service.Name" class="text-danger small"></span>
+                <div class="invalid-feedback">
+                    El nombre es obligatorio y debe tener al menos 3 caracteres.
+                </div>
             </div>
 
-            <!-- Tipo -->
             <div class="col-md-6">
                 <label asp-for="Service.Type" class="form-label">Tipo *</label>
-                <select asp-for="Service.Type" class="form-select">
+                <select asp-for="Service.Type" class="form-select" required>
                     <option value="">-- Selecciona el tipo --</option>
                     <option value="Preventivo">Preventivo</option>
                     <option value="Correctivo">Correctivo</option>
                 </select>
+                <span asp-validation-for="Service.Type" class="text-danger small"></span>
+                <div class="invalid-feedback">
+                    Debes seleccionar un tipo de servicio.
+                </div>
             </div>
 
-            <!-- Precio -->
             <div class="col-md-6">
                 <label asp-for="Service.Price" class="form-label">Precio *</label>
-                <!-- Usamos type="text" para no bloquear el envío y dejar la validación al servidor -->
                 <input asp-for="Service.Price"
                        class="form-control"
-                       type="text"
+                       type="number"
+                       min="0.01"
+                       step="0.01"
                        inputmode="decimal"
-                       placeholder="Ej: 150,00" />
-                <!-- <div class="form-text">Usa separador decimal (ej: 150,00).</div> -->
+                       placeholder="Ej: 150,00"
+                       required />
+                <span asp-validation-for="Service.Price" class="text-danger small"></span>
+                <div class="invalid-feedback">
+                    El precio es obligatorio y debe ser mayor que 0.
+                </div>
             </div>
 
-            <!-- Descripción -->
             <div class="col-12">
-                <label asp-for="Service.Description" class="form-label">Descripción</label>
+                <label asp-for="Service.Description" class="form-label">Descripción *</label>
                 <textarea asp-for="Service.Description"
                           class="form-control"
                           rows="3"
-                          placeholder="Detalles del servicio"></textarea>
-                <!-- <div class="form-text">Máximo 500 caracteres.</div> -->
+                          placeholder="Detalles del servicio"
+                          required
+                          minlength="3"
+                          maxlength="255"></textarea>
+                <span asp-validation-for="Service.Description" class="text-danger small"></span>
+                <div class="invalid-feedback">
+                    La descripción es obligatoria y debe tener al menos 3 caracteres.
+                </div>
             </div>
-
-            
         </div>
 
         <div class="mt-4">
-            <button class="btn btn-dark" type="submit">
+            <button type="button" class="btn btn-dark" id="btnOpenModal">
                 <i class="fas fa-save"></i> Guardar
             </button>
             <a asp-page="/Services/ServicePage" class="btn btn-outline-secondary">
@@ -83,18 +97,59 @@
             <small class="text-muted">* Campos obligatorios</small>
         </div>
     </form>
+
+    @await Html.PartialAsync("_ConfirmSaveModal")
 </div>
 
 @section Scripts {
     <script>
-        // Front-only: evita negativos en la UI (no valida, solo ayuda visual)
         document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('serviceForm');
             const priceInput = document.getElementById('Service_Price');
-            if (!priceInput) return;
+            const descriptionInput = document.getElementById('Service_Description');
 
-            priceInput.addEventListener('input', function () {
-                // elimina un '-' inicial si lo escriben por error
-                if (this.value.startsWith('-')) this.value = this.value.replace('-', '');
+            if (priceInput) {
+                priceInput.addEventListener('input', function () {
+                    if (this.value.startsWith('-')) this.value = this.value.replace('-', '');
+                });
+            }
+
+            document.getElementById('btnOpenModal').addEventListener('click', function () {
+                priceInput.classList.remove('is-invalid');
+                descriptionInput.classList.remove('is-invalid');
+
+                if (form.checkValidity()) {
+                    const price = parseFloat(priceInput.value);
+                    const description = descriptionInput.value.trim();
+
+                    let valid = true;
+                    if (price <= 0) {
+                        priceInput.classList.add('is-invalid');
+                        valid = false;
+                    }
+                    if (!description) {
+                        descriptionInput.classList.add('is-invalid');
+                        valid = false;
+                    }
+
+                    if (valid) {
+                        const modal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+                        modal.show();
+                    } else {
+                        form.classList.add('was-validated');
+                    }
+                } else {
+                    form.classList.add('was-validated');
+                }
+            });
+
+            document.getElementById('confirmSaveBtn').addEventListener('click', function () {
+                const confirmBtn = this;
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+                const modal = bootstrap.Modal.getInstance(document.getElementById('confirmSaveModal'));
+                modal.hide();
+                form.submit();
             });
         });
     </script>
