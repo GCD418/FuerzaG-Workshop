@@ -94,9 +94,9 @@
     </div>
 
     <div class="mt-4">
-      <button class="btn btn-dark" type="submit">
-        <i class="fas fa-save"></i> Guardar
-      </button>
+        <button type="button" class="btn btn-dark" id="btnOpenModal">
+            <i class="fas fa-save"></i> Guardar
+        </button>
       <a asp-page="/Owners/OwnerPage" class="btn btn-outline-secondary">
         <i class="fas fa-times"></i> Cancelar
       </a>
@@ -106,6 +106,7 @@
       <small class="text-muted">* Campos obligatorios</small>
     </div>
   </form>
+  @await Html.PartialAsync("_ConfirmSaveModal")
 </div>
 
 @section Scripts {
@@ -136,6 +137,21 @@
           this.value = this.value.slice(0, 9);
         }
       });
+    $('#btnOpenModal').on('click', function() {
+        if (form.checkValidity()) {
+            var modal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+            modal.show();
+        } else {
+            form.classList.add('was-validated');
+        }
+        });
+        $('#confirmSaveBtn').on('click', function() {
+            const confirmBtn = $(this);
+            confirmBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Guardando...');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmSaveModal'));
+            modal.hide();
+            form.submit();
+        });
     });
   </script>
 }
