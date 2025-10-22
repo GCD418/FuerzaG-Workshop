@@ -7,59 +7,59 @@
 <div class="container mt-4 mb-5">
     <h2 class="mb-3">Editar Servicio</h2>
 
-    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""]?.Errors.Any() == true)
+    @if (Model.ValidationErrors.Any())
     {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <h6 class="alert-heading mb-2"><i class="fas fa-exclamation-triangle"></i> Errores generales:</h6>
-            <ul class="mb-0 small">
-                @foreach (var error in ViewData.ModelState[""].Errors)
-                {
-                    <li>@error.ErrorMessage</li>
-                }
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div class="alert alert-danger" role="alert">
+        <h5 class="alert-heading">Errores de validación:</h5>
+        <ul class="mb-0">
+            @foreach (var error in Model.ValidationErrors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
     }
 
+    
     <form method="post" class="card card-body shadow-sm" id="serviceForm" novalidate>
         <input type="hidden" asp-for="EncryptedId" />
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ServiceId" />
 
         <div class="row g-3">
             <div class="col-md-6">
                 <label asp-for="Name" class="form-label">Nombre del servicio *</label>
-                <input asp-for="Name" class="form-control" required minlength="3" maxlength="100" />
-                <span asp-validation-for="Name" class="text-danger small"></span>
-                <div class="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>
+                <input asp-for="Name" class="form-control" placeholder="Ej: Cambio de aceite" />
             </div>
+            
 
             <div class="col-md-6">
                 <label asp-for="Type" class="form-label">Tipo *</label>
-                <input asp-for="Type" class="form-control" required minlength="3" maxlength="50" />
-                <span asp-validation-for="Type" class="text-danger small"></span>
-                <div class="invalid-feedback">El tipo debe tener al menos 3 caracteres.</div>
+                <select asp-for="Type" class="form-select">
+                    <option value="">-- Selecciona el tipo --</option>
+                    <option value="Preventivo">Preventivo</option>
+                    <option value="Correctivo">Correctivo</option>
+                </select>
             </div>
+            
+
 
             <div class="col-md-6">
                 <label asp-for="Price" class="form-label">Precio *</label>
-                <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" required />
-                <span asp-validation-for="Price" class="text-danger small"></span>
-                <div class="invalid-feedback">Ingrese un precio válido mayor o igual a 0.</div>
+                <input asp-for="Price" class="form-control" type="text" inputmode="decimal" placeholder="Ej: 150,00" />
+                <!-- <div class="form-text">Usa separador decimal (ej: 150,00).</div> -->
             </div>
 
             <div class="col-12">
                 <label asp-for="Description" class="form-label">Descripción</label>
-                <textarea asp-for="Description" class="form-control" rows="3" maxlength="300"></textarea>
-                <span asp-validation-for="Description" class="text-danger small"></span>
+                <textarea asp-for="Description" class="form-control" rows="3" maxlength="300" placeholder="Detalles del servicio"></textarea>
+                <!-- <div class="form-text">Máximo 500 caracteres.</div> -->
             </div>
 
-            <div class="col-12">
-                <div class="form-check">
-                    <input asp-for="IsActive" class="form-check-input" />
-                    <label asp-for="IsActive" class="form-check-label">Activo</label>
-                </div>
-            </div>
+            
         </div>
+
+
 
         <div class="mt-4">
             <button class="btn btn-dark" type="submit"><i class="fas fa-save"></i> Actualizar</button>
@@ -67,14 +67,3 @@
         </div>
     </form>
 </div>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-          const $price = $('input[asp-for="Price"]');
-          $price.on('input', function () {
-            if (this.value < 0) this.value = 0;
-          });
-        });
-    </script>
-}
