@@ -74,27 +74,48 @@
     </div>
 
     <div class="mt-4">
-      <button class="btn btn-dark" type="submit"><i class="fas fa-save"></i> Actualizar</button>
-      <a asp-page="/Owners/OwnerPage" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Cancelar</a>
+        <button type="button" class="btn btn-dark" id="btnOpenEditModal">
+                <i class="fas fa-save"></i> Actualizar
+        </button>
+        <a asp-page="/Owners/OwnerPage" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Cancelar</a>
     </div>
-    
   </form>
+    @await Html.PartialAsync("_ConfirmEditModal")
 </div>
 
 @section Scripts {
   <script>
-    $(document).ready(function () {
-      $('input[type="tel"], input[asp-for="Ci"]').on('keypress', function (e) {
-        if (e.which < 48 || e.which > 57) e.preventDefault();
-      });
+        $(document).ready(function() {
+            var form = document.getElementById('ownerForm');
 
-      $('input[type="tel"]').on('input', function () {
-        if (this.value.length > 8) this.value = this.value.slice(0, 8);
-      });
+            $('input[type="tel"], input[asp-for="Ci"]').on('keypress', function(e) {
+                if (e.which < 48 || e.which > 57) e.preventDefault();
+            });
 
-      $('input[asp-for="Ci"]').on('input', function () {
-        if (this.value.length > 9) this.value = this.value.slice(0, 9);
-      });
-    });
+            $('input[type="tel"]').on('input', function() {
+                if (this.value.length > 8) this.value = this.value.slice(0, 8);
+            });
+
+            $('input[asp-for="Ci"]').on('input', function() {
+                if (this.value.length > 9) this.value = this.value.slice(0, 9);
+            });
+
+            $('#btnOpenEditModal').on('click', function() {
+                if (form.checkValidity()) {
+                    var modal = new bootstrap.Modal(document.getElementById('confirmEditModal'));
+                    modal.show();
+                } else {
+                    form.classList.add('was-validated');
+                }
+            });
+
+            $('#confirmEditBtn').on('click', function() {
+                const confirmBtn = $(this);
+                confirmBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Guardando...');
+                var modal = bootstrap.Modal.getInstance(document.getElementById('confirmEditModal'));
+                modal.hide();
+                form.submit();
+            });
+        });
   </script>
 }

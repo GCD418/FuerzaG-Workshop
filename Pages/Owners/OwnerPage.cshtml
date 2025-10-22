@@ -32,7 +32,7 @@
         {
           <tr>
             <td class="text-center"><strong>@t.index</strong></td>
-            <td>@t.item.FirstLastname @t.item.Name @t.item.SecondLastname</td>
+            <td>@t.item.FirstLastname @t.item.SecondLastname @t.item.Name </td>
             <td class="text-center">@t.item.PhoneNumber</td>
             <td class="text-nowrap text-center">
               <a asp-page="/Owners/Edit" asp-route-id="@Model.EncryptId(t.item.Id)" class="btn btn-warning btn-sm me-1">
