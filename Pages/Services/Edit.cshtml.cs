@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 
 using System.ComponentModel.DataAnnotations;
 namespace FuerzaG.Pages.Services;
+using System.Globalization;
+using System.Text.RegularExpressions;
+
 
 
 [Authorize(Roles = UserRoles.Manager)]
@@ -32,8 +35,11 @@ public class EditModel : PageModel
     [BindProperty] public string Name { get; set; } = string.Empty;
     [BindProperty] public string Type { get; set; } = string.Empty;
     [BindProperty, Display(Name = "Precio")] public decimal Price { get; set; }
-    [BindProperty] public string Description { get; set; } = string.Empty;
     [BindProperty] public bool IsActive { get; set; }
+
+    [BindProperty, Display(Name = "Descripción")]
+    [Required(ErrorMessage = "La descripción es obligatoria")]
+    public string Description { get; set; } = string.Empty;
 
     public IActionResult OnGet(string id)
     {
@@ -57,20 +63,42 @@ public class EditModel : PageModel
     public IActionResult OnPost()
     {
         // Validación de binding
-        if (!ModelState.IsValid)
+        
+        var rawPrice = (Request.Form["Price"].ToString() ?? string.Empty).Trim();
+
+        if (string.IsNullOrWhiteSpace(rawPrice))
         {
-            ValidationErrors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage)
-                    ? "Entrada inválida."
-                    : e.ErrorMessage)
-                .ToList();
+            ValidationErrors = new() { "El precio es obligatorio." };
             return Page();
         }
 
+        rawPrice = new string(rawPrice.Where(c => char.IsDigit(c) || c == ',' || c == '.' || c == '-').ToArray());
+
+        decimal parsedPrice;
+        if (!decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.GetCultureInfo("es-BO"), out parsedPrice) &&
+            !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.GetCultureInfo("es-ES"), out parsedPrice) &&
+            !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.InvariantCulture, out parsedPrice))
+        {
+            
+            ValidationErrors = new() { "El precio SOLO puede contener números y separador decimal." };
+            return Page();
+        }
+        // if (!ModelState.IsValid)
+        // {
+        //     ValidationErrors = ModelState.Values
+        //         .SelectMany(v => v.Errors)
+        //         .Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage)
+        //             ? "Entrada inválida."
+        //             : e.ErrorMessage)
+        //         .ToList();
+        //     return Page();
+        // }
+
+        Price = parsedPrice;
+
         var candidate = new Service
         {
-            Id = ServiceId,              // 🔹 usar ServiceId
+            Id = ServiceId,
             Name = Name?.Trim() ?? string.Empty,
             Type = Type?.Trim() ?? string.Empty,
             Price = Price,

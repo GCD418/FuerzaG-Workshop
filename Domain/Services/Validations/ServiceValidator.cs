@@ -68,16 +68,28 @@ public class ServiceValidator : IValidator<Service>
             _errors.Add("El precio no puede ser negativo");
             return;
         }
+        if (price == 0)
+        {
+            _errors.Add("El precio es obligatorio");
+            return;
+        }
 
         if (decimal.Round(price, 2) != price)
+        {
             _errors.Add("El precio solo puede tener hasta dos decimales");
+            return;
+        }
+            
     }
 
+    
     private void ValidateDescription(string description)
     {
-        if (string.IsNullOrEmpty(description))
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            _errors.Add("La descripción es obligatoria");
             return;
-
+        }
         if (description.Length > 500)
             _errors.Add("La descripción no puede superar los 500 caracteres");
     }
