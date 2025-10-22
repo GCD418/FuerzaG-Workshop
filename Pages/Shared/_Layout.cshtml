@@ -138,9 +138,50 @@
                             <!-- Ocultar -->
                             
                         </div>
+                        
                         <div class="ml-auto">
-                            <a asp-page="/Login" class="btn btn-light px-4">Ingreso</a>
+                            @if (User?.Identity?.IsAuthenticated == true)
+                            {
+                                    var username = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                                    var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+                                
+                                <div class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle text-light" data-toggle="dropdown" id="userDropdown" style="cursor: pointer;">
+                                        <i class="fas fa-user-circle fa-lg mr-2"></i>
+                                        <span>@username</span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="userDropdown" style="min-width: 250px;">
+                                        <div class="dropdown-header bg-light py-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-user-circle fa-3x text-primary mr-3"></i>
+                                                <div>
+                                                    <strong class="d-block">@username</strong>
+                                                    @if (!string.IsNullOrEmpty(role))
+                                                    {
+                                                        <small class="text-muted d-block">
+                                                            <i class="fas fa-id-badge"></i> @role
+                                                        </small>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                        <form method="post" asp-page="/Login" asp-page-handler="Logout" class="m-0">
+                                            <button type="submit" class="dropdown-item text-danger" style="cursor: pointer;">
+                                                <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <a asp-page="/Login" class="btn btn-light px-4">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                                </a>
+                            }
                         </div>
+
                     </div>
                 </nav>
             </div>
