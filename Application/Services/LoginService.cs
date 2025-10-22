@@ -99,6 +99,10 @@ public class LoginService
             new Claim(ClaimTypes.NameIdentifier, userAccount.UserName),
             new Claim(ClaimTypes.Sid, userAccount.Id.ToString()),
             new Claim(ClaimTypes.Role, userAccount.Role),
+            new Claim(ClaimTypes.Name, userAccount.Name),
+            new Claim("FirstLastName", userAccount.FirstLastName),
+            new Claim("SecondLastName", userAccount.SecondLastName ?? string.Empty),
+            new Claim(ClaimTypes.Email, userAccount.Email ?? string.Empty) 
         };
 
         var identity = new ClaimsIdentity(claims, "GForceAuth");
