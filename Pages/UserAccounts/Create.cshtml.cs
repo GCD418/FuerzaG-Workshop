@@ -42,7 +42,7 @@ namespace FuerzaG.Pages.UserAccounts
             if (string.IsNullOrWhiteSpace(UserAccount.Name))
                 ValidationErrors.Add("El nombre es obligatorio.");
             if (string.IsNullOrWhiteSpace(UserAccount.Email))
-                ValidationErrors.Add("El correo electr�nico es obligatorio.");
+                ValidationErrors.Add("El correo electrónico es obligatorio.");
 
             if (ValidationErrors.Count > 0)
                 return Page();

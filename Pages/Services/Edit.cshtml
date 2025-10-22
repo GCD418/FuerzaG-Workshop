@@ -7,54 +7,63 @@
 <div class="container mt-4 mb-5">
     <h2 class="mb-3">Editar Servicio</h2>
 
-@if (Model.ValidationErrors.Any())
-{
-  <div class="alert alert-danger" role="alert">
-      <h5 class="alert-heading">Errores de validación:</h5>
-      <ul class="mb-0">
-          @foreach (var error in Model.ValidationErrors)
-          {
-              <li>@error</li>
-          }
-      </ul>
-  </div>
-}
-
-<form method="post" class="card card-body shadow-sm" novalidate>
-    <input type="hidden" asp-for="EncryptedId" />
-    <input type="hidden" asp-for="ServiceId" />
-
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label asp-for="Name" class="form-label">Nombre del servicio</label>
-            <input asp-for="Name" class="form-control" />
-        </div>
-
-        <div class="col-md-6">
-            <label asp-for="Type" class="form-label">Tipo</label>
-            <select asp-for="Type" class="form-select">
-                <option value="">-- Selecciona el tipo --</option>
-                <option value="Preventivo">Preventivo</option>
-                <option value="Correctivo">Correctivo</option>
-            </select>
-        </div>
-
-        <div class="col-md-6">
-            <label asp-for="Price" class="form-label">Precio</label>
-            <input asp-for="Price" class="form-control" />
-        </div>
-
-        <div class="col-12">
-            <label asp-for="Description" class="form-label">Descripción</label>
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-        </div>
-
-        
+    @if (Model.ValidationErrors.Any())
+    {
+    <div class="alert alert-danger" role="alert">
+        <h5 class="alert-heading">Errores de validación:</h5>
+        <ul class="mb-0">
+            @foreach (var error in Model.ValidationErrors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
     </div>
+    }
 
-    <div class="mt-3">
-        <button class="btn btn-primary" type="submit">Actualizar</button>
-        <a asp-page="/Services/ServicePage" class="btn btn-outline-secondary">Cancelar</a>
-    </div>
-</form>
+    
+    <form method="post" class="card card-body shadow-sm" id="serviceForm" novalidate>
+        <input type="hidden" asp-for="EncryptedId" />
+        <input type="hidden" asp-for="ServiceId" />
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label">Nombre del servicio *</label>
+                <input asp-for="Name" class="form-control" placeholder="Ej: Cambio de aceite" />
+            </div>
+            
+
+            <div class="col-md-6">
+                <label asp-for="Type" class="form-label">Tipo *</label>
+                <select asp-for="Type" class="form-select">
+                    <option value="">-- Selecciona el tipo --</option>
+                    <option value="Preventivo">Preventivo</option>
+                    <option value="Correctivo">Correctivo</option>
+                </select>
+            </div>
+            
+
+
+            <div class="col-md-6">
+                <label asp-for="Price" class="form-label">Precio *</label>
+                <input asp-for="Price" class="form-control" type="text" inputmode="decimal" placeholder="Ej: 150,00" />
+                <!-- <div class="form-text">Usa separador decimal (ej: 150,00).</div> -->
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Description" class="form-label">Descripción</label>
+                <textarea asp-for="Description" class="form-control" rows="3" maxlength="300" placeholder="Detalles del servicio"></textarea>
+                <!-- <div class="form-text">Máximo 500 caracteres.</div> -->
+            </div>
+
+            
+        </div>
+
+
+
+        <div class="mt-4">
+            <button class="btn btn-dark" type="submit"><i class="fas fa-save"></i> Actualizar</button>
+            <a asp-page="/Services/ServicePage" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Cancelar</a>
+        </div>
+    </form>
 </div>
