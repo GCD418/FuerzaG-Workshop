@@ -23,12 +23,13 @@ public class EditModel : PageModel
 
     public List<string> ValidationErrors { get; set; } = [];
 
-    public EditModel(IDbConnectionFactory connectionFactory, IDataProtectionProvider provider, IValidator<Service> validator)
+    public EditModel(ServiceRepositoryCreator creator, IDataProtectionProvider provider, IValidator<Service> validator)
     {
-        _creator = new ServiceRepositoryCreator(connectionFactory);
+        _creator = creator;
         _protector = provider.CreateProtector("ServiceProtector");
         _validator = validator;
     }
+    
 
     [BindProperty] public string EncryptedId { get; set; } = string.Empty;
     [BindProperty] public int ServiceId { get; set; }
