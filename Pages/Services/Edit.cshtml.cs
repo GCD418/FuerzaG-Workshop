@@ -1,8 +1,6 @@
 using FuerzaG.Application.Services;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
-using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +17,9 @@ public class EditModel : PageModel
 
     public List<string> ValidationErrors { get; set; } = new();
 
-    public EditModel(ServiceService servicesServices,IDbConnectionFactory connectionFactory, IDataProtectionProvider provider, IValidator<Service> validator)
+    public EditModel(ServiceService serviceService, IDataProtectionProvider provider, IValidator<Service> validator)
     {
-        _serviceService = servicesServices;
+        _serviceService = serviceService;
         _protector = provider.CreateProtector("ServiceProtector");
         _validator = validator;
     }
@@ -89,7 +87,7 @@ public class EditModel : PageModel
         if (errorLower.Contains("precio"))
             return "Price";
 
-        if (errorLower.Contains("descripción"))
+        if (errorLower.Contains("descripción") || errorLower.Contains("descripcion"))
             return "Description";
 
         return string.Empty;

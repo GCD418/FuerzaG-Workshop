@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Services.Validations;
 using Microsoft.AspNetCore.Authorization;
-using System.Globalization;
 
 namespace FuerzaG.Pages.Services;
 
@@ -29,22 +28,13 @@ public class CreateModel : PageModel
 
     public IActionResult OnPost()
     {
-        ModelState.Clear();
-
         var rawPrice = (Request.Form["Service.Price"].ToString() ?? string.Empty).Trim();
-        rawPrice = new string(rawPrice.Where(c => char.IsDigit(c) || c == ',' || c == '.').ToArray());
 
-        if (!decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.GetCultureInfo("es-BO"), out var parsed) &&
-            !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.GetCultureInfo("es-ES"), out parsed) &&
-            !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.InvariantCulture, out parsed))
-        {
-            ValidationErrors = new() { $"El valor '{rawPrice}' no es válido para Precio." };
-            return Page();
-        }
-
-        Service.Price = parsed;
+        if (decimal.TryParse(rawPrice, out var parsed))
+            Service.Price = parsed;
 
         var validationResult = _validator.Validate(Service);
+
         if (validationResult.IsFailure)
         {
             ValidationErrors = validationResult.Errors;
@@ -57,6 +47,7 @@ public class CreateModel : PageModel
                 else
                     ModelState.AddModelError(string.Empty, error);
             }
+
             return Page();
         }
 
@@ -76,13 +67,10 @@ public class CreateModel : PageModel
 
         if (errorLower.Contains("nombre"))
             return "Name";
-
         if (errorLower.Contains("tipo"))
             return "Type";
-
         if (errorLower.Contains("precio"))
             return "Price";
-
         if (errorLower.Contains("descripción") || errorLower.Contains("descripcion"))
             return "Description";
 
