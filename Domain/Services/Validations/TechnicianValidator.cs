@@ -55,7 +55,6 @@ namespace FuerzaG.Domain.Services.Validations
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                _errors.Add("SecondLastName|El segundo apellido es requerido");
                 return;
             }
             if (value.Length < 2) _errors.Add("SecondLastName|Debe tener al menos 2 caracteres");

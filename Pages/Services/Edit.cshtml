@@ -9,19 +9,18 @@
 
     @if (Model.ValidationErrors.Any())
     {
-    <div class="alert alert-danger" role="alert">
-        <h5 class="alert-heading">Errores de validación:</h5>
-        <ul class="mb-0">
-            @foreach (var error in Model.ValidationErrors)
-            {
-                <li>@error</li>
-            }
-        </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-    </div>
+        <div class="alert alert-danger" role="alert">
+            <h5 class="alert-heading">Errores de validación:</h5>
+            <ul class="mb-0">
+                @foreach (var error in Model.ValidationErrors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
     }
 
-    
     <form method="post" class="card card-body shadow-sm" id="serviceForm" novalidate>
         <input type="hidden" asp-for="EncryptedId" />
         <input type="hidden" asp-for="ServiceId" />
@@ -29,41 +28,67 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label asp-for="Name" class="form-label">Nombre del servicio *</label>
-                <input asp-for="Name" class="form-control" placeholder="Ej: Cambio de aceite" />
+                <input asp-for="Name" class="form-control" placeholder="Ej: Cambio de aceite" required minlength="3" maxlength="100" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+                <div class="invalid-feedback">El nombre debe tener entre 3 y 100 caracteres.</div>
             </div>
-            
 
             <div class="col-md-6">
                 <label asp-for="Type" class="form-label">Tipo *</label>
-                <select asp-for="Type" class="form-select">
+                <select asp-for="Type" class="form-select" required>
                     <option value="">-- Selecciona el tipo --</option>
                     <option value="Preventivo">Preventivo</option>
                     <option value="Correctivo">Correctivo</option>
                 </select>
+                <div class="invalid-feedback">Seleccione un tipo de servicio.</div>
             </div>
-            
-
 
             <div class="col-md-6">
                 <label asp-for="Price" class="form-label">Precio *</label>
-                <input asp-for="Price" class="form-control" type="text" inputmode="decimal" placeholder="Ej: 150,00" />
-                <!-- <div class="form-text">Usa separador decimal (ej: 150,00).</div> -->
+                <input asp-for="Price" class="form-control" type="text" inputmode="decimal" placeholder="Ej: 150,00" required pattern="^\d+([.,]\d{1,2})?$" />
+                <span asp-validation-for="Price" class="text-danger small"></span>
+                <div class="invalid-feedback">Ingrese un precio válido (ej: 150,00).</div>
             </div>
 
             <div class="col-12">
                 <label asp-for="Description" class="form-label">Descripción</label>
                 <textarea asp-for="Description" class="form-control" rows="3" maxlength="300" placeholder="Detalles del servicio"></textarea>
-                <!-- <div class="form-text">Máximo 500 caracteres.</div> -->
             </div>
-
-            
         </div>
 
-
-
         <div class="mt-4">
-            <button class="btn btn-dark" type="submit"><i class="fas fa-save"></i> Actualizar</button>
+            <button type="button" class="btn btn-dark" id="btnOpenEditModal"><i class="fas fa-save"></i> Actualizar</button>
             <a asp-page="/Services/ServicePage" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Cancelar</a>
         </div>
     </form>
+    @await Html.PartialAsync("_ConfirmEditModal")
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            var form = document.getElementById('serviceForm');
+
+            $('input[asp-for="Price"]').on('input', function() {
+                this.value = this.value.replace(/[^0-9.,]/g, '');
+            });
+
+            $('#btnOpenEditModal').on('click', function() {
+                if (form.checkValidity()) {
+                    var modal = new bootstrap.Modal(document.getElementById('confirmEditModal'));
+                    modal.show();
+                } else {
+                    form.classList.add('was-validated');
+                }
+            });
+
+            $('#confirmEditBtn').on('click', function() {
+                const confirmBtn = $(this);
+                confirmBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Guardando...');
+                var modal = bootstrap.Modal.getInstance(document.getElementById('confirmEditModal'));
+                modal.hide();
+                form.submit();
+            });
+        });
+    </script>
+}
