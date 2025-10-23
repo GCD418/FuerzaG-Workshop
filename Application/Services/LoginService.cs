@@ -85,8 +85,9 @@ public class LoginService
 
         var userData = new UserSessionData
         {
-            UserId = Int32.Parse(user.FindFirst(ClaimTypes.Sid).Value),
-            Username = user.FindFirst(ClaimTypes.NameIdentifier).Value,
+            
+            UserId  = int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value),
+            Username = user.FindFirst(ClaimTypes.NameIdentifier)!.Value, 
             Role = user.FindFirst(ClaimTypes.Role).Value,
         };
         return userData;
@@ -96,16 +97,15 @@ public class LoginService
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, userAccount.UserName),
-            new Claim(ClaimTypes.Sid, userAccount.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString()),
+            new Claim(ClaimTypes.Name, userAccount.UserName), 
             new Claim(ClaimTypes.Role, userAccount.Role),
-            new Claim(ClaimTypes.Name, userAccount.Name),
             new Claim("FirstLastName", userAccount.FirstLastName),
             new Claim("SecondLastName", userAccount.SecondLastName ?? string.Empty),
             new Claim(ClaimTypes.Email, userAccount.Email ?? string.Empty) 
         };
 
-        var identity = new ClaimsIdentity(claims, "GForceAuth");
+        var identity = new ClaimsIdentity(claims, "GForceAuth", ClaimTypes.Name, ClaimTypes.Role);
         var principal = new  ClaimsPrincipal(identity);
 
         await _httpContextAccessor.HttpContext.SignInAsync(
@@ -113,6 +113,8 @@ public class LoginService
             principal,
             new AuthenticationProperties { IsPersistent = false }
         );
+
+
     }
 
     private void SendEmail(string name, string username, string email, string password)
