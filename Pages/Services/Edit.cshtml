@@ -23,19 +23,19 @@
 
     <form method="post" class="card card-body shadow-sm" id="serviceForm" novalidate>
         <input type="hidden" asp-for="EncryptedId" />
-        <input type="hidden" asp-for="ServiceId" />
+        <input type="hidden" asp-for="Service.Id" />
 
         <div class="row g-3">
             <div class="col-md-6">
-                <label asp-for="Name" class="form-label">Nombre del servicio *</label>
-                <input asp-for="Name" class="form-control" placeholder="Ej: Cambio de aceite" required minlength="3" maxlength="100" />
-                <span asp-validation-for="Name" class="text-danger small"></span>
+                <label asp-for="Service.Name" class="form-label">Nombre del servicio *</label>
+                <input asp-for="Service.Name" class="form-control" placeholder="Ej: Cambio de aceite" required minlength="3" maxlength="100" />
+                <span asp-validation-for="Service.Name" class="text-danger small"></span>
                 <div class="invalid-feedback">El nombre debe tener entre 3 y 100 caracteres.</div>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="Type" class="form-label">Tipo *</label>
-                <select asp-for="Type" class="form-select" required>
+                <label asp-for="Service.Type" class="form-label">Tipo *</label>
+                <select asp-for="Service.Type" class="form-select" required>
                     <option value="">-- Selecciona el tipo --</option>
                     <option value="Preventivo">Preventivo</option>
                     <option value="Correctivo">Correctivo</option>
@@ -44,15 +44,17 @@
             </div>
 
             <div class="col-md-6">
-                <label asp-for="Price" class="form-label">Precio *</label>
-                <input asp-for="Price" class="form-control" type="text" inputmode="decimal" placeholder="Ej: 150,00" required pattern="^\d+([.,]\d{1,2})?$" />
-                <span asp-validation-for="Price" class="text-danger small"></span>
+                <label asp-for="Service.Price" class="form-label">Precio *</label>
+                <input asp-for="Service.Price" class="form-control" type="text" inputmode="decimal" placeholder="Ej: 150,00" required pattern="^\d+([.,]\d{1,2})?$" />
+                <span asp-validation-for="Service.Price" class="text-danger small"></span>
                 <div class="invalid-feedback">Ingrese un precio válido (ej: 150,00).</div>
             </div>
 
             <div class="col-12">
-                <label asp-for="Description" class="form-label">Descripción</label>
-                <textarea asp-for="Description" class="form-control" rows="3" maxlength="300" placeholder="Detalles del servicio"></textarea>
+                <label asp-for="Service.Description" class="form-label">Descripción *</label>
+                <textarea asp-for="Service.Description" class="form-control" rows="3" minlength="3" maxlength="500" placeholder="Detalles del servicio" required></textarea>
+                <span asp-validation-for="Service.Description" class="text-danger small"></span>
+                <div class="invalid-feedback">La descripción debe tener entre 3 y 500 caracteres.</div>
             </div>
         </div>
 
@@ -69,7 +71,7 @@
         $(document).ready(function() {
             var form = document.getElementById('serviceForm');
 
-            $('input[asp-for="Price"]').on('input', function() {
+            $('input[asp-for="Service.Price"]').on('input', function() {
                 this.value = this.value.replace(/[^0-9.,]/g, '');
             });
 

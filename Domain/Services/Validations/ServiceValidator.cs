@@ -41,7 +41,6 @@ public class ServiceValidator : IValidator<Service>
         if (name.Length > 100)
             _errors.Add("El nombre no puede superar los 100 caracteres");
 
-        // Permitir letras, números y espacios
         if (!Regex.IsMatch(name, @"^[\p{L}\d\s]+$"))
             _errors.Add("El nombre solo puede contener letras, números y espacios");
     }
@@ -90,6 +89,8 @@ public class ServiceValidator : IValidator<Service>
             _errors.Add("La descripción es obligatoria");
             return;
         }
+        if (description.Length < 3)
+            _errors.Add("La descripción debe tener al menos 3 caracteres");
         if (description.Length > 500)
             _errors.Add("La descripción no puede superar los 500 caracteres");
     }
