@@ -1,27 +1,20 @@
 using FuerzaG.Application.Services;
-using FuerzaG.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
-using FuerzaG.Domain.Services.Validations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using FuerzaG.Domain.Entities;
+using FuerzaG.Domain.Services.Validations;
+using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace FuerzaG.Pages.Services;
 
-using FuerzaG.Infrastructure.Connection;
-using FuerzaG.Infrastructure.Persistence.Factories;
-using System.ComponentModel.DataAnnotations;
-
-
 [Authorize(Roles = UserRoles.Manager)]
-
 public class CreateModel : PageModel
 {
     private readonly ServiceService _serviceService;
     private readonly IValidator<Service> _validator;
 
-    public List<string> ValidationErrors { get; set; } = [];
+    public List<string> ValidationErrors { get; set; } = new();
 
     public CreateModel(ServiceService serviceService, IValidator<Service> validator)
     {
@@ -36,47 +29,63 @@ public class CreateModel : PageModel
 
     public IActionResult OnPost()
     {
-        // if (!ModelState.IsValid)
-        // {
-        //     ValidationErrors = ModelState.Values
-        //         .SelectMany(v => v.Errors)
-        //         .Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage)
-        //             ? "Entrada inválida."
-        //             : e.ErrorMessage)
-        //         .ToList();
-        //     return Page();
-        // }
+        ModelState.Clear();
 
-        
         var rawPrice = (Request.Form["Service.Price"].ToString() ?? string.Empty).Trim();
         rawPrice = new string(rawPrice.Where(c => char.IsDigit(c) || c == ',' || c == '.').ToArray());
-        
+
         if (!decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.GetCultureInfo("es-BO"), out var parsed) &&
-        !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.GetCultureInfo("es-ES"), out parsed) &&
-        !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.InvariantCulture, out parsed))
+            !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.GetCultureInfo("es-ES"), out parsed) &&
+            !decimal.TryParse(rawPrice, NumberStyles.Number, CultureInfo.InvariantCulture, out parsed))
         {
             ValidationErrors = new() { $"El valor '{rawPrice}' no es válido para Precio." };
             return Page();
         }
-        
-        
+
         Service.Price = parsed;
 
         var validationResult = _validator.Validate(Service);
         if (validationResult.IsFailure)
         {
             ValidationErrors = validationResult.Errors;
+
+            foreach (var error in validationResult.Errors)
+            {
+                var fieldName = MapErrorToField(error);
+                if (!string.IsNullOrEmpty(fieldName))
+                    ModelState.AddModelError($"Service.{fieldName}", error);
+                else
+                    ModelState.AddModelError(string.Empty, error);
+            }
             return Page();
         }
-        
 
         var newId = _serviceService.Create(Service);
         if (newId <= 0)
         {
-            ValidationErrors = new() { "No se pudo crear el registro." };
+            ModelState.AddModelError(string.Empty, "No se pudo crear el registro.");
             return Page();
         }
 
         return RedirectToPage("/Services/ServicePage");
+    }
+
+    private string MapErrorToField(string error)
+    {
+        var errorLower = error.ToLower();
+
+        if (errorLower.Contains("nombre"))
+            return "Name";
+
+        if (errorLower.Contains("tipo"))
+            return "Type";
+
+        if (errorLower.Contains("precio"))
+            return "Price";
+
+        if (errorLower.Contains("descripción") || errorLower.Contains("descripcion"))
+            return "Description";
+
+        return string.Empty;
     }
 }
