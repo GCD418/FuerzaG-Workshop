@@ -44,8 +44,8 @@
                             </a>
                             <button type="button"
                                     class="btn btn-danger btn-sm"
-                                    data-toggle="modal"
-                                    data-target="#deleteModal@(s.service.Id)">
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal@(s.service.Id)">
                                 <i class="bi bi-trash"></i> Eliminar
                             </button>
                         </td>
@@ -71,9 +71,7 @@
                             <h5 class="modal-title text-light" id="deleteModalLabel@(s.Id)">
                                 <i class="fas fa-exclamation-triangle me-2"></i> Confirmar eliminación
                             </h5>
-                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p class="mb-3">
@@ -84,7 +82,7 @@
                             </p>
                         </div>
                         <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                 <i class="fas fa-times me-2"></i> Cancelar
                             </button>
                             <form method="post"
