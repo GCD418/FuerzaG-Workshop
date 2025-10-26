@@ -56,11 +56,10 @@
                 <label asp-for="Service.Price" class="form-label">Precio *</label>
                 <input asp-for="Service.Price"
                        class="form-control"
-                       type="number"
-                       min="0.01"
-                       step="0.01"
+                       type="text"
                        inputmode="decimal"
-                       placeholder="Ej: 150,00"
+                       placeholder="Ej: 1,200.50"
+                       value=""
                        required />
                 <span asp-validation-for="Service.Price" class="text-danger small"></span>
                 <div class="invalid-feedback">
@@ -117,27 +116,24 @@
             document.getElementById('btnOpenModal').addEventListener('click', function () {
                 priceInput.classList.remove('is-invalid');
                 descriptionInput.classList.remove('is-invalid');
+                let valid = true;
+                let priceStr = priceInput.value.replace(/,/g, '').trim();
+                let price = parseFloat(priceStr);
 
-                if (form.checkValidity()) {
-                    const price = parseFloat(priceInput.value);
-                    const description = descriptionInput.value.trim();
+                if (isNaN(price) || price <= 0) {
+                    priceInput.classList.add('is-invalid');
+                    valid = false;
+                }
 
-                    let valid = true;
-                    if (price <= 0) {
-                        priceInput.classList.add('is-invalid');
-                        valid = false;
-                    }
-                    if (!description) {
-                        descriptionInput.classList.add('is-invalid');
-                        valid = false;
-                    }
+                const description = descriptionInput.value.trim();
+                if (!description) {
+                    descriptionInput.classList.add('is-invalid');
+                    valid = false;
+                }
 
-                    if (valid) {
-                        const modal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
-                        modal.show();
-                    } else {
-                        form.classList.add('was-validated');
-                    }
+                if (valid && form.checkValidity()) {
+                    const modal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+                    modal.show();
                 } else {
                     form.classList.add('was-validated');
                 }
