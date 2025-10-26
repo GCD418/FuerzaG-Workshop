@@ -36,6 +36,8 @@ builder.Services.AddRazorPages()
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<ServiceRepositoryCreator>();
+builder.Services.AddScoped<AccountRepositoryCreator>();
+
 
 
 // Mensajes del model binding en ESPAÑOL

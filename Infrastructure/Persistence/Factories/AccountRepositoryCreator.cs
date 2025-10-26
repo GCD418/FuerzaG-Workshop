@@ -10,7 +10,7 @@ public class AccountRepositoryCreator : DataRepositoryFactory
 
     private readonly ICurrentUser _currentUser;
     
-    public AccountRepositoryCreator(IDbConnectionFactory dbConnectionFactory, ICurrentUser currentUser)                  // <-- NUEVO parámetro
+    public AccountRepositoryCreator(IDbConnectionFactory dbConnectionFactory, ICurrentUser currentUser)
     {
         _dbConnectionFactory = dbConnectionFactory;
         _currentUser = currentUser;
@@ -19,6 +19,7 @@ public class AccountRepositoryCreator : DataRepositoryFactory
     
     public override IRepository<T> GetRepository<T>()
     {
-        return (IRepository<T>)(object)new ServiceRepository(_dbConnectionFactory, _currentUser);
+        return (IRepository<T>)(object)new AccountRepository(_dbConnectionFactory, _currentUser);
+   
     }
 }
