@@ -17,9 +17,9 @@ public class EditModel : PageModel
 
     public List<string> ValidationErrors { get; set; } = new();
 
-    public EditModel(ServiceRepositoryCreator creator, IDataProtectionProvider provider, IValidator<Service> validator)
+    public EditModel(ServiceService serviceService, IDataProtectionProvider provider, IValidator<Service> validator)
     {
-        _creator = creator;
+        _serviceService = serviceService;
         _protector = provider.CreateProtector("ServiceProtector");
         _validator = validator;
     }
