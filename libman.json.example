@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap@5.3.2",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/css/bootstrap.min.css",
+        "dist/css/bootstrap.min.css.map",
+        "dist/js/bootstrap.bundle.min.js",
+        "dist/js/bootstrap.bundle.min.js.map"
+      ]
+    },
+    {
+      "library": "animate.css@4.1.1",
+      "destination": "wwwroot/lib/animate/",
+      "files": [
+        "animate.min.css"
+      ]
+    },
+    {
+      "library": "OwlCarousel2@2.3.4",
+      "destination": "wwwroot/lib/owlcarousel/",
+      "files": [
+        "dist/owl.carousel.min.js",
+        "dist/assets/owl.carousel.min.css",
+        "dist/assets/owl.theme.default.min.css"
+      ]
+    },
+    {
+      "library": "jquery.easing@1.4.1",
+      "destination": "wwwroot/lib/easing/",
+      "files": [
+        "jquery.easing.min.js"
+      ]
+    },
+    {
+      "library": "waypoints@4.0.1",
+      "destination": "wwwroot/lib/waypoints/",
+      "files": [
+        "lib/jquery.waypoints.min.js"
+      ]
+    },
+    {
+      "library": "Counter-Up@1.0.0",
+      "destination": "wwwroot/lib/counterup/",
+      "files": [
+        "jquery.counterup.min.js"
+      ]
+    }
+  ]
+}
