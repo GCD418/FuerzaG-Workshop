@@ -1,6 +1,7 @@
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Ports;
 using FuerzaG.Infrastructure.Connection;
+using FuerzaG.Infrastructure.Security;
 using FuerzaG.Infrastructure.Persistence.Factories;
 
 namespace FuerzaG.Application.Services;
@@ -9,11 +10,12 @@ public class UserAccountService
 {
     private readonly DataRepositoryFactory _dataRepositoryFactory;
 
-    public UserAccountService(IDbConnectionFactory connectionFactory)
+    public UserAccountService(IDbConnectionFactory connectionFactory, ICurrentUser currentUser)
     {
-        _dataRepositoryFactory = new AccountRepositoryCreator(connectionFactory);
+        _dataRepositoryFactory = new AccountRepositoryCreator(connectionFactory, currentUser);
     }
 
+    
     public List<UserAccount> GetAll()
     {
         return _dataRepositoryFactory.GetRepository<UserAccount>().GetAll();

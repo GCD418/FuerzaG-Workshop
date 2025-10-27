@@ -2,17 +2,19 @@ using System.Data;
 using FuerzaG.Domain.Ports;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
-
+using FuerzaG.Infrastructure.Security; 
 
 namespace FuerzaG.Infrastructure.Persistence;
 
 public class ServiceRepository : IRepository<Service>
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
+    private readonly ICurrentUser _currentUser; 
 
-    public ServiceRepository(IDbConnectionFactory dbConnectionFactory)
+    public ServiceRepository(IDbConnectionFactory dbConnectionFactory, ICurrentUser currentUser)
     {
         _dbConnectionFactory = dbConnectionFactory;
+        _currentUser = currentUser;
     }
 
     public List<Service> GetAll()
@@ -50,7 +52,7 @@ public class ServiceRepository : IRepository<Service>
     public int Create(Service service)
     {
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = "SELECT fn_insert_service(@name, @type, @price, @description)";
+        const string query = "SELECT fn_insert_service(@name, @type, @price, @description, @created_by_user_id)";
 
         using var command = connection.CreateCommand();
         command.CommandText = query;
@@ -59,6 +61,7 @@ public class ServiceRepository : IRepository<Service>
         AddParameter(command, "@type", service.Type);
         AddParameter(command, "@price", service.Price);
         AddParameter(command, "@description", service.Description);
+        AddParameter(command, "@created_by_user_id", _currentUser.UserId ?? -1);
 
         connection.Open();
         var idObj = command.ExecuteScalar();
@@ -78,7 +81,7 @@ public class ServiceRepository : IRepository<Service>
         AddParameter(command, "@type", service.Type);
         AddParameter(command, "@price", service.Price);
         AddParameter(command, "@description", service.Description);
-        AddParameter(command, "@modified_by_user_id", 9999); 
+        AddParameter(command, "@modified_by_user_id", _currentUser.UserId ?? -1);
 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
@@ -91,7 +94,7 @@ public class ServiceRepository : IRepository<Service>
         using var command = connection.CreateCommand();
         command.CommandText = query;
         AddParameter(command, "@id", id);
-        AddParameter(command, "@modified_by_user_id", 8888); 
+        AddParameter(command, "@modified_by_user_id", _currentUser.UserId ?? -1); 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
     }

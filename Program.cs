@@ -9,6 +9,7 @@ using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence;
 using FuerzaG.Infrastructure.Security;
 using FuerzaG.Models;
+using FuerzaG.Infrastructure.Persistence.Factories;
 
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
@@ -30,6 +31,14 @@ builder.Services
 builder.Services.AddRazorPages()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
+
+//
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+builder.Services.AddScoped<ServiceRepositoryCreator>();
+builder.Services.AddScoped<AccountRepositoryCreator>();
+
+
 
 // Mensajes del model binding en ESPAÑOL
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>

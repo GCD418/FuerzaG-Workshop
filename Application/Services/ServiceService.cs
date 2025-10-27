@@ -1,6 +1,7 @@
 using FuerzaG.Domain.Entities;
 using FuerzaG.Infrastructure.Connection;
 using FuerzaG.Infrastructure.Persistence.Factories;
+using FuerzaG.Infrastructure.Security;
 
 namespace FuerzaG.Application.Services;
 
@@ -8,11 +9,12 @@ public class ServiceService
 {
     private readonly DataRepositoryFactory _dataRepositoryFactory;
 
-    public ServiceService(IDbConnectionFactory connectionFactory)
+    
+    public ServiceService(IDbConnectionFactory connectionFactory, ICurrentUser currentUser)
     {
-        _dataRepositoryFactory = new ServiceRepositoryCreator(connectionFactory);
+        _dataRepositoryFactory = new ServiceRepositoryCreator(connectionFactory, currentUser);
     }
-
+    
     
     public List<Service> GetAll()
     {
@@ -43,3 +45,4 @@ public class ServiceService
         return _dataRepositoryFactory.GetRepository<Service>().DeleteById(id);
     }
 }
+

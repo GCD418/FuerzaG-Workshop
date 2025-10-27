@@ -23,6 +23,7 @@ public class EditModel : PageModel
         _protector = provider.CreateProtector("ServiceProtector");
         _validator = validator;
     }
+    
 
     [BindProperty] public string EncryptedId { get; set; } = string.Empty;
     [BindProperty] public Service Service { get; set; } = new();

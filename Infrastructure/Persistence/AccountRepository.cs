@@ -2,17 +2,21 @@ using System.Data;
 using FuerzaG.Domain.Entities;
 using FuerzaG.Domain.Ports;
 using FuerzaG.Infrastructure.Connection;
+using FuerzaG.Infrastructure.Security; 
 
 namespace FuerzaG.Infrastructure.Persistence;
 
 public class AccountRepository : IRepository<UserAccount>
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
-
-    public AccountRepository(IDbConnectionFactory dbConnectionFactory)
+    private readonly ICurrentUser _currentUser; 
+    
+    public AccountRepository(IDbConnectionFactory dbConnectionFactory, ICurrentUser currentUser)
     {
         _dbConnectionFactory = dbConnectionFactory;
+        _currentUser = currentUser;
     }
+
 
     public List<UserAccount> GetAll()
     {
@@ -46,9 +50,14 @@ public class AccountRepository : IRepository<UserAccount>
     }
     public int Create(UserAccount userAccount)
     {
+
         using var connection = _dbConnectionFactory.CreateConnection();
-        string query = "SELECT fn_insert_account(@name, @first_last_name, @second_last_name, @phone_number, @email, @document_number, @user_name, @password, @role)";
-        
+        const string query = @"
+            SELECT fn_insert_account(
+                @name, @first_last_name, @second_last_name, @phone_number,
+                @email, @document_number, @user_name, @password, @role,
+                @created_by_user_id
+            )";
         using var command = connection.CreateCommand();
         command.CommandText = query;
 
@@ -61,6 +70,8 @@ public class AccountRepository : IRepository<UserAccount>
         AddParameter(command, "@user_name", userAccount.UserName);
         AddParameter(command, "@password", userAccount.Password);
         AddParameter(command, "@role", userAccount.Role);
+        
+        AddParameter(command, "@created_by_user_id", _currentUser.UserId ?? -1);
 
         connection.Open();
         var idObj = command.ExecuteScalar();
@@ -86,7 +97,9 @@ public class AccountRepository : IRepository<UserAccount>
         AddParameter(command, "@user_name", userAccount.UserName);
         AddParameter(command, "@password", userAccount.Password);
         AddParameter(command, "@role", userAccount.Role);
-        AddParameter(command, "@modified_by_user_id", userAccount.ModifiedByUserId ?? 9999);
+        // AddParameter(command, "@modified_by_user_id", userAccount.ModifiedByUserId ?? 9999);
+
+        AddParameter(command, "@modified_by_user_id", _currentUser.UserId ?? -1);
 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
@@ -99,7 +112,9 @@ public class AccountRepository : IRepository<UserAccount>
         using var command = connection.CreateCommand();
         command.CommandText = query;
         AddParameter(command, "@id", id);
-        AddParameter(command, "@modified_by_user_id", 8888); // TODO: reemplazar con ID real del usuario autenticado
+        // AddParameter(command, "@modified_by_user_id", 8888);
+        AddParameter(command, "@modified_by_user_id", _currentUser.UserId ?? -1);
+
 
         connection.Open();
         return Convert.ToBoolean(command.ExecuteScalar());
